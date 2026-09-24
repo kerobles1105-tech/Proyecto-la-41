@@ -1,0 +1,3 @@
+html { scroll-behavior: smooth; }
+body { margin: 0; background: #fff8d9; }
+button, input, textarea { font: inherit; }
