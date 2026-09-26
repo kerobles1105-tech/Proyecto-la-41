@@ -6,6 +6,7 @@ import {
   CustomerCarePage,
   FleetPage,
   HomePage,
+  NewsPage,
   SafetyPage,
   ServicesPage,
 } from './pages';
@@ -13,6 +14,7 @@ import {
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'inicio' },
   { path: 'inicio', component: HomePage },
+  { path: 'noticias', component: NewsPage },
   { path: 'nosotros', component: AboutPage },
   { path: 'servicios', component: ServicesPage },
   { path: 'flota', component: FleetPage },
