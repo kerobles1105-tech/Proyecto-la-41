@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild, signal } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import emailjs from '@emailjs/browser';
@@ -269,18 +269,108 @@ export class FleetPage {}
 ` })
 export class SafetyPage {}
 
-@Component({ standalone: true, template: `
+@Component({ standalone: true, imports: [FormsModule], template: `
   <section class="inner-hero"><div class="container"><p class="eyebrow">05 / Contáctanos</p><h1>Tu próximo destino<br /><em>empieza aquí.</em></h1><p>Cuéntanos qué necesitas y nuestro equipo se pondrá en contacto contigo.</p></div></section>
-  <section class="contact-section contact-page"><div class="container contact-grid"><div><p class="eyebrow light">Hablemos</p><h2>Estamos listos<br /><em>para ayudarte.</em></h2><p>Atendemos consultas comerciales, solicitudes de transporte y alianzas.</p><div class="whatsapp-card"><div class="whatsapp-card-main"><span class="whatsapp-icon" aria-hidden="true"><svg viewBox="0 0 24 24" role="img"><path d="M20.5 3.5A11.8 11.8 0 0 0 12.1 0C5.6 0 .3 5.3.3 11.8c0 2.1.6 4.2 1.7 6L.2 24l6.4-1.7a11.8 11.8 0 0 0 5.5 1.4h.1c6.5 0 11.8-5.3 11.8-11.8 0-3.2-1.3-6.2-3.5-8.4ZM12.2 21.6h-.1a9.8 9.8 0 0 1-5-1.4l-.4-.2-3.8 1 1-3.7-.2-.4a9.8 9.8 0 0 1-1.5-5.2C2.2 6.4 6.7 2 12.1 2c2.6 0 5.1 1 6.9 2.9a9.8 9.8 0 0 1 2.9 7c0 5.4-4.4 9.7-9.7 9.7Zm5.3-7.3c-.3-.2-1.7-.8-2-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-1.5-.7-2.5-1.3-3.5-2.9-.3-.5.3-.4.8-1.3.1-.2.1-.4 0-.6l-.9-2.1c-.2-.5-.5-.4-.7-.4h-.6c-.2 0-.6.1-.9.4-.3.3-1.1 1.1-1.1 2.6s1.1 3 1.3 3.2c.2.2 2.1 3.2 5.1 4.5 1.9.8 2.6.9 3.5.8.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.3.1-1.4-.2-.1-.4-.2-.8-.4Z" /></svg></span><div><span class="whatsapp-label">Canal directo</span><strong>Escríbenos por WhatsApp</strong><small>+51 995 479 948</small></div></div><a class="whatsapp-button" href="https://wa.me/51995479948?text=Hola%2C%20deseo%20informaci%C3%B3n%20sobre%20sus%20servicios%20de%20transporte." target="_blank" rel="noopener">Abrir WhatsApp <span>↗</span></a></div></div><form class="contact-form" (submit)="$event.preventDefault()"><label>Nombre completo<input type="text" placeholder="Escribe tu nombre" /></label><label>Correo electrónico<input type="email" placeholder="tu@correo.com" /></label><label>¿Cómo podemos ayudarte?<textarea rows="3" placeholder="Cuéntanos brevemente"></textarea></label><button class="button button-primary" type="submit">Enviar mensaje <span>↗</span></button></form></div></section>
+  <section class="contact-section contact-page"><div class="container contact-grid"><div><p class="eyebrow light">Hablemos</p><h2>Estamos listos<br /><em>para ayudarte.</em></h2><p>Atendemos consultas comerciales, solicitudes de transporte y alianzas.</p><div class="whatsapp-card"><div class="whatsapp-card-main"><span class="whatsapp-icon" aria-hidden="true"><svg viewBox="0 0 24 24" role="img"><path d="M20.5 3.5A11.8 11.8 0 0 0 12.1 0C5.6 0 .3 5.3.3 11.8c0 2.1.6 4.2 1.7 6L.2 24l6.4-1.7a11.8 11.8 0 0 0 5.5 1.4h.1c6.5 0 11.8-5.3 11.8-11.8 0-3.2-1.3-6.2-3.5-8.4ZM12.2 21.6h-.1a9.8 9.8 0 0 1-5-1.4l-.4-.2-3.8 1 1-3.7-.2-.4a9.8 9.8 0 0 1-1.5-5.2C2.2 6.4 6.7 2 12.1 2c2.6 0 5.1 1 6.9 2.9a9.8 9.8 0 0 1 2.9 7c0 5.4-4.4 9.7-9.7 9.7Zm5.3-7.3c-.3-.2-1.7-.8-2-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-1.5-.7-2.5-1.3-3.5-2.9-.3-.5.3-.4.8-1.3.1-.2.1-.4 0-.6l-.9-2.1c-.2-.5-.5-.4-.7-.4h-.6c-.2 0-.6.1-.9.4-.3.3-1.1 1.1-1.1 2.6s1.1 3 1.3 3.2c.2.2 2.1 3.2 5.1 4.5 1.9.8 2.6.9 3.5.8.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.3.1-1.4-.2-.1-.4-.2-.8-.4Z" /></svg></span><div><span class="whatsapp-label">Canal directo</span><strong>Escríbenos por WhatsApp</strong><small>+51 995 479 948</small></div></div><a class="whatsapp-button" href="https://wa.me/51995479948?text=Hola%2C%20deseo%20informaci%C3%B3n%20sobre%20sus%20servicios%20de%20transporte." target="_blank" rel="noopener">Abrir WhatsApp <span>↗</span></a></div></div><form class="contact-form" (ngSubmit)="enviarContacto()"><label>Nombre completo<input type="text" name="nombre" [(ngModel)]="nombre" required placeholder="Escribe tu nombre" /></label><label>Correo electrónico<input type="email" name="email" [(ngModel)]="email" required placeholder="tu@correo.com" /></label><label>Teléfono<input type="tel" name="telefono" [(ngModel)]="telefono" required placeholder="Número de contacto" /></label><label>Asunto<input type="text" name="asunto" [(ngModel)]="asunto" required placeholder="Motivo de tu mensaje" /></label><label>¿Cómo podemos ayudarte?<textarea name="mensaje" [(ngModel)]="mensaje" rows="3" required placeholder="Cuéntanos brevemente"></textarea></label><button class="button button-primary" type="submit" [disabled]="isSendingContact">{{ isSendingContact ? 'Enviando...' : 'Enviar mensaje' }} <span>↗</span></button></form></div></section>
 ` })
-export class ContactPage {}
+export class ContactPage {
+  private readonly emailJsServiceCD = 'service_ge1gxt8';
+  private readonly templateContactoID = 'template_yp6vfyl';
+  private readonly emailJsPublicKeyCD = 'LstO0DA7TXhuH1Va6';
+
+  nombre = '';
+  email = '';
+  telefono = '';
+  asunto = '';
+  mensaje = '';
+  isSendingContact = false;
+
+  enviarContacto(): void {
+    if (this.isSendingContact) return;
+
+    if (this.templateContactoID.startsWith('PEGA_')) {
+      window.alert('Configura el Template ID de contacto de EmailJS antes de enviar.');
+      return;
+    }
+
+    this.isSendingContact = true;
+    const datosContacto = {
+      nombre: this.nombre,
+      email: this.email,
+      telefono: this.telefono,
+      asunto: this.asunto,
+      mensaje: this.mensaje,
+    };
+
+    emailjs.send(this.emailJsServiceCD, this.templateContactoID, datosContacto, this.emailJsPublicKeyCD)
+      .then(() => {
+        window.alert('Su mensaje ha sido enviado. Nos comunicaremos con usted a la brevedad.');
+        this.limpiarFormularioContacto();
+      })
+      .catch(() => {
+        window.alert('Hubo un error al enviar el mensaje.');
+      })
+      .finally(() => {
+        this.isSendingContact = false;
+      });
+  }
+
+  private limpiarFormularioContacto(): void {
+    this.nombre = '';
+    this.email = '';
+    this.telefono = '';
+    this.asunto = '';
+    this.mensaje = '';
+  }
+}
 
 @Component({ standalone: true, template: `
   <section class="inner-hero care-hero"><div class="container"><p class="eyebrow">Atención al cliente</p><h1>Estamos contigo<br /><em>en cada recorrido.</em></h1><p>Resuelve tus dudas, consulta el estado de tu servicio o cuéntanos cómo podemos ayudarte.</p></div></section>
   <section class="care-section section-space"><div class="container"><div class="section-heading"><div><p class="eyebrow">Centro de ayuda</p><h2>¿En qué podemos<br /><em>ayudarte?</em></h2></div><p class="heading-support">Encuentra una respuesta rápida o déjanos tus datos y nuestro equipo te atenderá.</p></div><div class="help-grid"><article><span>01</span><h3>Consultar un servicio</h3><p>¿Necesitas información sobre un viaje, entrega o atención en curso?</p><a href="#ayuda">Hacer consulta <b>↗</b></a></article><article><span>02</span><h3>Seguimiento</h3><p>Indícanos tu código de servicio para revisar el estado de tu solicitud.</p><a href="#ayuda">Ver seguimiento <b>↗</b></a></article><article><span>03</span><h3>Preguntas frecuentes</h3><p>Conoce respuestas sobre horarios, reservas, carga y canales de atención.</p><a href="#ayuda">Leer respuestas <b>↗</b></a></article></div></div></section>
   <section id="ayuda" class="care-form-section"><div class="container care-form-grid"><div><p class="eyebrow light">Atención 41 S.A.</p><h2>Cuéntanos<br /><em>qué necesitas.</em></h2><p>Te responderemos con la información adecuada para tu caso.</p><div class="whatsapp-card"><div class="whatsapp-card-main"><span class="whatsapp-icon" aria-hidden="true"><svg viewBox="0 0 24 24" role="img"><path d="M20.5 3.5A11.8 11.8 0 0 0 12.1 0C5.6 0 .3 5.3.3 11.8c0 2.1.6 4.2 1.7 6L.2 24l6.4-1.7a11.8 11.8 0 0 0 5.5 1.4h.1c6.5 0 11.8-5.3 11.8-11.8 0-3.2-1.3-6.2-3.5-8.4ZM12.2 21.6h-.1a9.8 9.8 0 0 1-5-1.4l-.4-.2-3.8 1 1-3.7-.2-.4a9.8 9.8 0 0 1-1.5-5.2C2.2 6.4 6.7 2 12.1 2c2.6 0 5.1 1 6.9 2.9a9.8 9.8 0 0 1 2.9 7c0 5.4-4.4 9.7-9.7 9.7Zm5.3-7.3c-.3-.2-1.7-.8-2-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-1.5-.7-2.5-1.3-3.5-2.9-.3-.5.3-.4.8-1.3.1-.2.1-.4 0-.6l-.9-2.1c-.2-.5-.5-.4-.7-.4h-.6c-.2 0-.6.1-.9.4-.3.3-1.1 1.1-1.1 2.6s1.1 3 1.3 3.2c.2.2 2.1 3.2 5.1 4.5 1.9.8 2.6.9 3.5.8.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.3.1-1.4-.2-.1-.4-.2-.8-.4Z" /></svg></span><div><span class="whatsapp-label">Canal directo</span><strong>Escríbenos por WhatsApp</strong><small>+51 995 479 948</small></div></div><a class="whatsapp-button" href="https://wa.me/51995479948?text=Hola%2C%20deseo%20informaci%C3%B3n%20sobre%20sus%20servicios%20de%20transporte." target="_blank" rel="noopener">Abrir WhatsApp <span>↗</span></a></div></div><form class="contact-form" (submit)="$event.preventDefault()"><fieldset class="consult-reasons"><legend>Motivo de consulta</legend><div class="consult-reason-options"><label><input type="radio" name="reason" value="servicio" checked /><span>Consulta sobre servicio</span></label><label><input type="radio" name="reason" value="seguimiento" /><span>Seguimiento</span></label><label><input type="radio" name="reason" value="horarios" /><span>Información de horarios</span></label><label><input type="radio" name="reason" value="otro" /><span>Otro</span></label></div></fieldset><label>Nombre completo<input type="text" placeholder="Escribe tu nombre" /></label><label>Correo electrónico<input type="email" placeholder="tu@correo.com" /></label><label>Mensaje<textarea rows="3" placeholder="Escribe tu consulta"></textarea></label><button class="button button-primary" type="submit">Enviar consulta <span>↗</span></button></form></div></section>
 ` })
-export class CustomerCarePage {}
+export class CustomerCarePage {
+  private readonly emailJsServiceId = 'service_ge1gxt8';
+  private readonly emailJsTemplateId = 'template_yp6vfyl';
+  private readonly emailJsPublicKey = 'LstO0DA7TXhuH1Va6';
+  private isSending = false;
+
+  @HostListener('submit', ['$event'])
+  enviarAtencion(event: Event): void {
+    event.preventDefault();
+    if (this.isSending) return;
+
+    const form = event.target as HTMLFormElement;
+    const name = form.querySelector<HTMLInputElement>('input[type="text"]')?.value.trim() ?? '';
+    const email = form.querySelector<HTMLInputElement>('input[type="email"]')?.value.trim() ?? '';
+    const reason = form.querySelector<HTMLInputElement>('input[name="reason"]:checked')?.value ?? '';
+    const message = form.querySelector<HTMLTextAreaElement>('textarea')?.value.trim() ?? '';
+
+    if (!name || !email || !message) {
+      window.alert('Completa tu nombre, correo y mensaje antes de enviar.');
+      return;
+    }
+
+    this.isSending = true;
+    emailjs.send(this.emailJsServiceId, this.emailJsTemplateId, {
+      nombre: name,
+      email,
+      telefono: '',
+      asunto: reason || 'Atención al cliente',
+      mensaje: message,
+    }, this.emailJsPublicKey)
+      .then(() => {
+        window.alert('Su mensaje ha sido enviado. Nos comunicaremos con usted a la brevedad.');
+        form.reset();
+      })
+      .catch(() => {
+        window.alert('Hubo un error al enviar el mensaje.');
+      })
+      .finally(() => {
+        this.isSending = false;
+      });
+  }
+}
 
 @Component({ standalone: true, imports: [FormsModule], template: `
   <section class="inner-hero claims-hero"><div class="container"><p class="eyebrow">Libro de reclamaciones</p><h1>Tu experiencia<br /><em>nos ayuda a mejorar.</em></h1><p>Registra aquí una queja o reclamo relacionado con nuestros servicios.</p></div></section>
