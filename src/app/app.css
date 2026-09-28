@@ -57,16 +57,16 @@
 .service-carousel-controls button:focus-visible, .service-carousel-dots button:focus-visible, .service-rotation-toggle:focus-visible { outline: 2px solid var(--red); outline-offset: 3px; }
 @media (max-width: 800px) { .service-catalog .service-slide { grid-template-columns: 1fr; grid-template-rows: 220px 350px; height: 570px; }.service-slide-media, .service-slide-media img { height: 220px; }.service-slide-copy { height: 350px; padding: 30px 26px 34px; }.service-carousel-controls { inset-inline: 12px; top: 110px; bottom: auto; transform: translateY(-50%); }.service-carousel-controls button { width: 42px; height: 42px; }.service-carousel-footer { margin-inline: 8px; } }
 @media (prefers-reduced-motion: reduce) { .service-catalog .service-slide, .service-carousel-dots button { animation: none; transition: none; } }
-.route-map-legend { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: -30px 0 18px; }
+.route-map-legend { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; margin: -30px 0 18px; }
 .route-legend-card { display: flex; align-items: flex-start; gap: 12px; min-width: 0; padding: 15px 16px; background: white; border-left: 3px solid; }
 .route-legend-card.route-legend-outbound { border-color: var(--red); }
-.route-legend-card.route-legend-return { border-color: var(--blue); }
 .route-legend-card i { flex: 0 0 28px; height: 4px; margin-top: 7px; border-radius: 4px; }
 .route-legend-outbound i { background: var(--red); }
-.route-legend-return i { background: var(--blue); }
 .route-legend-card strong { display: block; color: var(--blue-dark); font-size: 12px; line-height: 1.4; }
 .route-legend-card p { color: var(--muted); font-size: 11px; line-height: 1.5; margin: 5px 0 0; }
 .route-map-status { color: var(--muted); font-size: 12px; line-height: 1.6; margin: 12px 0 0; }
+.route-stop-label { border: 0; border-radius: 12px; background: rgba(8,40,88,.9); box-shadow: 0 2px 7px rgba(8,40,88,.22); color: white; font: 700 9px/1.2 "Trebuchet MS", sans-serif; padding: 3px 7px; white-space: nowrap; }
+.route-stop-label::before { border-top-color: rgba(8,40,88,.9); }
 @media (max-width: 800px) { .route-map-legend { grid-template-columns: 1fr; margin-top: -25px; gap: 8px; }.route-legend-card { padding: 12px 14px; } }
 .fleet-hero { background: linear-gradient(90deg, rgba(8,40,88,.88) 0%, rgba(18,63,145,.5) 55%, rgba(18,63,145,.12) 100%), url("/nuestraflota.jpeg") center 48% / cover no-repeat; }
 .fleet-details { background: #fffdf1; }
@@ -142,7 +142,7 @@
 @media (max-width: 800px) { .about-history-layout { grid-template-columns: 1fr; gap: 36px; }.about-history-carousel-viewport { aspect-ratio: 4 / 3; }.about-history-copy .about-history-lead { font-size: 20px; } }
 @media (prefers-reduced-motion: reduce) { .about-history-photo { animation: none; } }
 .care-hero { background: linear-gradient(90deg, rgba(8,40,88,.88) 0%, rgba(18,63,145,.48) 55%, rgba(18,63,145,.1) 100%), url("/atencion.jfif") center center / cover no-repeat; }
-.safety-hero { background: linear-gradient(90deg, rgba(8,40,88,.88) 0%, rgba(18,63,145,.48) 55%, rgba(18,63,145,.1) 100%), url("/seguridad.png") center center / cover no-repeat; }
+.safety-hero { background: linear-gradient(90deg, rgba(8,40,88,.88) 0%, rgba(18,63,145,.48) 55%, rgba(18,63,145,.1) 100%), url("/seguridad1.png") center center / cover no-repeat; }
 .about-principles { padding: 88px 0 96px; background: linear-gradient(135deg, var(--blue-dark), var(--blue)); color: white; }
 .about-principles .section-heading { align-items: center; margin-bottom: 42px; }
 .about-principles .section-heading .eyebrow { color: var(--yellow); }
@@ -227,4 +227,67 @@
 	.top-line-inner > span { font-size: 9px; }
 	.top-links { justify-content: space-between; gap: 12px; }
 	.top-links a { font-size: 10px; }
+}
+
+.reveal-on-scroll {
+	opacity: 0;
+	transform: translateY(18px);
+	transition: opacity .65s ease var(--reveal-delay, 0ms), transform .65s cubic-bezier(.22, 1, .36, 1) var(--reveal-delay, 0ms);
+}
+
+.reveal-on-scroll.is-visible {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.reveal-on-scroll {
+		opacity: 1;
+		transform: none;
+		transition: none;
+	}
+}
+
+.whatsapp-card {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 20px;
+	max-width: 520px;
+	margin-top: 34px;
+	padding: 18px 20px;
+	border: 1px solid rgba(255,255,255,.22);
+	background: rgba(8,40,88,.28);
+}
+
+.whatsapp-card > div {
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+}
+
+.whatsapp-card-main { display: flex !important; flex-direction: row !important; align-items: center; gap: 12px; }
+.whatsapp-icon { display: grid; flex: 0 0 34px; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: #25d366; }
+.whatsapp-icon svg { width: 22px; height: 22px; fill: #073b21; }
+.whatsapp-card .whatsapp-label,
+.whatsapp-card small { display: none; }
+.whatsapp-card-main > div { min-width: 0; }
+
+.whatsapp-label {
+	color: #b9f2cb;
+	font-size: 10px;
+	font-weight: 800;
+	letter-spacing: .12em;
+	text-transform: uppercase;
+}
+
+.whatsapp-card strong { color: white; font: 20px Georgia, serif; }
+.whatsapp-card small { color: #c5d7f2; font-size: 11px; }
+.whatsapp-button { flex: 0 0 auto; padding: 12px 14px; background: #25d366; color: #073b21; font-size: 11px; font-weight: 800; text-decoration: none; }
+.whatsapp-button span { margin-left: 8px; }
+.whatsapp-button:hover { background: #54e486; }
+
+@media (max-width: 800px) {
+	.whatsapp-card { align-items: stretch; flex-direction: column; gap: 14px; }
+	.whatsapp-button { text-align: center; }
 }
