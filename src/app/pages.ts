@@ -1,5 +1,7 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import emailjs from '@emailjs/browser';
 import * as L from 'leaflet';
 
 @Component({ standalone: true, imports: [RouterLink], template: `
@@ -280,8 +282,68 @@ export class ContactPage {}
 ` })
 export class CustomerCarePage {}
 
-@Component({ standalone: true, template: `
+@Component({ standalone: true, imports: [FormsModule], template: `
   <section class="inner-hero claims-hero"><div class="container"><p class="eyebrow">Libro de reclamaciones</p><h1>Tu experiencia<br /><em>nos ayuda a mejorar.</em></h1><p>Registra aquí una queja o reclamo relacionado con nuestros servicios.</p></div></section>
-  <section class="claims-section section-space"><div class="container claims-layout"><div class="claims-aside"><p class="eyebrow">Antes de empezar</p><h2>Queremos<br /><em>escucharte.</em></h2><p>Completa los datos con claridad. Revisaremos tu solicitud y te responderemos dentro del plazo establecido.</p><div class="claims-note"><strong>Importante</strong><span>Este formulario es una guía visual. Para recibir reclamos oficialmente, debes conectarlo a tu correo o sistema de atención.</span></div></div><form class="claims-form" (submit)="$event.preventDefault()"><div class="form-heading"><span>01</span><h3>Datos del consumidor</h3></div><div class="form-row"><label>Nombre completo<input type="text" placeholder="Escribe tu nombre" /></label><label>DNI / RUC<input type="text" placeholder="Número de documento" /></label></div><div class="form-row"><label>Correo electrónico<input type="email" placeholder="tu@correo.com" /></label><label>Teléfono<input type="tel" placeholder="Número de contacto" /></label></div><div class="form-heading"><span>02</span><h3>Detalle de la solicitud</h3></div><label>Tipo de solicitud<select><option>Selecciona una opción</option><option>Queja</option><option>Reclamo</option><option>Sugerencia</option></select></label><label>Fecha del servicio<input type="date" /></label><label>Cuéntanos qué ocurrió<textarea rows="5" placeholder="Describe los hechos con el mayor detalle posible"></textarea></label><label>¿Qué solución esperas?<textarea rows="3" placeholder="Escribe tu solicitud"></textarea></label><label class="check-label"><input type="checkbox" /> Confirmo que la información brindada es verdadera.</label><button class="button button-primary" type="submit">Enviar solicitud <span>↗</span></button></form></div></section>
+  <section class="claims-section section-space"><div class="container claims-layout"><div class="claims-aside"><p class="eyebrow">Antes de empezar</p><h2>Queremos<br /><em>escucharte.</em></h2><p>Completa los datos con claridad. Revisaremos tu solicitud y te responderemos dentro del plazo establecido.</p><div class="claims-note"><strong>Importante</strong><span>Este formulario se enviará por correo mediante EmailJS.</span></div></div><form class="claims-form" (ngSubmit)="enviarReclamo()"><div class="form-heading"><span>01</span><h3>Datos del consumidor</h3></div><div class="form-row"><label>Nombre completo<input type="text" name="nombre_completo" [(ngModel)]="nombreCompleto" required placeholder="Escribe tu nombre" /></label><label>DNI / RUC<input type="text" name="dni_ruc" [(ngModel)]="dniRuc" required placeholder="Número de documento" /></label></div><div class="form-row"><label>Correo electrónico<input type="email" name="correo_electronico" [(ngModel)]="correoElectronico" required placeholder="tu@correo.com" /></label><label>Teléfono<input type="tel" name="telefono" [(ngModel)]="telefono" required placeholder="Número de contacto" /></label></div><div class="form-heading"><span>02</span><h3>Detalle de la solicitud</h3></div><label>Tipo de solicitud<select name="tipo_solicitud" [(ngModel)]="tipoSolicitud" required><option value="">Selecciona una opción</option><option value="Queja">Queja</option><option value="Reclamo">Reclamo</option><option value="Sugerencia">Sugerencia</option></select></label><label>Fecha del servicio<input type="date" name="fecha_servicio" [(ngModel)]="fechaServicio" required /></label><label>Cuéntanos qué ocurrió<textarea name="detalle_solicitud" [(ngModel)]="detalleSolicitud" rows="5" required placeholder="Describe los hechos con el mayor detalle posible"></textarea></label><label>¿Qué solución esperas?<textarea name="solucion_esperada" [(ngModel)]="solucionEsperada" rows="3" required placeholder="Escribe tu solicitud"></textarea></label><label class="check-label"><input type="checkbox" name="confirmacion" [(ngModel)]="confirmacion" required /> Confirmo que la información brindada es verdadera.</label><button class="button button-primary" type="submit" [disabled]="isSending">{{ isSending ? 'Enviando...' : 'Enviar solicitud' }} <span>↗</span></button></form></div></section>
 ` })
-export class ClaimsPage {}
+export class ClaimsPage {
+  private readonly emailJsServiceId = 'service_ge1gxt8';
+  private readonly emailJsTemplateId = 'template_4hm8dtj';
+  private readonly emailJsPublicKey = 'LstO0DA7TXhuH1Va6';
+
+  nombreCompleto = '';
+  dniRuc = '';
+  correoElectronico = '';
+  telefono = '';
+  tipoSolicitud = '';
+  fechaServicio = '';
+  detalleSolicitud = '';
+  solucionEsperada = '';
+  confirmacion = false;
+  isSending = false;
+
+  enviarReclamo(): void {
+    if (this.isSending) return;
+
+    if (this.emailJsTemplateId.startsWith('TU_') || this.emailJsPublicKey.startsWith('TU_')) {
+      window.alert('Configura el Template ID y la Public Key de EmailJS antes de enviar.');
+      return;
+    }
+
+    this.isSending = true;
+    const datosEnvio = {
+      nombre_completo: this.nombreCompleto,
+      dni_ruc: this.dniRuc,
+      correo_electronico: this.correoElectronico,
+      telefono: this.telefono,
+      tipo_solicitud: this.tipoSolicitud,
+      fecha_servicio: this.fechaServicio,
+      detalle_solicitud: this.detalleSolicitud,
+      solucion_esperada: this.solucionEsperada,
+    };
+
+    emailjs.send(this.emailJsServiceId, this.emailJsTemplateId, datosEnvio, this.emailJsPublicKey)
+      .then(() => {
+        window.alert('Su reclamo ha sido enviado con éxito.');
+        this.limpiarFormulario();
+      })
+      .catch(() => {
+        window.alert('No se pudo enviar el reclamo. Intente nuevamente más tarde.');
+      })
+      .finally(() => {
+        this.isSending = false;
+      });
+  }
+
+  private limpiarFormulario(): void {
+    this.nombreCompleto = '';
+    this.dniRuc = '';
+    this.correoElectronico = '';
+    this.telefono = '';
+    this.tipoSolicitud = '';
+    this.fechaServicio = '';
+    this.detalleSolicitud = '';
+    this.solucionEsperada = '';
+    this.confirmacion = false;
+  }
+}
