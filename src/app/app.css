@@ -304,3 +304,10 @@
 @media (max-width: 800px) {
 	.social-link { align-self: center; margin-top: 10px; }
 }
+
+.about-card-vision { overflow: hidden; }
+.about-card-image { display: block; width: calc(100% + 52px); height: 112px; margin: -28px -26px 22px; object-fit: cover; }
+
+@media (max-width: 800px) {
+	.about-card-image { height: 125px; }
+}
