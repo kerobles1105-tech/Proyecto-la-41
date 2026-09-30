@@ -15,10 +15,16 @@ describe('App', () => {
     expect(app).toBeTruthy();
   });
 
-  it('should render title', async () => {
+  it('should toggle the active language', () => {
     const fixture = TestBed.createComponent(App);
-    await fixture.whenStable();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, mi-app');
+    const app = fixture.componentInstance;
+
+    expect(app.language()).toBe('es');
+
+    app.setLanguage('en');
+    expect(app.language()).toBe('en');
+
+    app.setLanguage('es');
+    expect(app.language()).toBe('es');
   });
 });

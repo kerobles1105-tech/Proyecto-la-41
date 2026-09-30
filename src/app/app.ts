@@ -1,5 +1,6 @@
-import { AfterViewInit, Component, OnDestroy, signal, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, inject, signal, ViewEncapsulation } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { LanguageService } from './language.service';
 
 @Component({
   imports: [RouterLink, RouterLinkActive, RouterOutlet],
@@ -9,11 +10,15 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
   templateUrl: './app.html',
 })
 export class App implements AfterViewInit, OnDestroy {
+  private readonly languageService = inject(LanguageService);
   protected readonly menuOpen = signal(false);
+  protected readonly language = this.languageService.language;
   private revealObserver?: IntersectionObserver;
   private contentObserver?: MutationObserver;
 
   ngAfterViewInit(): void {
+    document.documentElement.lang = this.language();
+
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       return;
     }
@@ -58,5 +63,9 @@ export class App implements AfterViewInit, OnDestroy {
 
   protected closeMenu(): void {
     this.menuOpen.set(false);
+  }
+
+  protected setLanguage(locale: 'es' | 'en'): void {
+    this.languageService.setLanguage(locale);
   }
 }

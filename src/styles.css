@@ -1,5 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@500;600;700&display=swap');
 @import "leaflet/dist/leaflet.css";
 
 html { scroll-behavior: smooth; }
-body { margin: 0; background: #fff8d9; }
+body { margin: 0; background: #fff8d9; font-family: "Manrope", "Segoe UI", sans-serif; }
+h1, h2, h3 { font-family: "Cormorant Garamond", Georgia, serif; }
 button, input, textarea { font: inherit; }
