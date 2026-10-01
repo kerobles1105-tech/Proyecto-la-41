@@ -305,11 +305,28 @@
 .footer-social-list .social-badge { flex: none; padding: 7px; fill: var(--blue-dark); transition: background .2s ease, transform .2s ease; }
 .footer-social-list a:hover .social-badge { transform: translateY(-2px); background: #ffda3d; }
 
-.about-card-vision { overflow: hidden; }
-.about-card-image { display: block; width: calc(100% + 52px); height: 112px; margin: -28px -26px 22px; object-fit: cover; }
+.about-card-art { position: relative; display: grid; height: 112px; margin: -28px -26px 22px; overflow: hidden; place-items: center; border-radius: 0 0 12px 12px; background: linear-gradient(135deg, #0b2c63, #1f559e); }
+.about-card-art::before, .about-card-art::after { position: absolute; border: 1px solid rgba(255,255,255,.14); border-radius: 50%; content: ""; }
+.about-card-art::before { width: 145px; height: 145px; right: -22px; bottom: -95px; }
+.about-card-art::after { width: 95px; height: 95px; right: 3px; bottom: -69px; }
+.about-card-art > span { position: absolute; top: 13px; left: 16px; color: rgba(255,255,255,.7); font-size: 8px; font-weight: 800; letter-spacing: .18em; }
+.about-card-art svg { position: relative; z-index: 1; width: 110px; height: 82px; overflow: visible; fill: none; stroke: #f6c515; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2; }
+.about-card-art .art-route { stroke: #fff; stroke-dasharray: 3 5; }
+.about-card-art .art-orbit { stroke: rgba(255,255,255,.25); stroke-dasharray: 2 5; }
+.about-card-art .art-point, .about-card-art .art-star { fill: #f6c515; stroke: #fff; }
+.about-card-art .art-arrow { fill: #f6c515; stroke: #f6c515; }
+.vision-art { background: linear-gradient(135deg, #183e83, #2873ad); }
+.vision-art .art-sun { fill: #f6c515; stroke: #fff3a6; }
+.vision-art .art-horizon { stroke: #fff; }
+.vision-art .art-rays { stroke: #fff3a6; }
+.principles-art { background: linear-gradient(135deg, #771d2a, #c43b3d); }
+.principles-art svg { stroke: #fff; }
+.principles-art .art-shield { fill: rgba(255,255,255,.09); stroke: #ffd94f; stroke-width: 2.5; }
+.principles-art .art-check { stroke: #ffd94f; stroke-width: 3; }
+.principles-art .art-star { fill: #ffd94f; stroke: #fff; }
 
 @media (max-width: 800px) {
-	.about-card-image { height: 125px; }
+	.about-card-art { height: 125px; }
 }
 
 .lang-option { justify-content: center; width: 40px; height: 34px; padding: 0; }
