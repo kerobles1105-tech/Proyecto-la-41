@@ -9,5 +9,8 @@ export class LanguageService {
   setLanguage(language: Language): void {
     this.language.set(language);
     document.documentElement.lang = language;
+    document.title = language === 'es'
+      ? 'Transportes 41 S.A. | Transporte terrestre'
+      : 'Transportes 41 S.A. | Ground transportation';
   }
 }

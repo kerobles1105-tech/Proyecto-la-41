@@ -17,7 +17,7 @@ export class App implements AfterViewInit, OnDestroy {
   private contentObserver?: MutationObserver;
 
   ngAfterViewInit(): void {
-    document.documentElement.lang = this.language();
+    this.languageService.setLanguage(this.language());
 
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       return;
