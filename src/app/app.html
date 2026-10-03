@@ -30,33 +30,35 @@
           <a routerLink="/seguridad" routerLinkActive="active" (click)="closeMenu()">{{ language() === 'es' ? 'Seguridad' : 'Safety' }}</a>
           <a routerLink="/noticias" routerLinkActive="active" (click)="closeMenu()">{{ language() === 'es' ? 'Noticias' : 'News' }}</a>
           <a routerLink="/contacto" routerLinkActive="active" class="nav-cta" (click)="closeMenu()">{{ language() === 'es' ? 'Contáctanos' : 'Contact us' }} <span>↗</span></a>
-          <div class="language-switcher" [attr.aria-label]="language() === 'es' ? 'Selector de idioma' : 'Language selector'">
-            <button class="lang-option" [class.active]="language() === 'es'" type="button" aria-label="Español" title="Español" (click)="setLanguage('es')">
-              <svg class="lang-flag" viewBox="0 0 22 15" width="22" height="15" aria-hidden="true">
-                <path fill="#d91023" d="M1 1h6.67v13H1z" />
-                <path fill="#fff" d="M7.67 1h6.66v13H7.67z" />
-                <path fill="#d91023" d="M14.33 1H21v13h-6.67z" />
-                <rect x=".5" y=".5" width="21" height="14" rx="2" fill="none" stroke="#000" stroke-opacity=".12" />
-              </svg>
-            </button>
-            <button class="lang-option" [class.active]="language() === 'en'" type="button" aria-label="English" title="English" (click)="setLanguage('en')">
-              <svg class="lang-flag" viewBox="0 0 60 36" width="22" height="15" aria-hidden="true">
-                <path fill="#b22234" d="M0 0h60v36H0z" />
-                <path stroke="#fff" stroke-width="2.77" d="M0 2.77h60M0 8.31h60M0 13.85h60M0 19.38h60M0 24.92h60M0 30.46h60" />
-                <path fill="#3c3b6e" d="M0 0h26v19H0z" />
-                <g fill="#fff">
-                  <circle cx="3" cy="3" r=".8" /><circle cx="8" cy="3" r=".8" /><circle cx="13" cy="3" r=".8" /><circle cx="18" cy="3" r=".8" /><circle cx="23" cy="3" r=".8" />
-                  <circle cx="5.5" cy="6.5" r=".8" /><circle cx="10.5" cy="6.5" r=".8" /><circle cx="15.5" cy="6.5" r=".8" /><circle cx="20.5" cy="6.5" r=".8" />
-                  <circle cx="3" cy="10" r=".8" /><circle cx="8" cy="10" r=".8" /><circle cx="13" cy="10" r=".8" /><circle cx="18" cy="10" r=".8" /><circle cx="23" cy="10" r=".8" />
-                  <circle cx="5.5" cy="13.5" r=".8" /><circle cx="10.5" cy="13.5" r=".8" /><circle cx="15.5" cy="13.5" r=".8" /><circle cx="20.5" cy="13.5" r=".8" />
-                  <circle cx="3" cy="17" r=".8" /><circle cx="8" cy="17" r=".8" /><circle cx="13" cy="17" r=".8" /><circle cx="18" cy="17" r=".8" /><circle cx="23" cy="17" r=".8" />
-                </g>
-                <rect x=".5" y=".5" width="59" height="35" rx="2" fill="none" stroke="#000" stroke-opacity=".12" />
-              </svg>
-            </button>
+          <div class="nav-utilities">
+            <div class="language-switcher" [attr.aria-label]="language() === 'es' ? 'Selector de idioma' : 'Language selector'">
+              <button class="lang-option" [class.active]="language() === 'es'" type="button" aria-label="Español" title="Español" (click)="setLanguage('es')">
+                <svg class="lang-flag" viewBox="0 0 22 15" width="22" height="15" aria-hidden="true">
+                  <path fill="#d91023" d="M1 1h6.67v13H1z" />
+                  <path fill="#fff" d="M7.67 1h6.66v13H7.67z" />
+                  <path fill="#d91023" d="M14.33 1H21v13h-6.67z" />
+                  <rect x=".5" y=".5" width="21" height="14" rx="2" fill="none" stroke="#000" stroke-opacity=".12" />
+                </svg>
+              </button>
+              <button class="lang-option" [class.active]="language() === 'en'" type="button" aria-label="English" title="English" (click)="setLanguage('en')">
+                <svg class="lang-flag" viewBox="0 0 60 36" width="22" height="15" aria-hidden="true">
+                  <path fill="#b22234" d="M0 0h60v36H0z" />
+                  <path stroke="#fff" stroke-width="2.77" d="M0 2.77h60M0 8.31h60M0 13.85h60M0 19.38h60M0 24.92h60M0 30.46h60" />
+                  <path fill="#3c3b6e" d="M0 0h26v19H0z" />
+                  <g fill="#fff">
+                    <circle cx="3" cy="3" r=".8" /><circle cx="8" cy="3" r=".8" /><circle cx="13" cy="3" r=".8" /><circle cx="18" cy="3" r=".8" /><circle cx="23" cy="3" r=".8" />
+                    <circle cx="5.5" cy="6.5" r=".8" /><circle cx="10.5" cy="6.5" r=".8" /><circle cx="15.5" cy="6.5" r=".8" /><circle cx="20.5" cy="6.5" r=".8" />
+                    <circle cx="3" cy="10" r=".8" /><circle cx="8" cy="10" r=".8" /><circle cx="13" cy="10" r=".8" /><circle cx="18" cy="10" r=".8" /><circle cx="23" cy="10" r=".8" />
+                    <circle cx="5.5" cy="13.5" r=".8" /><circle cx="10.5" cy="13.5" r=".8" /><circle cx="15.5" cy="13.5" r=".8" /><circle cx="20.5" cy="13.5" r=".8" />
+                    <circle cx="3" cy="17" r=".8" /><circle cx="8" cy="17" r=".8" /><circle cx="13" cy="17" r=".8" /><circle cx="18" cy="17" r=".8" /><circle cx="23" cy="17" r=".8" />
+                  </g>
+                  <rect x=".5" y=".5" width="59" height="35" rx="2" fill="none" stroke="#000" stroke-opacity=".12" />
+                </svg>
+              </button>
+            </div>
+            <a class="social-link social-facebook" href="https://www.facebook.com/profile.php?id=61594917055851" target="_blank" rel="noopener" [attr.aria-label]="language() === 'es' ? 'Facebook de Transportes 41' : 'Transportes 41 on Facebook'" [attr.title]="language() === 'es' ? 'Facebook de Transportes 41' : 'Transportes 41 on Facebook'"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 8h3V4h-3c-3.3 0-5 1.9-5 5v3H6v4h3v8h4v-8h3.2l.8-4H13V9c0-.7.3-1 1-1Z" /></svg></a>
+            <a class="social-link social-tiktok" href="https://www.tiktok.com/@et41sa.oficial" target="_blank" rel="noopener" [attr.aria-label]="language() === 'es' ? 'TikTok de Transportes 41' : 'Transportes 41 on TikTok'" [attr.title]="language() === 'es' ? 'TikTok de Transportes 41' : 'Transportes 41 on TikTok'"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.4 3c.4 2.2 1.7 3.6 3.8 3.8v3.1a8.4 8.4 0 0 1-3.8-1.1v6.1a5.1 5.1 0 1 1-4.4-5v3.2a2 2 0 1 0 1.3 1.9V3h3.1Z" /></svg></a>
           </div>
-          <a class="social-link social-facebook" href="https://www.facebook.com/profile.php?id=61594917055851" target="_blank" rel="noopener" [attr.aria-label]="language() === 'es' ? 'Facebook de Transportes 41' : 'Transportes 41 on Facebook'" [attr.title]="language() === 'es' ? 'Facebook de Transportes 41' : 'Transportes 41 on Facebook'"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 8h3V4h-3c-3.3 0-5 1.9-5 5v3H6v4h3v8h4v-8h3.2l.8-4H13V9c0-.7.3-1 1-1Z" /></svg></a>
-          <a class="social-link social-tiktok" href="https://www.tiktok.com/@et41sa.oficial" target="_blank" rel="noopener" [attr.aria-label]="language() === 'es' ? 'TikTok de Transportes 41' : 'Transportes 41 on TikTok'" [attr.title]="language() === 'es' ? 'TikTok de Transportes 41' : 'Transportes 41 on TikTok'"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.4 3c.4 2.2 1.7 3.6 3.8 3.8v3.1a8.4 8.4 0 0 1-3.8-1.1v6.1a5.1 5.1 0 1 1-4.4-5v3.2a2 2 0 1 0 1.3 1.9V3h3.1Z" /></svg></a>
         </div>
       </div>
     </nav>

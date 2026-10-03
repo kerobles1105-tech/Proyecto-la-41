@@ -332,3 +332,49 @@
 .lang-option { justify-content: center; width: 40px; height: 34px; padding: 0; }
 .lang-flag { display: block; flex: none; width: 22px; height: 15px; border-radius: 2px; box-shadow: 0 1px 2px rgba(8,40,88,.18); }
 .fleet-visual { background: linear-gradient(rgba(8,40,88,.48), rgba(8,40,88,.66)), url("/preparados.jpeg") center / cover no-repeat; }
+.nav-utilities { display: flex; align-items: center; gap: 10px; }
+
+@media (max-width: 800px) {
+	.nav-utilities {
+		justify-content: center;
+		gap: 14px;
+		margin-top: 16px;
+		padding-top: 16px;
+		border-top: 1px solid rgba(8,40,88,.18);
+	}
+
+	.nav-utilities .language-switcher {
+		margin-left: 0;
+		padding-left: 0;
+		border-left: 0;
+	}
+
+	.nav-utilities .social-link {
+		margin-top: 0;
+	}
+
+	.footer-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 36px 24px;
+		padding-top: 40px;
+	}
+
+	.footer-brand-column {
+		grid-column: 1 / -1;
+	}
+
+	.footer-column h3 {
+		margin-bottom: 14px;
+		font-size: clamp(1.5rem, 5vw, 2rem);
+	}
+
+	.footer-contact-list li {
+		align-items: flex-start;
+	}
+
+	.footer-contact-list li > a,
+	.footer-contact-list li > span:last-child {
+		min-width: 0;
+		overflow-wrap: anywhere;
+	}
+}
