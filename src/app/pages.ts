@@ -14,9 +14,81 @@ export class HomePage {
   protected readonly language = inject(LanguageService).language;
 }
 
-@Component({ standalone: true, imports: [RouterLink], template: `
+@Component({ standalone: true, imports: [], template: `
   <section class="news-hero"><div class="container news-hero-layout"><div class="news-hero-copy"><p class="eyebrow light"><span></span> {{ language() === 'es' ? 'ACTUALIDAD / TRANSPORTES 41' : 'NEWS / TRANSPORTES 41' }}</p><h1>{{ language() === 'es' ? 'En ruta,' : 'On the move,' }}<br /><em>{{ language() === 'es' ? 'también te contamos.' : 'we keep you informed.' }}</em></h1><p>{{ language() === 'es' ? 'Comunicados y novedades sobre nuestros servicios, recorridos y equipo.' : 'Updates and news about our services, routes and team.' }}</p><button class="news-scroll-button" type="button" aria-label="{{ language() === 'es' ? 'Bajar a las últimas novedades' : 'Scroll to the latest news' }}" title="{{ language() === 'es' ? 'Bajar a las últimas novedades' : 'Scroll to the latest news' }}" (click)="scrollToNews()"><span aria-hidden="true">↓</span></button></div></div></section>
-  <section #latestNews id="ultimas-noticias" class="news-latest section-space"><div class="container"><div class="section-heading"><div><p class="eyebrow">{{ language() === 'es' ? 'Boletín 41' : '41 bulletin' }}</p><h2>{{ language() === 'es' ? 'Últimas' : 'Latest' }}<br /><em>{{ language() === 'es' ? 'novedades.' : 'updates.' }}</em></h2></div><p class="heading-support">{{ language() === 'es' ? 'Información de primera mano sobre la operación y la vida de nuestra empresa.' : 'First-hand information about our operations and company life.' }}</p></div><article class="news-feature-story"><figure class="news-story-image"><img src="/baje1.png" alt="{{ language() === 'es' ? 'Anuncio de reducción del precio de los pasajes de Transportes 41 S.A.' : 'Announcement of fare reductions by Transportes 41 S.A.' }}" /><figcaption><span>{{ language() === 'es' ? 'COMUNICADO / TARIFAS' : 'ANNOUNCEMENT / FARES' }}</span>Transportes 41 S.A.</figcaption></figure><div class="news-story-copy"><p class="eyebrow">{{ language() === 'es' ? 'Novedad de servicio' : 'Service update' }}</p><h3>{{ language() === 'es' ? 'Bajamos el precio de los pasajes' : 'We lowered the fare' }}</h3><p>{{ language() === 'es' ? 'En Transportes 41 S.A. hemos reducido el precio de los pasajes. Para conocer la tarifa vigente del tramo que necesitas, consulta con nuestro equipo antes de viajar.' : 'At Transportes 41 S.A. we have reduced fares. To learn the current rate for the route you need, please check with our team before traveling.' }}</p><a class="text-link" routerLink="/contacto">{{ language() === 'es' ? 'Consultar tarifa' : 'Check fare' }} <span>↗</span></a></div></article></div></section>
+  <section #latestNews id="ultimas-noticias" class="news-latest section-space">
+    <div class="container">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow"><span></span> {{ language() === 'es' ? 'Boletín 41' : '41 bulletin' }}</p>
+          <h2>{{ language() === 'es' ? 'Últimas' : 'Latest' }}<br /><em>{{ language() === 'es' ? 'novedades.' : 'updates.' }}</em></h2>
+        </div>
+        <p class="heading-support">{{ language() === 'es' ? 'Información de primera mano sobre la operación y la vida de nuestra empresa.' : 'First-hand information about our operations and company life.' }}</p>
+      </div>
+
+      <article class="news-feature-story">
+        <!-- Columna Visual con Imagen Enmarcada y Badges -->
+        <figure class="news-story-image">
+          <div class="news-image-badges">
+            <span class="news-badge-live">⚡ {{ language() === 'es' ? 'COMUNICADO OFICIAL' : 'OFFICIAL STATEMENT' }}</span>
+            <span class="news-badge-date">2026</span>
+          </div>
+          <img src="/baje1.png" alt="{{ language() === 'es' ? 'Anuncio de reducción del precio de los pasajes de Transportes 41 S.A.' : 'Announcement of fare reductions by Transportes 41 S.A.' }}" />
+          <figcaption>
+            <span>{{ language() === 'es' ? 'COMUNICADO / TARIFAS' : 'ANNOUNCEMENT / FARES' }}</span>
+            <strong>Transportes 41 S.A.</strong>
+          </figcaption>
+        </figure>
+
+        <!-- Columna de Contenido Editorial Mejorada -->
+        <div class="news-story-copy">
+          <div class="news-meta-row">
+            <span class="news-category-tag">📢 {{ language() === 'es' ? 'Novedad de servicio' : 'Service update' }}</span>
+            <span class="news-status-pill">✓ {{ language() === 'es' ? 'Vigente' : 'Active' }}</span>
+          </div>
+
+          <h3>{{ language() === 'es' ? 'Bajamos el precio de los pasajes' : 'We lowered the fares' }}</h3>
+
+          <p class="news-lead-copy">
+            {{ language() === 'es' 
+              ? 'En Transportes 41 S.A. pensamos en la economía de nuestros pasajeros. Por ello, hemos reducido las tarifas en diversos tramos para que sigas viajando cómodo, rápido y seguro al mejor precio en todo Lima y Callao.' 
+              : 'At Transportes 41 S.A. we think of our passengers. We have reduced segment fares so you can continue traveling comfortably, quickly, and safely at the best price.' }}
+          </p>
+
+          <!-- Puntos destacados de valor para el usuario -->
+          <div class="news-highlights-grid">
+            <div class="news-highlight-item">
+              <span class="highlight-check">✓</span>
+              <div>
+                <strong>{{ language() === 'es' ? 'Tarifas más accesibles' : 'More affordable fares' }}</strong>
+                <small>{{ language() === 'es' ? 'Precios rebajados en tramos urbanos autorizados' : 'Reduced rates on authorized city corridors' }}</small>
+              </div>
+            </div>
+            <div class="news-highlight-item">
+              <span class="highlight-check">✓</span>
+              <div>
+                <strong>{{ language() === 'es' ? 'Medio pasaje garantizado' : 'Student discount guaranteed' }}</strong>
+                <small>{{ language() === 'es' ? 'Universitario y escolar conforme a Ley' : 'Applicable for students according to law' }}</small>
+              </div>
+            </div>
+            <div class="news-highlight-item">
+              <span class="highlight-check">✓</span>
+              <div>
+                <strong>{{ language() === 'es' ? 'Misma calidad y seguridad' : 'Same safety and quality' }}</strong>
+                <small>{{ language() === 'es' ? 'Monitoreo satelital GPS y unidades aseguradas' : 'Satellite GPS tracking and insured fleet' }}</small>
+              </div>
+            </div>
+          </div>
+
+          <!-- Nota de cobertura institucional al pie -->
+          <div class="news-coverage-banner">
+            <span class="coverage-icon">🚌</span>
+            <span>{{ language() === 'es' ? 'Válido en todo el circuito de la Ruta 9801: Pachacútec ⇄ Villa El Salvador' : 'Valid along the entire Route 9801: Pachacútec ⇄ Villa El Salvador' }}</span>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
 ` })
 export class NewsPage {
   protected readonly language = inject(LanguageService).language;
