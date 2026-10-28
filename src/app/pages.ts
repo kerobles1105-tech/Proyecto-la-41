@@ -522,7 +522,76 @@ export class ServicesPage implements OnInit, OnDestroy {
 @Component({ standalone: true, template: `
   <section class="inner-hero fleet-hero"><div class="container"><p class="eyebrow">{{ language() === 'es' ? '03 / Nuestra flota' : '03 / Our fleet' }}</p><h1>{{ language() === 'es' ? 'Una flota que' : 'A fleet that' }}<br /><em>{{ language() === 'es' ? 'responde.' : 'responds.' }}</em></h1><p>{{ language() === 'es' ? 'Unidades preparadas, mantenimiento preventivo y seguimiento permanente.' : 'Prepared units, preventive maintenance and permanent monitoring.' }}</p></div></section>
   <section class="fleet-section fleet-page"><div class="container fleet-grid"><div class="fleet-visual"><div class="circle-badge"><span>41</span><small>S.A.</small></div><div class="fleet-line"></div><p>{{ language() === 'es' ? 'Listos para' : 'Ready to' }}<br /><strong>{{ language() === 'es' ? 'seguir avanzando.' : 'keep moving forward.' }}</strong></p></div><div class="fleet-copy"><p class="eyebrow light">{{ language() === 'es' ? 'Nuestra operación' : 'Our operation' }}</p><h2>{{ language() === 'es' ? 'Seguridad en' : 'Safety on' }}<br /><em>{{ language() === 'es' ? 'cada kilómetro.' : 'every kilometer.' }}</em></h2><p>{{ language() === 'es' ? 'Contamos con unidades modernas, revisadas y preparadas para operar con altos estándares de calidad.' : 'We have modern, regularly inspected vehicles ready to operate with high standards of quality.' }}</p><div class="fleet-list"><div><strong>01</strong><span>{{ language() === 'es' ? 'Mantenimiento preventivo' : 'Preventive maintenance' }}</span></div><div><strong>02</strong><span>{{ language() === 'es' ? 'Conductores capacitados' : 'Trained drivers' }}</span></div><div><strong>03</strong><span>{{ language() === 'es' ? 'Monitoreo permanente' : 'Permanent monitoring' }}</span></div></div></div></div></section>
-  <section class="fleet-details section-space"><div class="container"><div class="section-heading"><div><p class="eyebrow">{{ language() === 'es' ? 'Seguridad y operación' : 'Safety and operations' }}</p><h2>{{ language() === 'es' ? 'Preparados para' : 'Ready for' }}<br /><em>{{ language() === 'es' ? 'cada recorrido.' : 'every journey.' }}</em></h2></div><p class="heading-support">{{ language() === 'es' ? 'Personas, unidades y seguimiento trabajando juntos para cuidar cada viaje.' : 'People, vehicles, and monitoring working together to make every trip safer.' }}</p></div><div class="fleet-detail-grid"><article class="fleet-detail-card"><div class="fleet-detail-image"><img src="/conductores.jpeg" alt="{{ language() === 'es' ? 'Conductores de Transportes 41 S.A.' : 'Transportes 41 S.A. drivers' }}" /></div><div class="fleet-detail-copy"><span>{{ language() === 'es' ? '01 / CAPACITACIÓN' : '01 / TRAINING' }}</span><h3>{{ language() === 'es' ? 'Conductores preparados' : 'Prepared drivers' }}</h3><p>{{ language() === 'es' ? 'Conductores capacitados para brindar un servicio responsable y priorizar la seguridad de los pasajeros en cada recorrido.' : 'Trained drivers provide responsible service and prioritize passenger safety on every journey.' }}</p></div></article><article class="fleet-detail-card"><div class="fleet-detail-image"><img src="/carronuevo.png" alt="{{ language() === 'es' ? 'Unidad de Transportes 41 S.A.' : 'Transportes 41 S.A. vehicle' }}" /></div><div class="fleet-detail-copy"><span>{{ language() === 'es' ? '02 / RESPALDO' : '02 / PROTECTION' }}</span><h3>{{ language() === 'es' ? 'Unidades aseguradas' : 'Insured vehicles' }}</h3><p>{{ language() === 'es' ? 'Los vehículos cuentan con seguro para brindar mayor respaldo y tranquilidad durante el servicio.' : 'All our vehicles are insured, providing greater protection and peace of mind throughout every trip.' }}</p></div></article><article class="fleet-detail-card"><div class="fleet-detail-image"><img src="/VANDAL.jfif" alt="{{ language() === 'es' ? 'Vehículo de la flota de Transportes 41 S.A. en operación' : 'Transportes 41 S.A. fleet vehicle in operation' }}" /></div><div class="fleet-detail-copy"><span>{{ language() === 'es' ? '03 / SEGUIMIENTO' : '03 / MONITORING' }}</span><h3>{{ language() === 'es' ? 'Monitoreo en tiempo real' : 'Real-time monitoring' }}</h3><p>{{ language() === 'es' ? 'El equipo monitorea los recorridos en tiempo real y coordina la operación para atender cualquier novedad.' : 'Our team monitors routes in real time and coordinates operations to address any issues.' }}</p></div></article></div></div></section>
+  <section class="fleet-details section-space">
+    <div class="container">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow"><span></span> {{ language() === 'es' ? 'Seguridad y operación' : 'Safety and operations' }}</p>
+          <h2>{{ language() === 'es' ? 'Preparados para' : 'Ready for' }}<br /><em>{{ language() === 'es' ? 'cada recorrido.' : 'every journey.' }}</em></h2>
+        </div>
+        <p class="heading-support">{{ language() === 'es' ? 'Personas, unidades y seguimiento trabajando juntos para cuidar cada viaje.' : 'People, vehicles, and monitoring working together to make every trip safer.' }}</p>
+      </div>
+
+      <div class="fleet-detail-grid">
+        <!-- Tarjeta 01: Capacitación (Amarillo / Oro corporativo) -->
+        <article class="fleet-detail-card card-capacitacion">
+          <div class="fleet-card-accent-strip"></div>
+          <div class="fleet-detail-image">
+            <span class="fleet-detail-badge badge-yellow">👨‍✈️ {{ language() === 'es' ? 'CAPACITACIÓN CONTINUA' : 'CONTINUOUS TRAINING' }}</span>
+            <img src="/conductores.jpeg" alt="{{ language() === 'es' ? 'Conductores de Transportes 41 S.A.' : 'Transportes 41 S.A. drivers' }}" />
+            <div class="fleet-image-overlay"></div>
+          </div>
+          <div class="fleet-detail-copy">
+            <span class="value-tag tag-yellow">01 / {{ language() === 'es' ? 'CAPACITACIÓN' : 'TRAINING' }}</span>
+            <h3>{{ language() === 'es' ? 'Conductores preparados' : 'Prepared drivers' }}</h3>
+            <p>{{ language() === 'es' ? 'Conductores capacitados para brindar un servicio responsable y priorizar la seguridad de los pasajeros en cada recorrido.' : 'Trained drivers provide responsible service and prioritize passenger safety on every journey.' }}</p>
+            <div class="fleet-card-guarantee">
+              <span class="guarantee-icon">✓</span>
+              <span>{{ language() === 'es' ? 'Conductores certificados y trato respetuoso' : 'Certified drivers and respectful service' }}</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Tarjeta 02: Respaldo (Rojo corporativo) -->
+        <article class="fleet-detail-card card-respaldo">
+          <div class="fleet-card-accent-strip"></div>
+          <div class="fleet-detail-image">
+            <span class="fleet-detail-badge badge-red">🛡️ {{ language() === 'es' ? 'UNIDADES ASEGURADAS' : 'INSURED VEHICLES' }}</span>
+            <img src="/carronuevo.png" alt="{{ language() === 'es' ? 'Unidad de Transportes 41 S.A.' : 'Transportes 41 S.A. vehicle' }}" />
+            <div class="fleet-image-overlay"></div>
+          </div>
+          <div class="fleet-detail-copy">
+            <span class="value-tag tag-red">02 / {{ language() === 'es' ? 'RESPALDO' : 'PROTECTION' }}</span>
+            <h3>{{ language() === 'es' ? 'Unidades aseguradas' : 'Insured vehicles' }}</h3>
+            <p>{{ language() === 'es' ? 'Los vehículos cuentan con seguro para brindar mayor respaldo y tranquilidad durante el servicio.' : 'All our vehicles are insured, providing greater protection and peace of mind throughout every trip.' }}</p>
+            <div class="fleet-card-guarantee">
+              <span class="guarantee-icon">✓</span>
+              <span>{{ language() === 'es' ? 'Pólizas vigentes y respaldo ante imprevistos' : 'Active insurance and passenger peace of mind' }}</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Tarjeta 03: Seguimiento (Azul corporativo) -->
+        <article class="fleet-detail-card card-seguimiento">
+          <div class="fleet-card-accent-strip"></div>
+          <div class="fleet-detail-image">
+            <span class="fleet-detail-badge badge-blue">📡 {{ language() === 'es' ? 'MONITOREO GPS 24/7' : '24/7 GPS MONITORING' }}</span>
+            <img src="/VANDAL.jfif" alt="{{ language() === 'es' ? 'Vehículo de la flota de Transportes 41 S.A. en operación' : 'Transportes 41 S.A. fleet vehicle in operation' }}" />
+            <div class="fleet-image-overlay"></div>
+          </div>
+          <div class="fleet-detail-copy">
+            <span class="value-tag tag-blue">03 / {{ language() === 'es' ? 'SEGUIMIENTO' : 'MONITORING' }}</span>
+            <h3>{{ language() === 'es' ? 'Monitoreo en tiempo real' : 'Real-time monitoring' }}</h3>
+            <p>{{ language() === 'es' ? 'El equipo monitorea los recorridos en tiempo real y coordina la operación para atender cualquier novedad.' : 'Our team monitors routes in real time and coordinates operations to address any issues.' }}</p>
+            <div class="fleet-card-guarantee">
+              <span class="guarantee-icon">✓</span>
+              <span>{{ language() === 'es' ? 'Seguimiento satelital de velocidad y ruta' : 'Satellite speed and route monitoring' }}</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
 ` })
 export class FleetPage {
   protected readonly language = inject(LanguageService).language;
