@@ -1,13 +1,14 @@
-import { AfterViewInit, Component, ElementRef, HostListener, inject, OnDestroy, OnInit, ViewChild, signal } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, inject, OnDestroy, OnInit, signal, computed, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import emailjs from '@emailjs/browser';
-import * as L from 'leaflet';
 import { LanguageService } from './language.service';
+import * as L from 'leaflet';
+import { ROUTE_METADATA, ROUTE_STOPS, RouteStop, OFFICIAL_ROUTE_41_PATH, OFFICIAL_ROUTE_41_IDA, OFFICIAL_ROUTE_41_VUELTA, OFFICIAL_15_KEY_STOPS, KeyStop } from './route-41.data';
 
 @Component({ standalone: true, imports: [RouterLink], template: `
-  <section class="hero-section page-hero"><div class="hero-overlay"></div><div class="container hero-content"><p class="eyebrow light"><span></span> {{ language() === 'es' ? 'Servicio rápido, seguro y confiable' : 'Fast, safe and reliable service' }}</p><h1>{{ language() === 'es' ? 'Movemos lo que' : 'We move what' }}<br /><em>{{ language() === 'es' ? 'importa.' : 'matters.' }}</em></h1><p class="hero-description">{{ language() === 'es' ? 'Conectamos personas, ciudades y oportunidades con la fuerza de una flota preparada para llegar más lejos.' : 'We connect people, cities and opportunities with a fleet ready to go farther and serve better.' }}</p><div class="hero-stats" aria-label="{{ language() === 'es' ? 'Estadísticas de la empresa' : 'Company statistics' }}"><div class="stat-item"><strong class="stat-value"><span class="stat-sign">+</span>15</strong><span class="stat-label">{{ language() === 'es' ? 'años de experiencia' : 'years of experience' }}</span></div><div class="stat-item"><strong class="stat-value">24/7</strong><span class="stat-label">{{ language() === 'es' ? 'atención y soporte' : 'support and assistance' }}</span></div><div class="stat-item"><strong class="stat-value">100%</strong><span class="stat-label">{{ language() === 'es' ? 'compromiso peruano' : 'Peruvian commitment' }}</span></div></div></div></section>
-  <section class="section-space home-intro"><div class="container split-heading"><div><p class="eyebrow">{{ language() === 'es' ? 'Una ruta con propósito' : 'A route with purpose' }}</p><h2>{{ language() === 'es' ? 'La confianza también' : 'Trust is also' }}<br /><em>{{ language() === 'es' ? 'se transporta.' : 'transported.' }}</em></h2></div><div><p class="body-copy">{{ language() === 'es' ? 'Transportes 41 S.A. conecta personas, ciudades y oportunidades con responsabilidad, puntualidad y un profundo respeto por quienes confían en nosotros.' : 'Transportes 41 S.A. connects people, cities and opportunities with responsibility, punctuality and deep respect for those who trust us.' }}</p><a class="text-link" routerLink="/nosotros">{{ language() === 'es' ? 'Conoce nuestra empresa' : 'Meet our company' }} <span>→</span></a></div></div></section>
+  <section class="hero-section page-hero"><div class="hero-overlay"></div><div class="container hero-content"><p class="eyebrow light"><span></span> {{ language() === 'es' ? 'Servicio rápido, seguro y confiable' : 'Fast, safe and reliable service' }}</p><h1>{{ language() === 'es' ? 'Movemos lo que' : 'We move what' }}<br /><em>{{ language() === 'es' ? 'importa.' : 'matters.' }}</em></h1><p class="hero-description">{{ language() === 'es' ? 'Conectamos personas, ciudades y oportunidades con la fuerza de una flota preparada para llegar más lejos.' : 'We connect people, cities and opportunities with a fleet ready to go farther and serve better.' }}</p><div class="hero-stats" aria-label="{{ language() === 'es' ? 'Estadísticas de la empresa' : 'Company statistics' }}"><div class="stat-item"><strong class="stat-value"><span class="stat-sign">+</span>35</strong><span class="stat-label">{{ language() === 'es' ? 'años de experiencia' : 'years of experience' }}</span></div><div class="stat-item"><strong class="stat-value">24/7</strong><span class="stat-label">{{ language() === 'es' ? 'atención y soporte' : 'support and assistance' }}</span></div><div class="stat-item"><strong class="stat-value">100%</strong><span class="stat-label">{{ language() === 'es' ? 'compromiso peruano' : 'Peruvian commitment' }}</span></div></div></div></section>
+  <section class="section-space home-intro"><div class="container split-heading"><div><p class="eyebrow">{{ language() === 'es' ? 'Una ruta con propósito' : 'A route with purpose' }}</p><h2>{{ language() === 'es' ? 'La confianza también' : 'Trust is also' }}<br /><em>{{ language() === 'es' ? 'se transporta.' : 'transported.' }}</em></h2></div><div><p class="body-copy">{{ language() === 'es' ? 'Transportes 41 S.A. conecta personas, ciudades y oportunidades con responsabilidad, puntualidad y un profundo respeto por quienes confían en nosotros.' : 'Transportes 41 S.A. connects people, cities and opportunities with responsibility, punctuality and deep respect for those who trust us.' }}</p><div class="home-intro-actions"><a class="text-link" routerLink="/nosotros">{{ language() === 'es' ? 'Conoce nuestra empresa' : 'Meet our company' }} <span>→</span></a><a class="route-quick-link" routerLink="/nosotros" fragment="buscador-paraderos">{{ language() === 'es' ? '🚏 Consultar Paraderos Ruta 9801' : '🚏 Check Route 9801 Stops' }} <span>↓</span></a></div></div></div></section>
 ` })
 export class HomePage {
   protected readonly language = inject(LanguageService).language;
@@ -15,7 +16,7 @@ export class HomePage {
 
 @Component({ standalone: true, imports: [RouterLink], template: `
   <section class="news-hero"><div class="container news-hero-layout"><div class="news-hero-copy"><p class="eyebrow light"><span></span> {{ language() === 'es' ? 'ACTUALIDAD / TRANSPORTES 41' : 'NEWS / TRANSPORTES 41' }}</p><h1>{{ language() === 'es' ? 'En ruta,' : 'On the move,' }}<br /><em>{{ language() === 'es' ? 'también te contamos.' : 'we keep you informed.' }}</em></h1><p>{{ language() === 'es' ? 'Comunicados y novedades sobre nuestros servicios, recorridos y equipo.' : 'Updates and news about our services, routes and team.' }}</p><button class="news-scroll-button" type="button" aria-label="{{ language() === 'es' ? 'Bajar a las últimas novedades' : 'Scroll to the latest news' }}" title="{{ language() === 'es' ? 'Bajar a las últimas novedades' : 'Scroll to the latest news' }}" (click)="scrollToNews()"><span aria-hidden="true">↓</span></button></div></div></section>
-  <section #latestNews id="ultimas-noticias" class="news-latest section-space"><div class="container"><div class="section-heading"><div><p class="eyebrow">{{ language() === 'es' ? 'Boletín 41' : '41 bulletin' }}</p><h2>{{ language() === 'es' ? 'Últimas' : 'Latest' }}<br /><em>{{ language() === 'es' ? 'novedades.' : 'updates.' }}</em></h2></div><p class="heading-support">{{ language() === 'es' ? 'Información de primera mano sobre la operación y la vida de nuestra empresa.' : 'First-hand information about our operations and company life.' }}</p></div><article class="news-feature-story"><figure class="news-story-image"><img src="/baje1.png" alt="{{ language() === 'es' ? 'Anuncio de reducción del precio de los pasajes de Transportes 41 S.A.' : 'Announcement of fare reductions by Transportes 41 S.A.' }}" /><figcaption><span>{{ language() === 'es' ? 'COMUNICADO / TARIFAS' : 'ANNOUNCEMENT / FARES' }}</span>Transportes 41 S.A.</figcaption></figure><div class="news-story-copy"><p class="eyebrow">{{ language() === 'es' ? 'Novedad de servicio' : 'Service update' }}</p><h3>{{ language() === 'es' ? 'Bajamos el precio de los pasajes' : 'We lowered the fare' }}</h3><p>{{ language() === 'es' ? 'En Transportes 41 S.A. hemos reducido el precio de los pasajes. Para conocer la tarifa vigente del tramo que necesitas, consulta con nuestro equipo antes de viajar.' : 'At Transportes 41 S.A. we have reduced fares. To learn the current rate for the route you need, please check with our team before traveling.' }}</p><a class="text-link" routerLink="/atencion">{{ language() === 'es' ? 'Consultar tarifa' : 'Check fare' }} <span>↗</span></a></div></article></div></section>
+  <section #latestNews id="ultimas-noticias" class="news-latest section-space"><div class="container"><div class="section-heading"><div><p class="eyebrow">{{ language() === 'es' ? 'Boletín 41' : '41 bulletin' }}</p><h2>{{ language() === 'es' ? 'Últimas' : 'Latest' }}<br /><em>{{ language() === 'es' ? 'novedades.' : 'updates.' }}</em></h2></div><p class="heading-support">{{ language() === 'es' ? 'Información de primera mano sobre la operación y la vida de nuestra empresa.' : 'First-hand information about our operations and company life.' }}</p></div><article class="news-feature-story"><figure class="news-story-image"><img src="/baje1.png" alt="{{ language() === 'es' ? 'Anuncio de reducción del precio de los pasajes de Transportes 41 S.A.' : 'Announcement of fare reductions by Transportes 41 S.A.' }}" /><figcaption><span>{{ language() === 'es' ? 'COMUNICADO / TARIFAS' : 'ANNOUNCEMENT / FARES' }}</span>Transportes 41 S.A.</figcaption></figure><div class="news-story-copy"><p class="eyebrow">{{ language() === 'es' ? 'Novedad de servicio' : 'Service update' }}</p><h3>{{ language() === 'es' ? 'Bajamos el precio de los pasajes' : 'We lowered the fare' }}</h3><p>{{ language() === 'es' ? 'En Transportes 41 S.A. hemos reducido el precio de los pasajes. Para conocer la tarifa vigente del tramo que necesitas, consulta con nuestro equipo antes de viajar.' : 'At Transportes 41 S.A. we have reduced fares. To learn the current rate for the route you need, please check with our team before traveling.' }}</p><a class="text-link" routerLink="/contacto">{{ language() === 'es' ? 'Consultar tarifa' : 'Check fare' }} <span>↗</span></a></div></article></div></section>
 ` })
 export class NewsPage {
   protected readonly language = inject(LanguageService).language;
@@ -26,36 +27,672 @@ export class NewsPage {
   }
 }
 
-@Component({ standalone: true, template: `
+@Component({ standalone: true, imports: [FormsModule], template: `
   <section class="inner-hero about-hero"><div class="container"><p class="eyebrow">{{ language() === 'es' ? '01 / Quiénes somos' : '01 / About us' }}</p><h1>{{ language() === 'es' ? 'La confianza también' : 'Trust is also' }}<br /><em>{{ language() === 'es' ? 'se transporta.' : 'transported.' }}</em></h1><p>{{ language() === 'es' ? 'Una empresa peruana que convierte cada recorrido en una experiencia segura y responsable.' : 'A Peruvian company that makes every journey a safe and responsible experience.' }}</p></div></section>
-  <section class="about-history section-space"><div class="container about-history-layout"><div class="about-history-copy"><p class="eyebrow">{{ language() === 'es' ? 'La historia de 41 S.A.' : 'The story of 41 S.A.' }}</p><h2>{{ language() === 'es' ? 'Quiénes somos' : 'About us' }}</h2><p class="about-history-lead">{{ language() === 'es' ? 'Más de 15 años conectando personas, comunidades y oportunidades a través del transporte.' : 'Over 15 years connecting people, communities, and opportunities through transportation.' }}</p><p>{{ language() === 'es' ? 'Transportes 41 S.A. es una empresa peruana dedicada al transporte de personas y mercancías. Nuestra historia se construye viaje a viaje, con responsabilidad, puntualidad y vocación de servicio.' : 'Transportes 41 S.A. is a Peruvian company dedicated to transporting people and goods. Our story is built one trip at a time, with responsibility, punctuality, and a commitment to service.' }}</p><p>{{ language() === 'es' ? 'Hoy seguimos uniendo Lima. El recorrido entre Pachacútec y Villa El Salvador refleja el trabajo coordinado de nuestros conductores, el equipo administrativo y una flota preparada para cada jornada.' : 'Today, we continue connecting Lima. The route between Pachacútec and Villa El Salvador reflects the coordinated work of our drivers, administrative team, and fleet, ready for daily operations.' }}</p><div class="about-history-years"><strong>+15</strong><span>{{ language() === 'es' ? 'años de experiencia' : 'years of experience' }}</span></div></div><div class="about-history-gallery"><div class="about-history-carousel-stage"><div id="about-history-slide" class="about-history-carousel-viewport" role="group" aria-label="{{ language() === 'es' ? 'Imágenes de Transportes 41 S.A.' : 'Images of Transportes 41 S.A.' }}" [attr.aria-roledescription]="language() === 'es' ? 'carrusel' : 'carousel'" aria-live="off">@switch (historyImageIndex()) { @case (0) { <figure class="about-history-photo"><img src="/atencia.jpg" alt="{{ language() === 'es' ? 'Equipo de atención de Transportes 41 S.A.' : 'Transportes 41 S.A. customer service team' }}" /><figcaption>{{ language() === 'es' ? 'Nuestro equipo de atención' : 'Our customer service team' }}</figcaption></figure> } @case (1) { <figure class="about-history-photo"><img src="/grupocapacitacion.png" alt="{{ language() === 'es' ? 'Equipo de Transportes 41 S.A. en capacitación' : 'Transportes 41 S.A. team in training' }}" /><figcaption>{{ language() === 'es' ? 'Capacitación de nuestro equipo' : 'Training our team' }}</figcaption></figure> } @case (2) { <figure class="about-history-photo"><img src="/imagen41.jpeg" alt="{{ language() === 'es' ? 'Imagen de Transportes 41 S.A.' : 'Transportes 41 S.A. image' }}" /><figcaption>Transportes 41 S.A.</figcaption></figure> } }</div><div class="about-history-controls"><button type="button" aria-label="{{ language() === 'es' ? 'Imagen anterior' : 'Previous image' }}" aria-controls="about-history-slide" (click)="previousHistoryImage()"><span aria-hidden="true">←</span></button><button type="button" aria-label="{{ language() === 'es' ? 'Imagen siguiente' : 'Next image' }}" aria-controls="about-history-slide" (click)="nextHistoryImage()"><span aria-hidden="true">→</span></button></div></div><div class="about-history-carousel-footer"><span>{{ historyImageIndex() + 1 }} / 3</span><div class="about-history-dots" role="group" aria-label="{{ language() === 'es' ? 'Elegir imagen' : 'Choose an image' }}"><button type="button" [class.active]="historyImageIndex() === 0" [attr.aria-pressed]="historyImageIndex() === 0" aria-label="{{ language() === 'es' ? 'Mostrar equipo de atención' : 'Show customer service team' }}" (click)="selectHistoryImage(0)"></button><button type="button" [class.active]="historyImageIndex() === 1" [attr.aria-pressed]="historyImageIndex() === 1" aria-label="{{ language() === 'es' ? 'Mostrar foto de capacitación' : 'Show training photo' }}" (click)="selectHistoryImage(1)"></button><button type="button" [class.active]="historyImageIndex() === 2" [attr.aria-pressed]="historyImageIndex() === 2" aria-label="{{ language() === 'es' ? 'Mostrar imagen de Transportes 41' : 'Show Transportes 41 image' }}" (click)="selectHistoryImage(2)"></button></div><button class="about-history-toggle" type="button" [attr.aria-label]="historyRotationPaused() ? (language() === 'es' ? 'Reanudar carrusel' : 'Resume carousel') : (language() === 'es' ? 'Pausar carrusel' : 'Pause carousel')" (click)="toggleHistoryRotation()"><span aria-hidden="true">{{ historyRotationPaused() ? '▶' : 'Ⅱ' }}</span></button></div></div></div></section>
-  <section class="about-principles section-space"><div class="container"><div class="section-heading"><div><p class="eyebrow">{{ language() === 'es' ? 'Lo que nos guía' : 'What guides us' }}</p><h2>{{ language() === 'es' ? 'Un servicio' : 'A service' }}<br /><em>{{ language() === 'es' ? 'con propósito.' : 'with purpose.' }}</em></h2></div><p class="heading-support">{{ language() === 'es' ? 'La forma en que cuidamos a las personas en cada recorrido.' : 'How we care for people on every journey.' }}</p></div><div class="container about-details"><div class="about-card about-card-mission"><div class="about-card-art mission-art" aria-hidden="true"><span>RUMBO / 41</span><svg viewBox="0 0 120 90"><path class="art-route" d="M17 70C32 70 30 47 48 47s16 20 31 7 12-33 26-33" /><circle class="art-point" cx="17" cy="70" r="5" /><path class="art-arrow" d="m94 19 12 2-2 12" /><circle class="art-orbit" cx="60" cy="45" r="35" /></svg></div><span class="about-index">01</span><h3>{{ language() === 'es' ? 'Misión' : 'Mission' }}</h3><p>{{ language() === 'es' ? 'Brindar soluciones de transporte confiables, cuidando a cada pasajero, carga y colaborador durante todo el recorrido.' : 'To provide reliable transportation solutions while caring for every passenger, shipment, and team member throughout each journey.' }}</p></div><div class="about-card about-card-vision"><div class="about-card-art vision-art" aria-hidden="true"><span>HORIZONTE / 41</span><svg viewBox="0 0 120 90"><circle class="art-sun" cx="78" cy="33" r="15" /><path class="art-horizon" d="M13 63h94M22 63l18-20 15 14 18-26 27 32" /><path class="art-rays" d="M78 8V2m25 31h8M59 14l-5-5m42 5 5-5" /><path class="art-route" d="M18 75c18-8 28-8 43-1s28 7 43-1" /></svg></div><span class="about-index">02</span><h3>{{ language() === 'es' ? 'Visión' : 'Vision' }}</h3><p>{{ language() === 'es' ? 'Ser una empresa referente en movilidad responsable y eficiente, reconocida por la calidad de nuestro servicio.' : 'To be a leading company in responsible and efficient mobility, recognized for the quality of our service.' }}</p></div><div class="about-card about-card-principles"><div class="about-card-art principles-art" aria-hidden="true"><span>VALORES / 41</span><svg viewBox="0 0 120 90"><path class="art-shield" d="M60 12 91 23v20c0 19-12 29-31 38-19-9-31-19-31-38V23z" /><path class="art-check" d="m45 46 10 10 21-23" /><circle class="art-star" cx="60" cy="12" r="3" /></svg></div><span class="about-index">03</span><h3>{{ language() === 'es' ? 'Principios' : 'Principles' }}</h3><p>{{ language() === 'es' ? 'Seguridad, puntualidad, respeto y mejora continua en cada decisión que tomamos.' : 'Safety, punctuality, respect, and continuous improvement in every decision we make.' }}</p></div></div></div></section>
-  <section class="route-section section-space"><div class="container"><div class="section-heading"><div><p class="eyebrow">{{ language() === 'es' ? 'Nuestra cobertura' : 'Our coverage' }}</p><h2>{{ language() === 'es' ? 'Una ruta que' : 'A route that' }}<br /><em>{{ language() === 'es' ? 'conecta.' : 'connects.' }}</em></h2></div><p class="heading-support">{{ language() === 'es' ? 'Recorrido Pachacútec – Villa El Salvador, trazado por los principales corredores de la ruta 41.' : 'The Pachacútec–Villa El Salvador route, following the main corridors served by Route 41.' }}</p></div><div class="route-map-legend" aria-label="{{ language() === 'es' ? 'Leyenda del recorrido' : 'Route legend' }}"><div class="route-legend-card route-legend-outbound"><i aria-hidden="true"></i><div><strong>{{ language() === 'es' ? 'Ruta 41: Pachacútec → Villa El Salvador' : 'Route 41: Pachacútec → Villa El Salvador' }}</strong><p>{{ language() === 'es' ? 'Paraderos principales señalados directamente sobre el mapa.' : 'Main stops are marked directly on the map.' }}</p></div></div></div><div class="gps-map" #routeMap role="application" aria-label="{{ language() === 'es' ? 'Mapa interactivo de la ruta 41 con nombres de paraderos' : 'Interactive map of Route 41 with stop names' }}"></div><p class="route-map-status" aria-live="polite">{{ routeMapLoading() ? (language() === 'es' ? 'Cargando recorrido por calles…' : 'Loading street route…') : routeMapError() ? (language() === 'es' ? 'No se pudo cargar el trazado. Comprueba tu conexión e inténtalo de nuevo.' : 'Could not load the route. Check your connection and try again.') : (language() === 'es' ? 'Ruta vial calculada con OpenStreetMap siguiendo los corredores principales indicados para la 41.' : 'Road route calculated with OpenStreetMap, following the main corridors used by Route 41.') }}</p><a class="map-link" href="https://www.openstreetmap.org/directions?engine=fossgis_osrm_car&amp;route=-11.840027%2C-77.149774%3B-11.8298%2C-77.1356%3B-11.866798%2C-77.077838%3B-11.8953%2C-77.0707%3B-11.9427%2C-77.0692%3B-11.9918%2C-77.0616%3B-12.0067%2C-77.0581%3B-12.0215%2C-77.0543%3B-12.0367%2C-77.0439%3B-12.045981%2C-77.042829%3B-12.0572%2C-77.0448%3B-12.0835%2C-77.0521%3B-12.1042%2C-77.0332%3B-12.1267%2C-77.0064%3B-12.1384%2C-76.9972%3B-12.153689%2C-76.983694%3B-12.1817%2C-76.9615%3B-12.213031%2C-76.937026%3B-12.2203%2C-76.9275" target="_blank" rel="noopener">{{ language() === 'es' ? 'Abrir recorrido en OpenStreetMap' : 'Open route in OpenStreetMap' }} <span>↗</span></a></div></section>
+  <section class="about-history section-space"><div class="container about-history-layout"><div class="about-history-copy"><p class="eyebrow"><span></span> {{ language() === 'es' ? 'La historia de 41 S.A.' : 'The story of 41 S.A.' }}</p><h2>{{ language() === 'es' ? 'Quiénes somos' : 'About us' }}</h2><p class="about-history-lead">{{ language() === 'es' ? 'Más de 35 años conectando personas, comunidades y oportunidades a través del transporte.' : 'Over 35 years connecting people, communities, and opportunities through transportation.' }}</p><p>{{ language() === 'es' ? 'Transportes 41 S.A. es una empresa peruana dedicada al transporte de personas y mercancías. Nuestra historia se construye viaje a viaje, con responsabilidad, puntualidad y vocación de servicio.' : 'Transportes 41 S.A. is a Peruvian company dedicated to transporting people and goods. Our story is built one trip at a time, with responsibility, punctuality, and a commitment to service.' }}</p><p>{{ language() === 'es' ? 'Hoy seguimos uniendo Lima. El recorrido entre Pachacútec y Villa El Salvador refleja el trabajo coordinado de nuestros conductores, el equipo administrativo y una flota preparada para cada jornada.' : 'Today, we continue connecting Lima. The route between Pachacútec and Villa El Salvador reflects the coordinated work of our drivers, administrative team, and fleet, ready for daily operations.' }}</p><div class="about-history-years"><strong>+35</strong><span>{{ language() === 'es' ? 'años de experiencia' : 'years of experience' }}</span></div></div><div class="about-history-gallery"><div class="about-history-carousel-stage"><div id="about-history-slide" class="about-history-carousel-viewport" role="group" aria-label="{{ language() === 'es' ? 'Imágenes de Transportes 41 S.A.' : 'Images of Transportes 41 S.A.' }}" [attr.aria-roledescription]="language() === 'es' ? 'carrusel' : 'carousel'" aria-live="off">@switch (historyImageIndex()) { @case (0) { <figure class="about-history-photo"><img src="/atencia.jpg" alt="{{ language() === 'es' ? 'Equipo de atención de Transportes 41 S.A.' : 'Transportes 41 S.A. customer service team' }}" /><figcaption>{{ language() === 'es' ? 'Nuestro equipo de atención' : 'Our customer service team' }}</figcaption></figure> } @case (1) { <figure class="about-history-photo"><img src="/grupocapacitacion.png" alt="{{ language() === 'es' ? 'Equipo de Transportes 41 S.A. en capacitación' : 'Transportes 41 S.A. team in training' }}" /><figcaption>{{ language() === 'es' ? 'Capacitación de nuestro equipo' : 'Training our team' }}</figcaption></figure> } @case (2) { <figure class="about-history-photo"><img src="/imagen41.jpeg" alt="{{ language() === 'es' ? 'Imagen de Transportes 41 S.A.' : 'Transportes 41 S.A. image' }}" /><figcaption>Transportes 41 S.A.</figcaption></figure> } }</div><div class="about-history-controls"><button type="button" aria-label="{{ language() === 'es' ? 'Imagen anterior' : 'Previous image' }}" aria-controls="about-history-slide" (click)="previousHistoryImage()"><span aria-hidden="true">←</span></button><button type="button" aria-label="{{ language() === 'es' ? 'Imagen siguiente' : 'Next image' }}" aria-controls="about-history-slide" (click)="nextHistoryImage()"><span aria-hidden="true">→</span></button></div></div><div class="about-history-carousel-footer"><span>{{ historyImageIndex() + 1 }} / 3</span><div class="about-history-dots" role="group" aria-label="{{ language() === 'es' ? 'Elegir imagen' : 'Choose an image' }}"><button type="button" [class.active]="historyImageIndex() === 0" [attr.aria-pressed]="historyImageIndex() === 0" aria-label="{{ language() === 'es' ? 'Mostrar equipo de atención' : 'Show customer service team' }}" (click)="selectHistoryImage(0)"></button><button type="button" [class.active]="historyImageIndex() === 1" [attr.aria-pressed]="historyImageIndex() === 1" aria-label="{{ language() === 'es' ? 'Mostrar foto de capacitación' : 'Show training photo' }}" (click)="selectHistoryImage(1)"></button><button type="button" [class.active]="historyImageIndex() === 2" [attr.aria-pressed]="historyImageIndex() === 2" aria-label="{{ language() === 'es' ? 'Mostrar imagen de Transportes 41' : 'Show Transportes 41 image' }}" (click)="selectHistoryImage(2)"></button></div><button class="about-history-toggle" type="button" [attr.aria-label]="historyRotationPaused() ? (language() === 'es' ? 'Reanudar carrusel' : 'Resume carousel') : (language() === 'es' ? 'Pausar carrusel' : 'Pause carousel')" (click)="toggleHistoryRotation()"><span aria-hidden="true">{{ historyRotationPaused() ? '▶' : 'Ⅱ' }}</span></button></div></div></div></section>
+  <section class="about-principles section-space"><div class="container"><div class="section-heading"><div><p class="eyebrow">{{ language() === 'es' ? 'Lo que nos guía' : 'What guides us' }}</p><h2>{{ language() === 'es' ? 'Un servicio' : 'A service' }}<br /><em>{{ language() === 'es' ? 'con propósito.' : 'with purpose.' }}</em></h2></div><p class="heading-support">{{ language() === 'es' ? 'La forma en que cuidamos a las personas en cada recorrido.' : 'How we care for people on every journey.' }}</p></div><div class="container about-details"><div class="about-card about-card-mission"><div class="about-card-media mission-media"><img src="/mision-rumbo.jpg" alt="{{ language() === 'es' ? 'Símbolo de Misión y Rumbo: brújula de precisión orientando el trazado de la ruta sobre el mapa' : 'Symbol of Mission and Route: precision compass guiding the plotted route on the map' }}" class="about-card-photo photo-mission" /><div class="about-card-photo-overlay" aria-hidden="true"></div></div><span class="about-index">01</span><h3>{{ language() === 'es' ? 'Misión' : 'Mission' }}</h3><p>{{ language() === 'es' ? 'Brindar soluciones de transporte confiables, cuidando a cada pasajero, carga y colaborador durante todo el recorrido.' : 'To provide reliable transportation solutions while caring for every passenger, shipment, and team member throughout each journey.' }}</p></div><div class="about-card about-card-vision"><div class="about-card-media vision-media"><img src="/vision-horizonte.jpg" alt="{{ language() === 'es' ? 'Símbolo de Visión y Horizonte: telescopio clásico enfocado hacia el amanecer en el horizonte' : 'Symbol of Vision and Horizon: classic telescope focused on the dawn horizon' }}" class="about-card-photo photo-vision" /><div class="about-card-photo-overlay" aria-hidden="true"></div></div><span class="about-index">02</span><h3>{{ language() === 'es' ? 'Visión' : 'Vision' }}</h3><p>{{ language() === 'es' ? 'Ser una empresa referente en movilidad responsable y eficiente, reconocida por la calidad de nuestro servicio.' : 'To be a leading company in responsible and efficient mobility, recognized for the quality of our service.' }}</p></div><div class="about-card about-card-principles"><div class="about-card-media principles-media"><img src="/principios-valores.jpg" alt="{{ language() === 'es' ? 'Símbolo de Principios y Valores: balanza clásica en equilibrio representando ética, integridad y rectitud' : 'Symbol of Principles and Values: classic balance scale in equilibrium representing ethics, integrity, and fairness' }}" class="about-card-photo photo-principles" /><div class="about-card-photo-overlay" aria-hidden="true"></div></div><span class="about-index">03</span><h3>{{ language() === 'es' ? 'Principios' : 'Principles' }}</h3><p>{{ language() === 'es' ? 'Seguridad, puntualidad, respeto y mejora continua en cada decisión que tomamos.' : 'Safety, punctuality, respect, and continuous improvement in every decision we make.' }}</p></div></div></div></section>
+  <section id="recorrido-oficial" class="route-section section-space">
+    <div class="container">
+      <div class="section-heading route-section-heading">
+        <div class="heading-copy-center">
+          <p class="eyebrow">{{ language() === 'es' ? 'Recorrido oficial / Cobertura' : 'Official Route / Coverage' }}</p>
+          <h2>{{ language() === 'es' ? 'Recorrido GPS Ruta 9801' : 'Official GPS Map Route 9801' }}<br /><em>{{ language() === 'es' ? 'Pachacútec ⇄ Villa El Salvador' : 'Pachacútec ⇄ Villa El Salvador' }}</em></h2>
+        </div>
+        <p class="heading-support">{{ language() === 'es' ? 'Trazado GPS oficial del recorrido de la 41 S.A., conectando 17 distritos a lo largo de 134.58 km por los corredores autorizados de Lima y Callao.' : 'Official GPS route map of Transportes 41 S.A., connecting 17 districts over 134.58 km along authorized corridors in Lima and Callao.' }}</p>
+      </div>
+
+      <div class="official-map-wrapper">
+        <div class="official-map-grid">
+          <!-- Visor del Mapa Oficial (Interactivo con Coordenadas GPS Reales o Captura Estática) -->
+          <div class="official-map-viewer-card">
+            <!-- Barra superior con selector de modo y título -->
+            <div class="viewer-header-bar">
+              <div class="viewer-title">
+                <span class="viewer-tag">RUTA 9801</span>
+                <div>
+                  <strong>{{ language() === 'es' ? 'Recorrido Oficial de la 41 S.A.' : 'Official Route Map 41 S.A.' }}</strong>
+                  <span class="viewer-subtitle">{{ language() === 'es' ? 'Trazado continuo Pachacútec ⇄ Villa El Salvador' : 'Continuous Corridor Pachacútec ⇄ Villa El Salvador' }}</span>
+                </div>
+              </div>
+
+              <!-- Selector de Modo: Interactivo vs Captura Estática -->
+              <div class="viewer-mode-tabs">
+                <button 
+                  type="button" 
+                  class="mode-tab-btn" 
+                  [class.active]="mapViewMode() === 'interactive'"
+                  (click)="setMapViewMode('interactive')">
+                  <span>🗺️</span> {{ language() === 'es' ? 'Mapa Interactivo' : 'Interactive Map' }}
+                </button>
+                <button 
+                  type="button" 
+                  class="mode-tab-btn" 
+                  [class.active]="mapViewMode() === 'static'"
+                  (click)="setMapViewMode('static')">
+                  <span>📷</span> {{ language() === 'es' ? 'Infografía Oficial' : 'Official Map Graphic' }}
+                </button>
+                <button 
+                  type="button" 
+                  class="lightbox-trigger-btn" 
+                  (click)="openLightbox()" 
+                  title="{{ language() === 'es' ? 'Ver en pantalla completa' : 'View full size' }}">
+                  <span>⛶</span> {{ language() === 'es' ? 'Pantalla Completa' : 'Full Screen' }}
+                </button>
+              </div>
+            </div>
+
+            <!-- Toolbar de Controles del Mapa Interactivo (Solo visible en modo interactivo) -->
+            @if (mapViewMode() === 'interactive') {
+              <div class="interactive-controls-bar">
+                <div class="route-official-pill">
+                  <span class="route-status-beacon"></span>
+                  <span class="route-pill-title">{{ language() === 'es' ? 'Ruta Oficial SIT Express • 41 S.A.' : 'Official SIT Express Line • 41 S.A.' }}</span>
+                  <span class="route-pill-meta">{{ activeDirection() === 'ida' ? '55.7 km • Pachacútec ➔ VES' : '56.3 km • VES ➔ Pachacútec' }}</span>
+                </div>
+
+                <div class="map-actions-group">
+                  <div class="direction-switch-group">
+                    <button 
+                      type="button" 
+                      class="map-tool-btn direction-btn" 
+                      [class.active]="activeDirection() === 'ida'"
+                      (click)="setDirection('ida')"
+                      title="{{ language() === 'es' ? 'Ver recorrido de Ida: Pachacútec a Villa El Salvador' : 'Outbound: Pachacútec to VES' }}">
+                      🟢 {{ language() === 'es' ? 'Ida (55.7 km)' : 'Outbound' }}
+                    </button>
+                    <button 
+                      type="button" 
+                      class="map-tool-btn direction-btn" 
+                      [class.active]="activeDirection() === 'vuelta'"
+                      (click)="setDirection('vuelta')"
+                      title="{{ language() === 'es' ? 'Ver recorrido de Vuelta: Villa El Salvador a Pachacútec' : 'Inbound: VES to Pachacútec' }}">
+                      🔄 {{ language() === 'es' ? 'Vuelta (56.3 km)' : 'Inbound' }}
+                    </button>
+                  </div>
+                  <button 
+                    type="button" 
+                    class="map-tool-btn" 
+                    [class.active]="showStops()"
+                    (click)="toggleStops()"
+                    title="{{ language() === 'es' ? 'Mostrar u ocultar los 15 paraderos clave oficiales' : 'Toggle 15 key official stops' }}">
+                    <span>🚏</span> {{ showStops() ? (language() === 'es' ? '15 Paraderos' : '15 Key Stops') : (language() === 'es' ? 'Ver Paraderos' : 'Show Stops') }}
+                  </button>
+                  <button 
+                    type="button" 
+                    class="map-tool-btn" 
+                    (click)="resetMapBounds()"
+                    title="{{ language() === 'es' ? 'Ajustar zoom al recorrido completo' : 'Fit to full route' }}">
+                    <span>🎯</span> {{ language() === 'es' ? 'Centrar' : 'Fit' }}
+                  </button>
+                </div>
+              </div>
+            }
+
+            <!-- Canvas del Mapa Interactivo Leaflet -->
+            <div class="interactive-map-stage" [style.display]="mapViewMode() === 'interactive' ? 'block' : 'none'">
+              <div id="interactive-route-map" class="interactive-map-canvas"></div>
+
+              <!-- Badge Flotante Informativo en el mapa -->
+              <div class="map-floating-legend">
+                <div class="legend-badge-item">
+                  <span class="legend-swatch swatch-green"></span>
+                  <span>{{ language() === 'es' ? 'Línea Oficial: Pachacútec ⇄ Villa El Salvador' : 'Official Route Line: Pachacútec ⇄ Villa El Salvador' }}</span>
+                </div>
+                <div class="legend-badge-item">
+                  <span class="legend-badge-circle">1-15</span>
+                  <span>{{ language() === 'es' ? '15 Paraderos y Avenidas Principales' : '15 Key Avenues & Stops' }}</span>
+                </div>
+                <div class="legend-badge-item legend-hint">
+                  <span>🖱️ {{ language() === 'es' ? 'Arrastra o haz zoom libremente • Clic en paraderos para detalles' : 'Drag or zoom freely • Click stops for details' }}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Mapa Estático con Marco Elegante (Modo Captura) -->
+            <div class="static-map-wrapper" [style.display]="mapViewMode() === 'static' ? 'flex' : 'none'">
+              <div class="static-map-frame" (click)="openLightbox()" title="{{ language() === 'es' ? 'Haz clic para ver el mapa en tamaño completo' : 'Click to view full size' }}">
+                <img
+                  src="/mapa-ruta-41-oficial.png"
+                  alt="{{ language() === 'es' ? 'Captura GPS oficial del recorrido de la Ruta 9801 Empresa de Transportes 41 S.A.' : 'Official GPS route map of Route 9801 Transportes 41 S.A.' }}"
+                  class="static-map-img"
+                />
+                <div class="map-frame-footer-badge">
+                  <span>{{ language() === 'es' ? '📍 Recorrido Oficial: Pachacútec ⇄ Villa El Salvador' : '📍 Official Route: Pachacútec ⇄ Villa El Salvador' }}</span>
+                  <span class="expand-hint">🔍 {{ language() === 'es' ? 'Clic para ampliar' : 'Click to enlarge' }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ASISTENTE VIRTUAL / IA PROGRAMADA DE RUTA 41 -->
+      <div id="buscador-paraderos" class="route-ai-card">
+        <div class="route-ai-header">
+          <div class="ai-avatar-group">
+            <div class="ai-avatar-badge">
+              <span>🤖</span>
+              <span class="ai-status-dot" title="En línea"></span>
+            </div>
+            <div class="ai-header-titles">
+              <span class="ai-pill-tag">⚡ {{ language() === 'es' ? 'ASISTENTE VIRTUAL IA' : 'AI ROUTE ASSISTANT' }}</span>
+              <h3>{{ language() === 'es' ? 'Consulta de Paraderos y Recorrido' : 'Stops & Route Assistant' }}</h3>
+              <p>{{ language() === 'es' ? 'Elige una pregunta programada o escribe tu destino para saber si la 41 S.A. pasa por ahí.' : 'Choose a suggested question or type your destination to check if Route 41 passes by.' }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Preguntas Rápidas Programadas -->
+        <div class="ai-quick-section">
+          <span class="ai-quick-label">{{ language() === 'es' ? 'Preguntas frecuentes de ruta:' : 'Frequent route questions:' }}</span>
+          <div class="ai-quick-chips">
+            @for (item of predefinedQuestions; track item.id) {
+              <button 
+                type="button" 
+                class="ai-quick-btn" 
+                [class.active]="selectedQuestionId() === item.id"
+                (click)="askPredefinedQuestion(item)">
+                <span class="chip-icon">{{ item.icon }}</span>
+                <span>{{ language() === 'es' ? item.questionEs : item.questionEn }}</span>
+              </button>
+            }
+          </div>
+        </div>
+
+        <!-- Barra de Búsqueda / Pregunta Personalizada -->
+        <form class="ai-search-form" (submit)="submitQuery($event)">
+          <div class="ai-input-wrap">
+            <span class="ai-input-icon">🔍</span>
+            <input 
+              type="text" 
+              class="ai-text-input"
+              [ngModel]="userQuery()" 
+              (ngModelChange)="userQuery.set($event)"
+              name="userQuery"
+              [placeholder]="language() === 'es' ? 'Escribe una avenida, distrito o pregunta (ej. ¿Pasa por Jesús María? o Paraderos en Surco)...' : 'Type an avenue, district, or question (e.g. Does it pass by Surco?)...'"
+              aria-label="{{ language() === 'es' ? 'Preguntar al asistente sobre paraderos' : 'Ask assistant about stops' }}"
+            />
+            @if (userQuery().length > 0) {
+              <button type="button" class="ai-clear-btn" (click)="clearQuery()" aria-label="{{ language() === 'es' ? 'Borrar consulta' : 'Clear query' }}">✕</button>
+            }
+          </div>
+          <button type="submit" class="ai-submit-btn" [disabled]="!userQuery().trim()">
+            <span>{{ language() === 'es' ? 'Consultar' : 'Ask' }}</span> <b>→</b>
+          </button>
+        </form>
+
+        <!-- Respuesta Generada por la IA -->
+        @if (currentResponse(); as res) {
+          <div class="ai-response-box">
+            <div class="ai-response-header">
+              <div class="ai-user-inquiry">
+                <span class="user-inquiry-tag">{{ language() === 'es' ? 'Tu consulta:' : 'Your question:' }}</span>
+                <strong>“{{ res.question }}”</strong>
+              </div>
+              <button type="button" class="ai-reset-btn" (click)="resetQuery()" title="{{ language() === 'es' ? 'Hacer otra consulta' : 'Ask another question' }}">
+                <span>↺</span> {{ language() === 'es' ? 'Nueva consulta' : 'New question' }}
+              </button>
+            </div>
+
+            <div class="ai-bubble-message">
+              <div class="ai-bubble-avatar">🤖</div>
+              <div class="ai-bubble-content">
+                <p class="ai-reply-text">{{ res.answer }}</p>
+
+                <!-- Paraderos específicos destacados -->
+                @if (res.stops && res.stops.length > 0) {
+                  <div class="ai-matched-stops">
+                    <span class="matched-stops-title">🚏 {{ language() === 'es' ? 'Paraderos oficiales confirmados:' : 'Confirmed official stops:' }}</span>
+                    <div class="matched-stops-list">
+                      @for (s of res.stops; track s.id) {
+                        <div class="mini-stop-pill" (click)="focusStopOnMap(s)" role="button" tabindex="0" title="{{ language() === 'es' ? 'Clic para ubicar en el mapa interactivo' : 'Click to locate on interactive map' }}">
+                          <span class="mini-stop-icon">{{ s.icon }}</span>
+                          <div class="mini-stop-info">
+                            <strong>{{ s.name }}</strong>
+                            <small>{{ s.avenue }} • <em>{{ s.district }}</em></small>
+                            @if (s.connections && s.connections.length > 0) {
+                              <span class="mini-stop-conn">🔗 {{ s.connections.join(' • ') }}</span>
+                            }
+                          </div>
+                          <span class="mini-stop-pin-action">📍 {{ language() === 'es' ? 'Ver en Mapa' : 'View on Map' }}</span>
+                        </div>
+                      }
+                    </div>
+                  </div>
+                }
+
+                @if (res.note) {
+                  <p class="ai-reply-note">{{ res.note }}</p>
+                }
+              </div>
+            </div>
+
+            <!-- Ayuda adicional si desean consultar WhatsApp -->
+            <div class="ai-response-footer">
+              <span>{{ language() === 'es' ? '¿Deseas confirmar la hora exacta de llegada de la unidad más cercana?' : 'Want to verify the arrival time of the nearest bus?' }}</span>
+              <a class="ai-whatsapp-link" 
+                [href]="'https://wa.me/51995479948?text=' + encodeQuery(res.question)"
+                target="_blank" rel="noopener">
+                <span>💬</span> {{ language() === 'es' ? 'Consultar con despachador por WhatsApp' : 'Ask route controller on WhatsApp' }}
+              </a>
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- MODAL LIGHTBOX FULLSCREEN -->
+      @if (lightboxOpen()) {
+        <div class="map-lightbox-overlay" (click)="closeLightbox()" role="dialog" aria-modal="true" aria-label="{{ language() === 'es' ? 'Visor de mapa oficial en pantalla completa' : 'Official map fullscreen viewer' }}">
+          <div class="map-lightbox-card" (click)="$event.stopPropagation()">
+            <div class="lightbox-header">
+              <div class="lightbox-title-area">
+                <span class="route-badge-9801">GPS 9801</span>
+                <h3>{{ language() === 'es' ? 'Mapa GPS Oficial - Empresa de Transportes 41 S.A.' : 'Official GPS Map - Transportes 41 S.A.' }}</h3>
+              </div>
+              <button type="button" class="lightbox-close-btn" (click)="closeLightbox()" aria-label="{{ language() === 'es' ? 'Cerrar' : 'Close' }}">✕</button>
+            </div>
+            <div class="lightbox-stage">
+              <img
+                src="/mapa-ruta-41-oficial.png"
+                alt="{{ language() === 'es' ? 'Mapa GPS ampliado de la Ruta 9801' : 'Expanded Route 9801 GPS map' }}"
+                class="lightbox-image"
+              />
+            </div>
+            <div class="lightbox-footer">
+              <div class="lightbox-legend">
+                <span class="ida-tag" style="color: #4ade80;">🟢 Trazado Oficial GPS Ruta 9801</span>
+                <span class="vuelta-tag">📍 Pachacútec ⇄ Villa El Salvador</span>
+                <span class="distritos-tag">🗺️ 17 Distritos Conectados</span>
+              </div>
+              <span class="lightbox-hint">{{ language() === 'es' ? 'Presiona ESC o ✕ para cerrar' : 'Press ESC or ✕ to close' }}</span>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </section>
 ` })
 export class AboutPage implements AfterViewInit, OnDestroy {
   protected readonly language = inject(LanguageService).language;
-  @ViewChild('routeMap') private routeMapElement!: ElementRef<HTMLDivElement>;
-  readonly routeMapLoading = signal(true);
-  readonly routeMapError = signal(false);
+
+  // Modal Lightbox Fullscreen
+  readonly lightboxOpen = signal<boolean>(false);
+
+  // Estado del Mapa Interactivo Leaflet
+  readonly mapViewMode = signal<'interactive' | 'static'>('interactive');
+  readonly showStops = signal<boolean>(true);
+  readonly activeDirection = signal<'ida' | 'vuelta'>('ida');
+
+  private map: L.Map | undefined;
+  private casingLayer: L.Polyline | undefined;
+  private routeLineLayer: L.Polyline | undefined;
+  private stopsLayerGroup: L.LayerGroup | undefined;
+
+  // Carrusel histórico institucional
   readonly historyImageIndex = signal(0);
   readonly historyRotationPaused = signal(false);
-  private map?: L.Map;
   private historyRotationTimer: ReturnType<typeof setInterval> | undefined;
 
+  // Asistente Virtual / IA de Ruta 41
+  readonly userQuery = signal<string>('');
+  readonly selectedQuestionId = signal<string | null>(null);
+  readonly currentResponse = signal<{ question: string; answer: string; stops?: RouteStop[]; note?: string } | null>(null);
+
+  readonly predefinedQuestions = [
+    {
+      id: 'brasil',
+      icon: '📍',
+      questionEs: '¿Pasa por la Av. Brasil o Alfonso Ugarte?',
+      questionEn: 'Does it pass through Av. Brasil or Alfonso Ugarte?',
+      answerEs: '¡Sí, es uno de los corredores principales de la 41 S.A.! Conectamos el Centro de Lima, Breña y Jesús María a través de los siguientes paraderos oficiales:',
+      answerEn: 'Yes! Route 9801 runs along Av. Alfonso Ugarte and connects with Av. Brasil and Plaza Bolognesi across Downtown Lima, Breña, and Jesús María:',
+      relevantStopIds: ['out-15', 'out-16', 'out-17']
+    },
+    {
+      id: 'hospitales',
+      icon: '🏥',
+      questionEs: '¿Qué paraderos tiene cerca de hospitales?',
+      questionEn: 'Which stops are close to major hospitals?',
+      answerEs: 'La Ruta 9801 cuenta con paraderos autorizados en la puerta de los tres principales hospitales nacionales de Lima:',
+      answerEn: 'Route 9801 provides direct authorized stops at three of the largest national hospitals in Lima:',
+      relevantStopIds: ['out-15', 'out-18', 'out-28']
+    },
+    {
+      id: 'metro',
+      icon: '🚇',
+      questionEs: '¿Dónde conecta con Metro Línea 1 o Metropolitano?',
+      questionEn: 'Where does it connect with Metro Line 1 or Metropolitano?',
+      answerEs: 'Contamos con interconexión multimodal directa con el Metro de Lima y el Metropolitano en varios puntos clave:',
+      answerEn: 'We offer direct multimodal connections with both Lima Metro Line 1 and the Metropolitano bus rapid transit system:',
+      relevantStopIds: ['out-14', 'out-20', 'out-23', 'out-24', 'out-26', 'out-27']
+    },
+    {
+      id: 'surco-ves',
+      icon: '🏙️',
+      questionEs: '¿Cuáles son los paraderos en Surco y Villa El Salvador?',
+      questionEn: 'What are the stops in Surco and Villa El Salvador?',
+      answerEs: 'En Lima Sur cubrimos el corredor de Av. Tomás Marsano en Surco y la Av. Micaela Bastidas (Ruta C) en Villa El Salvador hasta el Terminal Sur:',
+      answerEn: 'In South Lima we serve Av. Tomás Marsano in Surco and Av. Micaela Bastidas in Villa El Salvador all the way to Terminal Sur:',
+      relevantStopIds: ['out-23', 'out-24', 'out-25', 'out-30', 'out-31', 'out-33']
+    },
+    {
+      id: 'norte',
+      icon: '🚍',
+      questionEs: '¿Por dónde pasa en Lima Norte (Ventanilla / Puente Piedra / Los Olivos)?',
+      questionEn: 'Where does it pass in North Lima (Ventanilla / Los Olivos)?',
+      answerEs: 'En Lima Norte conectamos desde nuestro Terminal Pachacútec, cruzando Puente Piedra y la Panamericana Norte hasta Plaza Norte y Caquetá:',
+      answerEn: 'In North Lima we start at Terminal Pachacútec, crossing Puente Piedra and the Panamericana Norte corridor towards Plaza Norte and Caquetá:',
+      relevantStopIds: ['out-01', 'out-06', 'out-08', 'out-11', 'out-12']
+    },
+    {
+      id: 'horarios',
+      icon: '⏱️',
+      questionEs: '¿Cuáles son los horarios de salida y frecuencia?',
+      questionEn: 'What are the operating hours and frequency?',
+      answerEs: 'Operamos de lunes a domingo de 04:15 a.m. a 00:50 a.m. La frecuencia en horas punta es de 3 a 6 minutos, monitoreada satelitalmente por GPS para garantizar máxima regularidad en todo el circuito.',
+      answerEn: 'We operate Monday through Sunday from 04:15 AM to 00:50 AM with headways of 3 to 6 minutes during peak hours, tracked via GPS.',
+      relevantStopIds: []
+    }
+  ];
+
+  askPredefinedQuestion(item: typeof this.predefinedQuestions[0]): void {
+    this.selectedQuestionId.set(item.id);
+    const isEs = this.language() === 'es';
+    this.userQuery.set(isEs ? item.questionEs : item.questionEn);
+
+    const stops = item.relevantStopIds && item.relevantStopIds.length > 0
+      ? ROUTE_STOPS.filter(s => item.relevantStopIds.includes(s.id))
+      : undefined;
+
+    this.currentResponse.set({
+      question: isEs ? item.questionEs : item.questionEn,
+      answer: isEs ? item.answerEs : item.answerEn,
+      stops
+    });
+  }
+
+  submitQuery(event?: Event): void {
+    if (event) event.preventDefault();
+    const q = this.userQuery().trim();
+    if (!q) return;
+
+    this.selectedQuestionId.set(null);
+    const qLower = q.toLowerCase();
+    const isEs = this.language() === 'es';
+
+    // 1. Chequeo de temas generales (horario, tarifas, etc.)
+    if (qLower.includes('horario') || qLower.includes('hora') || qLower.includes('frecuencia') || qLower.includes('salida') || qLower.includes('primer bus') || qLower.includes('ultimo bus')) {
+      this.currentResponse.set({
+        question: q,
+        answer: isEs 
+          ? 'La Ruta 9801 opera todos los días de 04:15 a.m. a 00:50 a.m. En hora punta los buses salen cada 3 a 6 minutos desde los terminales de Pachacútec y Villa El Salvador.'
+          : 'Route 9801 runs daily from 04:15 AM to 00:50 AM with 3 to 6 minute departures during peak hours from both terminals.',
+        note: isEs ? 'El servicio cuenta con monitoreo satelital GPS en tiempo real.' : 'All trips are monitored via real-time GPS.'
+      });
+      return;
+    }
+
+    if (qLower.includes('precio') || qLower.includes('pasaje') || qLower.includes('tarifa') || qLower.includes('costo') || qLower.includes('cuanto')) {
+      this.currentResponse.set({
+        question: q,
+        answer: isEs
+          ? 'En Transportes 41 S.A. hemos reducido el precio de los pasajes. El costo exacto se calcula según tu tramo de origen y destino (Adulto, Medio Pasaje Universitario o Escolar conforme a Ley).'
+          : 'Fares have been reduced. Exact pricing depends on your boarding and drop-off zones, with official student discounts applied.',
+        note: isEs ? 'Para consultar la tarifa vigente de un tramo específico, puedes escribir a nuestro WhatsApp oficial.' : 'For exact segment fares, you can message our official WhatsApp.'
+      });
+      return;
+    }
+
+    // 2. Búsqueda inteligente en la base de paraderos oficial
+    const matchedStops = ROUTE_STOPS.filter((stop) => {
+      const inName = stop.name.toLowerCase().includes(qLower);
+      const inAvenue = stop.avenue.toLowerCase().includes(qLower);
+      const inDistrict = stop.district.toLowerCase().includes(qLower);
+      const inDesc = stop.description ? stop.description.toLowerCase().includes(qLower) : false;
+      const inConn = stop.connections && stop.connections.some(c => c.toLowerCase().includes(qLower));
+      return inName || inAvenue || inDistrict || inDesc || inConn;
+    });
+
+    if (matchedStops.length > 0) {
+      this.currentResponse.set({
+        question: q,
+        answer: isEs 
+          ? `¡Confirmado! La Ruta 9801 cuenta con paraderos oficiales vinculados a tu consulta:`
+          : `Confirmed! Route 9801 has official stops matching your query:`,
+        stops: matchedStops.slice(0, 5),
+        note: matchedStops.length > 5 
+          ? (isEs ? `Mostrando los 5 paraderos más representativos de los ${matchedStops.length} encontrados.` : `Showing top 5 matching stops.`)
+          : undefined
+      });
+      return;
+    }
+
+    // 3. Respuesta si no hay paraderos directos
+    this.currentResponse.set({
+      question: q,
+      answer: isEs
+        ? `No encontramos un paradero directo con el término "${q}" para la Ruta 9801. Recuerda que la 41 conecta 17 distritos entre Pachacútec y Villa El Salvador cruzando la Panamericana Norte, Alfonso Ugarte, Salaverry y Tomás Marsano.`
+        : `We did not find an official stop matching "${q}" for Route 9801. Our route connects 17 districts along Panamericana Norte, Alfonso Ugarte, Salaverry, and Tomás Marsano.`,
+      note: isEs
+        ? 'Si deseas que te indiquemos la esquina o conexión más cercana para llegar a tu destino, consúltanos por WhatsApp.'
+        : 'If you want to know the nearest stop to reach your destination, message us on WhatsApp.'
+    });
+  }
+
+  clearQuery(): void {
+    this.userQuery.set('');
+  }
+
+  resetQuery(): void {
+    this.userQuery.set('');
+    this.selectedQuestionId.set(null);
+    this.currentResponse.set(null);
+  }
+
+  encodeQuery(q: string): string {
+    const prefix = this.language() === 'es'
+      ? 'Hola, tengo una consulta sobre el recorrido de la Ruta 41: '
+      : 'Hello, I have an inquiry about Route 41 stops: ';
+    return encodeURIComponent(prefix + q);
+  }
+
+  @HostListener('window:keydown.escape')
+  onEscape(): void {
+    if (this.lightboxOpen()) {
+      this.closeLightbox();
+    }
+  }
+
+  openLightbox(): void {
+    this.lightboxOpen.set(true);
+  }
+
+  closeLightbox(): void {
+    this.lightboxOpen.set(false);
+  }
+
   ngAfterViewInit(): void {
-    this.map = L.map(this.routeMapElement.nativeElement, { scrollWheelZoom: false }).setView([-12.04, -77.08], 10);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>',
-    }).addTo(this.map);
-    void this.loadRoute();
     this.historyRotationPaused.set(window.matchMedia('(prefers-reduced-motion: reduce)').matches);
     this.restartHistoryRotation();
+    this.initLeafletMap();
   }
 
   ngOnDestroy(): void {
-    this.map?.remove();
     this.stopHistoryRotation();
+    if (this.map) {
+      this.map.remove();
+      this.map = undefined;
+    }
+  }
+
+  setMapViewMode(mode: 'interactive' | 'static'): void {
+    this.mapViewMode.set(mode);
+    if (mode === 'interactive') {
+      setTimeout(() => {
+        if (!this.map) {
+          this.initLeafletMap();
+        } else {
+          this.map.invalidateSize();
+        }
+      }, 150);
+    }
+  }
+
+  toggleStops(): void {
+    this.showStops.update(v => !v);
+    if (!this.map || !this.stopsLayerGroup) return;
+    if (this.showStops()) {
+      if (!this.map.hasLayer(this.stopsLayerGroup)) {
+        this.stopsLayerGroup.addTo(this.map);
+      }
+    } else {
+      if (this.map.hasLayer(this.stopsLayerGroup)) {
+        this.map.removeLayer(this.stopsLayerGroup);
+      }
+    }
+  }
+
+  resetMapBounds(): void {
+    if (!this.map || !this.routeLineLayer) return;
+    this.map.fitBounds(this.routeLineLayer.getBounds(), { padding: [35, 35] });
+  }
+
+  setDirection(dir: 'ida' | 'vuelta'): void {
+    this.activeDirection.set(dir);
+    if (!this.map || !this.routeLineLayer || !this.casingLayer) return;
+    const path = dir === 'ida' ? OFFICIAL_ROUTE_41_IDA : OFFICIAL_ROUTE_41_VUELTA;
+    this.routeLineLayer.setLatLngs(path as L.LatLngExpression[]);
+    this.casingLayer.setLatLngs(path as L.LatLngExpression[]);
+    this.map.fitBounds(this.routeLineLayer.getBounds(), { padding: [35, 35] });
+  }
+
+
+
+  focusStopOnMap(stop: RouteStop): void {
+    if (this.mapViewMode() !== 'interactive') {
+      this.setMapViewMode('interactive');
+    }
+
+    const mapElement = document.getElementById('interactive-route-map');
+    mapElement?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    setTimeout(() => {
+      if (!this.map) return;
+      this.map.flyTo(stop.coordinates, 15, { duration: 1.2 });
+      L.popup({ className: 'custom-leaflet-popup', maxWidth: 300 })
+        .setLatLng(stop.coordinates)
+        .setContent(`
+          <div class="interactive-map-popup">
+            <div class="popup-header" style="border-left: 4px solid #059669;">
+              <span class="popup-type">${stop.typeLabel || 'Paradero Oficial'}</span>
+              <h4 class="popup-title">${stop.icon || '📍'} ${stop.name}</h4>
+            </div>
+            <div class="popup-body">
+              <p class="popup-street"><strong>Avenida:</strong> ${stop.avenue}</p>
+              <p class="popup-district"><strong>Distrito:</strong> ${stop.district}</p>
+              ${stop.description ? `<p class="popup-note">${stop.description}</p>` : ''}
+            </div>
+          </div>
+        `)
+        .openOn(this.map);
+    }, 250);
+  }
+
+  private initLeafletMap(): void {
+    if (typeof window === 'undefined') return;
+    const container = document.getElementById('interactive-route-map');
+    if (!container || this.map) return;
+
+    // Inicializar mapa centrado en el eje troncal de Lima
+    this.map = L.map('interactive-route-map', {
+      center: [-12.046374, -77.042793],
+      zoom: 11,
+      zoomControl: true,
+      scrollWheelZoom: true
+    });
+
+    // Tiles oficiales de OpenStreetMap
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; OpenStreetMap | Empresa de Transportes 41 S.A.'
+    }).addTo(this.map);
+
+    // 1. Halo blanco de contraste para que la línea resalte limpia y legible sobre cualquier mapa
+    this.casingLayer = L.polyline(OFFICIAL_ROUTE_41_PATH as L.LatLngExpression[], {
+      color: '#ffffff',
+      weight: 8,
+      opacity: 0.95,
+      lineJoin: 'round',
+      lineCap: 'round'
+    }).addTo(this.map);
+
+    // 2. Línea Verde Esmeralda Oficial de la Ruta 41 (Sola, continua y exacta)
+    this.routeLineLayer = L.polyline(OFFICIAL_ROUTE_41_PATH as L.LatLngExpression[], {
+      color: '#059669',
+      weight: 5,
+      opacity: 1,
+      lineJoin: 'round',
+      lineCap: 'round'
+    }).addTo(this.map);
+
+    // 3. Capa de los 15 Paraderos y Avenidas Clave del Mapa Oficial
+    this.stopsLayerGroup = L.layerGroup().addTo(this.map);
+    this.renderStopMarkers();
+
+    // Centrar mapa con margen para abarcar desde Pachacútec hasta Villa El Salvador
+    if (this.routeLineLayer) {
+      this.map.fitBounds(this.routeLineLayer.getBounds(), { padding: [35, 35] });
+    }
+
+    setTimeout(() => {
+      this.map?.invalidateSize();
+    }, 300);
+  }
+
+  private renderStopMarkers(): void {
+    if (!this.stopsLayerGroup) return;
+    this.stopsLayerGroup.clearLayers();
+
+    const isEs = this.language() === 'es';
+
+    OFFICIAL_15_KEY_STOPS.forEach(s => {
+      const isTerminal = s.num === 1 || s.num === 15;
+      const markerHtml = `
+        <div class="key-stop-badge ${isTerminal ? 'terminal-badge' : ''}" title="${s.num}. ${s.name}">
+          <span class="badge-num">${s.num}</span>
+          <span class="badge-label">${s.name}</span>
+        </div>
+      `;
+
+      const customIcon = L.divIcon({
+        className: 'route-41-div-icon',
+        html: markerHtml,
+        iconSize: [160, 32],
+        iconAnchor: [16, 16]
+      });
+
+      const marker = L.marker(s.coordinates, { icon: customIcon });
+
+      const popupContent = `
+        <div class="interactive-map-popup">
+          <div class="popup-header" style="border-left: 4px solid #059669;">
+            <span class="popup-type">${isTerminal ? (isEs ? 'Terminal Oficial' : 'Official Terminal') : (isEs ? 'Paradero Clave N° ' + s.num : 'Key Stop N° ' + s.num)}</span>
+            <h4 class="popup-title">${s.num}. ${s.name}</h4>
+          </div>
+          <div class="popup-body">
+            <p class="popup-street"><strong>${isEs ? 'Avenida / Referencia:' : 'Avenue / Landmark:'}</strong> ${s.sub}</p>
+            <p class="popup-district"><strong>${isEs ? 'Corredor:' : 'Corridor:'}</strong> Empresa de Transportes 41 S.A. (Ruta 9801)</p>
+          </div>
+        </div>
+      `;
+
+      marker.bindPopup(popupContent, {
+        className: 'custom-leaflet-popup',
+        maxWidth: 320
+      });
+
+      this.stopsLayerGroup?.addLayer(marker);
+    });
   }
 
   previousHistoryImage(): void {
@@ -91,105 +728,60 @@ export class AboutPage implements AfterViewInit, OnDestroy {
       this.historyRotationTimer = undefined;
     }
   }
-
-  private async loadRoute(): Promise<void> {
-    const outbound: [number, number][] = [
-      [-11.8400266, -77.1497739],
-      [-11.8298, -77.1356],
-      [-11.8667978, -77.0778382],
-      [-11.8953, -77.0707],
-      [-11.9427, -77.0692],
-      [-11.9918, -77.0616],
-      [-12.0067, -77.0581],
-      [-12.0215, -77.0543],
-      [-12.0367, -77.0439],
-      [-12.0459814, -77.042829],
-      [-12.0572, -77.0448],
-      [-12.0835, -77.0521],
-      [-12.1042, -77.0332],
-      [-12.1267, -77.0064],
-      [-12.1384, -76.9972],
-      [-12.1536891, -76.9836944],
-      [-12.1817, -76.9615],
-      [-12.213031, -76.9370262],
-      [-12.2203, -76.9275],
-    ];
-    const routeStops: { coordinates: [number, number]; name: string }[] = [
-      { coordinates: outbound[0], name: 'Pachacútec / Ventanilla' },
-      { coordinates: outbound[1], name: 'Néstor Gambetta' },
-      { coordinates: outbound[2], name: 'Alameda del Norte' },
-      { coordinates: outbound[6], name: 'Plaza Norte' },
-      { coordinates: outbound[9], name: 'Alfonso Ugarte' },
-      { coordinates: outbound[12], name: 'República de Panamá' },
-      { coordinates: outbound[13], name: 'Tomás Marsano' },
-      { coordinates: outbound[15], name: 'Los Héroes / Atocongo' },
-      { coordinates: outbound[18], name: 'Av. Revolución / Huáscar' },
-    ];
-
-    try {
-      const line = await this.fetchRoute(outbound, '#d9212e');
-      const start = L.circleMarker(outbound[0], { radius: 8, color: '#fff', weight: 3, fillColor: '#d9212e', fillOpacity: 1 })
-        .bindPopup(() => `${this.language() === 'es' ? 'Inicio' : 'Start'}: Pachacútec`);
-      const destination = L.circleMarker(outbound[outbound.length - 1], { radius: 8, color: '#fff', weight: 3, fillColor: '#123f91', fillOpacity: 1 })
-        .bindPopup(() => `${this.language() === 'es' ? 'Destino' : 'Destination'}: Villa El Salvador`);
-      const stopMarkers = routeStops.map(({ coordinates, name }) => L.circleMarker(coordinates, {
-        radius: 5,
-        color: '#fff',
-        weight: 2,
-        fillColor: '#d9212e',
-        fillOpacity: 1,
-      }).bindTooltip(name, {
-        permanent: true,
-        direction: 'top',
-        className: 'route-stop-label',
-        offset: [0, -5],
-      }).addTo(this.map!));
-      const bounds = L.featureGroup([line, start, destination, ...stopMarkers]).addTo(this.map!).getBounds();
-      this.map!.fitBounds(bounds.pad(0.06));
-    } catch {
-      this.routeMapError.set(true);
-    } finally {
-      this.routeMapLoading.set(false);
-    }
-  }
-
-  private async fetchRoute(points: [number, number][], color: string): Promise<L.Polyline> {
-    const coordinates = points.map(([latitude, longitude]) => `${longitude},${latitude}`).join(';');
-    const response = await fetch(`https://router.project-osrm.org/route/v1/driving/${coordinates}?overview=full&geometries=geojson`);
-    if (!response.ok) throw new Error('Routing request failed');
-
-    const data = await response.json() as { routes?: { geometry: { coordinates: [number, number][] } }[] };
-    const routeCoordinates = data.routes?.[0]?.geometry.coordinates;
-    if (!routeCoordinates || !this.map) throw new Error('Route geometry unavailable');
-
-    return L.polyline(routeCoordinates.map(([longitude, latitude]) => [latitude, longitude]), {
-      color,
-      weight: 6,
-      opacity: 0.88,
-    }).addTo(this.map);
-  }
 }
 
-@Component({ standalone: true, imports: [RouterLink], template: `
-  <section class="inner-hero services-hero"><div class="container"><p class="eyebrow">{{ language() === 'es' ? '02 / Servicios' : '02 / Services' }}</p><h1>{{ language() === 'es' ? 'Transporte pensado' : 'Transport designed' }}<br /><em>{{ language() === 'es' ? 'para avanzar.' : 'to move forward.' }}</em></h1><p>{{ language() === 'es' ? 'Soluciones claras para mover personas, mercancías y operaciones con confianza.' : 'Clear solutions to move people, cargo and operations with confidence.' }}</p></div></section>
-  <section class="service-intro section-space"><div class="container service-intro-grid"><div><p class="eyebrow">{{ language() === 'es' ? 'Lo que hacemos' : 'What we do' }}</p><h2>{{ language() === 'es' ? 'Cada recorrido' : 'Every route' }}<br /><em>{{ language() === 'es' ? 'tiene un propósito.' : 'has a purpose.' }}</em></h2></div><p class="body-copy">{{ language() === 'es' ? 'Ponemos nuestra experiencia, equipo y capacidad operativa al servicio de cada cliente. Elige la solución que necesitas y construyamos juntos una ruta más eficiente.' : 'We put our experience, team and operational capacity at the service of each client. Choose the solution you need and let’s build a more efficient route together.' }}</p></div></section>
+@Component({ standalone: true, template: `
+  <section class="inner-hero services-hero"><div class="container"><p class="eyebrow">{{ language() === 'es' ? '02 / Servicios' : '02 / Services' }}</p><h1>{{ language() === 'es' ? 'Transporte pensado' : 'Transport designed' }}<br /><em>{{ language() === 'es' ? 'para avanzar.' : 'to move forward.' }}</em></h1><p>{{ language() === 'es' ? 'Soluciones integrales de movilidad urbana, ingeniería de flota y gestión técnica del transporte.' : 'Comprehensive urban mobility solutions, fleet engineering, and professional transit management.' }}</p></div></section>
+  <section class="service-intro section-space"><div class="container service-intro-grid"><div><p class="eyebrow">{{ language() === 'es' ? 'Lo que hacemos' : 'What we do' }}</p><h2>{{ language() === 'es' ? 'Cada recorrido' : 'Every route' }}<br /><em>{{ language() === 'es' ? 'tiene un propósito.' : 'has a purpose.' }}</em></h2></div><p class="body-copy">{{ language() === 'es' ? 'Ponemos nuestra experiencia, equipo y capacidad operativa al servicio de cada usuario e institución. Conectamos Lima con altos estándares de regularidad, seguridad vial y mantenimiento preventivo.' : 'We provide our experience, equipment, and operational capacity at the service of every passenger and institution. Connecting Lima with rigorous safety, punctuality, and fleet engineering standards.' }}</p></div></section>
   <section class="services-section service-catalog section-space">
     <div class="container">
       <div class="service-carousel">
-        <div class="service-carousel-stage">
+        <div class="service-carousel-stage" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
           <div id="service-carousel-viewport" class="service-carousel-viewport" role="group" aria-label="{{ language() === 'es' ? 'Servicios disponibles' : 'Available services' }}" [attr.aria-roledescription]="language() === 'es' ? 'carrusel' : 'carousel'" aria-live="off">
             @switch (activeServiceIndex()) {
               @case (0) {
-                <article class="service-card service-slide service-card-dark"><div class="service-slide-media"><img src="/carronuevo.png" alt="{{ language() === 'es' ? 'Vehículo de Transportes 41 S.A.' : 'Transportes 41 S.A. vehicle' }}" /></div><div class="service-slide-copy"><span class="card-number">{{ language() === 'es' ? '01 / CIUDAD' : '01 / CITY' }}</span><div class="service-icon" aria-hidden="true">⌖</div><h3>{{ language() === 'es' ? 'Transporte urbano' : 'Urban transportation' }}</h3><p>{{ language() === 'es' ? 'Movilidad eficiente y cercana para conectar cada punto de la ciudad.' : 'Efficient, accessible transportation connecting every part of the city.' }}</p><a routerLink="/contacto">{{ language() === 'es' ? 'Solicitar servicio' : 'Request service' }} <span>↗</span></a></div></article>
+                <article class="service-card service-slide service-card-dark">
+                  <div class="service-slide-media">
+                    <img src="/carronuevo.png" alt="{{ language() === 'es' ? 'Vehículo de Transportes 41 S.A.' : 'Transportes 41 S.A. vehicle' }}" />
+                  </div>
+                  <div class="service-slide-copy">
+                    <h3>{{ language() === 'es' ? 'Transporte público urbano masivo' : 'Urban mass transit operations' }}</h3>
+                    <p>{{ language() === 'es' ? 'Operación troncal de transporte masivo en la Ruta Autorizada 9801 (Pachacútec ⇄ Villa El Salvador), cubriendo 134.58 km a lo largo de 17 distritos metropolitanos. Despacho dinámico con intervalos de paso de 8 a 12 minutos, monitoreo telemático satelital GPS en tiempo real y estricto control de itinerarios para garantizar regularidad, puntualidad y seguridad en la movilidad urbana.' : 'Mainline mass transit operations along authorized Route 9801 (Pachacútec ⇄ Villa El Salvador), covering 134.58 km across 17 metropolitan districts. Features headways of 8 to 12 minutes, real-time GPS fleet telematics, and rigorous itinerary adherence to ensure passenger reliability, punctuality, and transit safety.' }}</p>
+                  </div>
+                </article>
               }
               @case (1) {
-                <article class="service-card service-slide service-card-red"><div class="service-slide-media"><img src="/servicios.jpg" alt="{{ language() === 'es' ? 'Servicio de transporte de Transportes 41 S.A.' : 'Transportes 41 S.A. transportation service' }}" /></div><div class="service-slide-copy"><span class="card-number">{{ language() === 'es' ? '02 / PERSONALIZADO' : '02 / CUSTOMIZED' }}</span><div class="service-icon" aria-hidden="true">▣</div><h3>{{ language() === 'es' ? 'Transporte personalizado' : 'Customized transportation' }}</h3><p>{{ language() === 'es' ? 'Trasladamos tus productos con cuidado, trazabilidad y puntualidad.' : 'We transport your goods with care, traceability, and punctuality.' }}</p><a routerLink="/contacto">{{ language() === 'es' ? 'Solicitar servicio' : 'Request service' }} <span>↗</span></a></div></article>
+                <article class="service-card service-slide service-card-red">
+                  <div class="service-slide-media">
+                    <img src="/servicios.jpg" alt="{{ language() === 'es' ? 'Servicio de transporte de Transportes 41 S.A.' : 'Transportes 41 S.A. transportation service' }}" />
+                  </div>
+                  <div class="service-slide-copy">
+                    <h3>{{ language() === 'es' ? 'Transporte de personal e institucional' : 'Corporate & institutional transit' }}</h3>
+                    <p>{{ language() === 'es' ? 'Soluciones logísticas de movilidad terrestre para empresas, industrias y entidades educativas. Configuración de rutas corporativas origen-destino con optimización de tiempos de traslado, cobertura integral de pólizas SOAT, unidades con altos estándares de confort y conductores profesionales evaluados bajo protocolos de manejo defensivo.' : 'Dedicated mobility logistics designed for enterprises, industrial centers, and educational entities. Customized point-to-point routing with optimized transit windows, full commercial insurance coverage, comfortable vehicles, and vetted drivers trained in defensive driving.' }}</p>
+                  </div>
+                </article>
               }
               @case (2) {
-                <article class="service-card service-slide service-card-light"><div class="service-slide-media"><img src="/compa%C3%B1eros.jpeg" alt="{{ language() === 'es' ? 'Equipo de Transportes 41 S.A.' : 'Transportes 41 S.A. team' }}" /></div><div class="service-slide-copy"><span class="card-number">{{ language() === 'es' ? '03 / OPERACIÓN' : '03 / OPERATIONS' }}</span><div class="service-icon" aria-hidden="true">⚙</div><h3>{{ language() === 'es' ? 'Gestión de flota' : 'Fleet management' }}</h3><p>{{ language() === 'es' ? 'Operación y mantenimiento para que cada unidad esté lista.' : 'Operations and maintenance to keep every vehicle ready.' }}</p><a routerLink="/contacto">{{ language() === 'es' ? 'Solicitar servicio' : 'Request service' }} <span>↗</span></a></div></article>
+                <article class="service-card service-slide service-card-light">
+                  <div class="service-slide-media">
+                    <img src="/compa%C3%B1eros.jpeg" alt="{{ language() === 'es' ? 'Equipo de Transportes 41 S.A.' : 'Transportes 41 S.A. team' }}" />
+                  </div>
+                  <div class="service-slide-copy">
+                    <h3>{{ language() === 'es' ? 'Ingeniería y mantenimiento de flota' : 'Fleet engineering & maintenance' }}</h3>
+                    <p>{{ language() === 'es' ? 'Programa sistemático de mantenimiento preventivo y predictivo ejecutado en talleres mecánicos propios. Inspección periódica de sistemas de frenado neumático, dirección asistida, suspensión, neumáticos y control de emisiones, asegurando la máxima fiabilidad operativa, disponibilidad técnica y bioseguridad en cada jornada de ruta.' : 'Systematic preventive and predictive maintenance program executed in specialized in-house workshops. Periodic diagnostics of pneumatic braking systems, power steering, suspension, tires, and emission controls to ensure maximum operational uptime, mechanical reliability, and passenger safety.' }}</p>
+                  </div>
+                </article>
               }
               @case (3) {
-                <article class="service-card service-slide service-card-red"><div class="service-slide-media"><img src="/Equipo.jpeg" alt="{{ language() === 'es' ? 'Equipo unido de Transportes 41 S.A.' : 'United Transportes 41 S.A. team' }}" /></div><div class="service-slide-copy"><span class="card-number">{{ language() === 'es' ? '04 / EQUIPO' : '04 / TEAM' }}</span><div class="service-icon" aria-hidden="true">✦</div><h3>{{ language() === 'es' ? 'Un equipo unido de trabajo' : 'A united team at work' }}</h3><p>{{ language() === 'es' ? 'Personas comprometidas que trabajan juntas para brindar un servicio confiable en cada recorrido.' : 'Committed people working together to deliver reliable service on every journey.' }}</p><a routerLink="/contacto">{{ language() === 'es' ? 'Solicitar servicio' : 'Request service' }} <span>↗</span></a></div></article>
+                <article class="service-card service-slide service-card-red">
+                  <div class="service-slide-media">
+                    <img src="/Equipo.jpeg" alt="{{ language() === 'es' ? 'Equipo unido de Transportes 41 S.A.' : 'United Transportes 41 S.A. team' }}" />
+                  </div>
+                  <div class="service-slide-copy">
+                    <h3>{{ language() === 'es' ? 'Gestión operativa y talento humano' : 'Operational team & route control' }}</h3>
+                    <p>{{ language() === 'es' ? 'Cuerpo operativo integrado por conductores profesionales, despachadores de patio y supervisores de control en vía debidamente certificados. Programa continuo de capacitación en ergonomía, primeros auxilios, normatividad de tránsito y atención al usuario, respaldado por monitoreo de fatiga y protocolos de contingencia vial.' : 'Operational team comprised of certified professional drivers, yard dispatchers, and route controllers. Ongoing training curriculum in ergonomics, first aid, road traffic regulations, and passenger service, backed by driver fatigue monitoring and real-time contingency protocols.' }}</p>
+                  </div>
+                </article>
               }
             }
           </div>
@@ -197,16 +789,6 @@ export class AboutPage implements AfterViewInit, OnDestroy {
             <button type="button" aria-label="{{ language() === 'es' ? 'Servicio anterior' : 'Previous service' }}" aria-controls="service-carousel-viewport" (click)="previousService()"><span aria-hidden="true">←</span></button>
             <button type="button" aria-label="{{ language() === 'es' ? 'Servicio siguiente' : 'Next service' }}" aria-controls="service-carousel-viewport" (click)="nextService()"><span aria-hidden="true">→</span></button>
           </div>
-        </div>
-        <div class="service-carousel-footer">
-          <span class="service-carousel-count">{{ activeServiceIndex() + 1 }} / {{ serviceCount }}</span>
-          <div class="service-carousel-dots" role="group" aria-label="{{ language() === 'es' ? 'Seleccionar un servicio' : 'Select a service' }}">
-            <button type="button" [class.active]="activeServiceIndex() === 0" [attr.aria-pressed]="activeServiceIndex() === 0" aria-label="{{ language() === 'es' ? 'Mostrar transporte urbano' : 'Show urban transportation' }}" (click)="selectService(0)"></button>
-            <button type="button" [class.active]="activeServiceIndex() === 1" [attr.aria-pressed]="activeServiceIndex() === 1" aria-label="{{ language() === 'es' ? 'Mostrar transporte personalizado' : 'Show customized transportation' }}" (click)="selectService(1)"></button>
-            <button type="button" [class.active]="activeServiceIndex() === 2" [attr.aria-pressed]="activeServiceIndex() === 2" aria-label="{{ language() === 'es' ? 'Mostrar gestión de flota' : 'Show fleet management' }}" (click)="selectService(2)"></button>
-            <button type="button" [class.active]="activeServiceIndex() === 3" [attr.aria-pressed]="activeServiceIndex() === 3" aria-label="{{ language() === 'es' ? 'Mostrar equipo unido de trabajo' : 'Show united team at work' }}" (click)="selectService(3)"></button>
-          </div>
-          <button class="service-rotation-toggle" type="button" [attr.aria-label]="isRotationPaused() ? (language() === 'es' ? 'Reanudar carrusel' : 'Resume carousel') : (language() === 'es' ? 'Pausar carrusel' : 'Pause carousel')" (click)="toggleRotation()"><span aria-hidden="true">{{ isRotationPaused() ? '▶' : 'Ⅱ' }}</span></button>
         </div>
       </div>
     </div>
@@ -252,13 +834,21 @@ export class ServicesPage implements OnInit, OnDestroy {
     this.restartRotation();
   }
 
+  onMouseEnter(): void {
+    this.stopRotation();
+  }
+
+  onMouseLeave(): void {
+    this.restartRotation();
+  }
+
   private restartRotation(): void {
     this.stopRotation();
     if (this.isRotationPaused()) return;
 
     this.rotationTimer = setInterval(() => {
       this.activeServiceIndex.update((index) => (index + 1) % this.serviceCount);
-    }, 5000);
+    }, 12000);
   }
 
   private stopRotation(): void {
@@ -287,8 +877,130 @@ export class SafetyPage {
 }
 
 @Component({ standalone: true, imports: [FormsModule], template: `
-  <section class="inner-hero"><div class="container"><p class="eyebrow">{{ language() === 'es' ? '05 / Contáctanos' : '05 / Contact us' }}</p><h1>{{ language() === 'es' ? 'Tu próximo destino' : 'Your next destination' }}<br /><em>{{ language() === 'es' ? 'empieza aquí.' : 'starts here.' }}</em></h1><p>{{ language() === 'es' ? 'Cuéntanos qué necesitas y nuestro equipo se pondrá en contacto contigo.' : 'Tell us what you need, and our team will get in touch.' }}</p></div></section>
-  <section class="contact-section contact-page"><div class="container contact-grid"><div><p class="eyebrow light">{{ language() === 'es' ? 'Hablemos' : 'Let us talk' }}</p><h2>{{ language() === 'es' ? 'Estamos listos' : 'We are ready' }}<br /><em>{{ language() === 'es' ? 'para ayudarte.' : 'to help you.' }}</em></h2><p>{{ language() === 'es' ? 'Atendemos consultas comerciales, solicitudes de transporte y alianzas.' : 'We handle business inquiries, transportation requests, and partnerships.' }}</p><div class="whatsapp-card"><div class="whatsapp-card-main"><span class="whatsapp-icon" aria-hidden="true"><svg viewBox="0 0 24 24" role="img"><path d="M20.5 3.5A11.8 11.8 0 0 0 12.1 0C5.6 0 .3 5.3.3 11.8c0 2.1.6 4.2 1.7 6L.2 24l6.4-1.7a11.8 11.8 0 0 0 5.5 1.4h.1c6.5 0 11.8-5.3 11.8-11.8 0-3.2-1.3-6.2-3.5-8.4ZM12.2 21.6h-.1a9.8 9.8 0 0 1-5-1.4l-.4-.2-3.8 1 1-3.7-.2-.4a9.8 9.8 0 0 1-1.5-5.2C2.2 6.4 6.7 2 12.1 2c2.6 0 5.1 1 6.9 2.9a9.8 9.8 0 0 1 2.9 7c0 5.4-4.4 9.7-9.7 9.7Zm5.3-7.3c-.3-.2-1.7-.8-2-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-1.5-.7-2.5-1.3-3.5-2.9-.3-.5.3-.4.8-1.3.1-.2.1-.4 0-.6l-.9-2.1c-.2-.5-.5-.4-.7-.4h-.6c-.2 0-.6.1-.9.4-.3.3-1.1 1.1-1.1 2.6s1.1 3 1.3 3.2c.2.2 2.1 3.2 5.1 4.5 1.9.8 2.6.9 3.5.8.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.3.1-1.4-.2-.1-.4-.2-.8-.4Z" /></svg></span><div><span class="whatsapp-label">{{ language() === 'es' ? 'Canal directo' : 'Direct line' }}</span><strong>{{ language() === 'es' ? 'Escríbenos por WhatsApp' : 'Message us on WhatsApp' }}</strong><small>+51 995479948</small></div></div><a class="whatsapp-button" [href]="language() === 'es' ? 'https://wa.me/51995479948?text=Hola%2C%20deseo%20informaci%C3%B3n%20sobre%20sus%20servicios%20de%20transporte.' : 'https://wa.me/51995479948?text=Hello%2C%20I%20would%20like%20information%20about%20your%20transportation%20services.'" target="_blank" rel="noopener">{{ language() === 'es' ? 'Abrir WhatsApp' : 'Open WhatsApp' }} <span>↗</span></a></div></div><form class="contact-form" (ngSubmit)="enviarContacto()"><label>{{ language() === 'es' ? 'Nombre completo' : 'Full name' }}<input type="text" name="nombre" [(ngModel)]="nombre" required placeholder="{{ language() === 'es' ? 'Escribe tu nombre' : 'Enter your name' }}" /></label><label>{{ language() === 'es' ? 'Correo electrónico' : 'Email address' }}<input type="email" name="email" [(ngModel)]="email" required placeholder="tu@correo.com" /></label><label>{{ language() === 'es' ? 'Teléfono' : 'Phone' }}<input type="tel" name="telefono" [(ngModel)]="telefono" required placeholder="{{ language() === 'es' ? 'Número de contacto' : 'Phone number' }}" /></label><label>{{ language() === 'es' ? 'Asunto' : 'Subject' }}<input type="text" name="asunto" [(ngModel)]="asunto" required placeholder="{{ language() === 'es' ? 'Motivo de tu mensaje' : 'Reason for your message' }}" /></label><label>{{ language() === 'es' ? '¿Cómo podemos' : 'How can we' }} {{ language() === 'es' ? 'ayudarte?' : 'help you?' }}<textarea name="mensaje" [(ngModel)]="mensaje" rows="3" required placeholder="{{ language() === 'es' ? 'Cuéntanos brevemente' : 'Tell us briefly' }}"></textarea></label><button class="button button-primary" type="submit" [disabled]="isSendingContact">{{ isSendingContact ? (language() === 'es' ? 'Enviando...' : 'Sending...') : (language() === 'es' ? 'Enviar mensaje' : 'Send message') }} <span>↗</span></button></form></div></section>
+  <section class="inner-hero contact-hero">
+    <div class="container">
+      <p class="eyebrow">{{ language() === 'es' ? '05 / Atención y Contacto' : '05 / Passenger Service & Contact' }}</p>
+      <h1>{{ language() === 'es' ? 'Estamos a tu servicio,' : 'At your service,' }}<br /><em>{{ language() === 'es' ? 'en cada recorrido.' : 'on every journey.' }}</em></h1>
+      <p>{{ language() === 'es' ? 'Canal oficial de Transportes 41 S.A. para consultas de ruta, tarifas, reporte de objetos olvidados, contratación corporativa y atención directa.' : 'Official Transportes 41 S.A. channel for route inquiries, fares, lost items, corporate rentals, and direct passenger support.' }}</p>
+    </div>
+  </section>
+
+  <!-- Centro de Ayuda al Pasajero -->
+  <section class="care-section section-space">
+    <div class="container">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">{{ language() === 'es' ? 'Centro de ayuda' : 'Help center' }}</p>
+          <h2>{{ language() === 'es' ? '¿En qué podemos' : 'How can we' }}<br /><em>{{ language() === 'es' ? 'ayudarte hoy?' : 'help you today?' }}</em></h2>
+        </div>
+        <p class="heading-support">{{ language() === 'es' ? 'Elige una opción rápida o completa el formulario inferior para que nuestro equipo atienda tu consulta con prioridad.' : 'Choose a quick action below or fill out the form so our team can assist you with priority.' }}</p>
+      </div>
+
+      <div class="help-grid">
+        <article class="help-card" (click)="seleccionarMotivo('Consulta sobre Servicio y Horarios')" role="button" tabindex="0">
+          <span class="help-card-tag">{{ language() === 'es' ? '01 / RUTA 9801' : '01 / ROUTE 9801' }}</span>
+          <h3>{{ language() === 'es' ? 'Horarios y Frecuencias' : 'Schedules & Frequency' }}</h3>
+          <p>{{ language() === 'es' ? 'Salida continua de buses de 4:30 a.m. a 11:30 p.m. Intervalos de 8 a 12 minutos entre Pachacútec y Villa El Salvador.' : 'Continuous departures from 4:30 AM to 11:30 PM. 8 to 12 minute headway between Pachacútec and Villa El Salvador.' }}</p>
+          <span class="help-card-action">{{ language() === 'es' ? 'Consultar horarios' : 'Check schedules' }} <b>↓</b></span>
+        </article>
+
+        <article class="help-card" (click)="seleccionarMotivo('Reporte de Objetos Perdidos')" role="button" tabindex="0">
+          <span class="help-card-tag">{{ language() === 'es' ? '02 / OBJETOS PERDIDOS' : '02 / LOST PROPERTY' }}</span>
+          <h3>{{ language() === 'es' ? 'Objetos en Unidades' : 'Lost & Found' }}</h3>
+          <p>{{ language() === 'es' ? '¿Olvidaste una pertenencia o documento en nuestros buses? Notifícanos con fecha aproximada, hora y paradero para coordinar su búsqueda.' : 'Did you leave a belonging on board? Notify us with the date, time, and stop so our control team can track it down.' }}</p>
+          <span class="help-card-action">{{ language() === 'es' ? 'Reportar objeto' : 'Report item' }} <b>↓</b></span>
+        </article>
+
+        <article class="help-card" (click)="seleccionarMotivo('Alquiler de Buses y Servicios Especiales')" role="button" tabindex="0">
+          <span class="help-card-tag">{{ language() === 'es' ? '03 / SERVICIOS ESPECIALES' : '03 / SPECIAL SERVICES' }}</span>
+          <h3>{{ language() === 'es' ? 'Alquiler y Corporativo' : 'Charter & Corporate' }}</h3>
+          <p>{{ language() === 'es' ? 'Traslado de personal de empresas, viajes de instituciones, colegios y eventos privados con choferes calificados y SOAT al día.' : 'Corporate staff shuttles, educational tours, and private events with modern fleet, insurance, and professional drivers.' }}</p>
+          <span class="help-card-action">{{ language() === 'es' ? 'Solicitar cotización' : 'Request quote' }} <b>↓</b></span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Canales Directos y Formulario Unificado -->
+  <section id="formulario-contacto" class="contact-section contact-page section-space" style="padding-top: 40px;">
+    <div class="container contact-grid">
+      <div class="contact-channels-column">
+        <p class="eyebrow light">{{ language() === 'es' ? 'Canales directos' : 'Direct channels' }}</p>
+        <h2>{{ language() === 'es' ? 'Comunícate' : 'Get in touch' }}<br /><em>{{ language() === 'es' ? 'con nosotros.' : 'with our team.' }}</em></h2>
+        <p>{{ language() === 'es' ? 'Estamos disponibles de lunes a domingo. Elige tu canal preferido para una atención rápida y personalizada.' : 'We are available Monday through Sunday. Choose your preferred channel for prompt and personalized assistance.' }}</p>
+
+        <!-- WhatsApp Card -->
+        <div class="whatsapp-card">
+          <div class="whatsapp-card-main">
+            <span class="whatsapp-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" role="img"><path d="M20.5 3.5A11.8 11.8 0 0 0 12.1 0C5.6 0 .3 5.3.3 11.8c0 2.1.6 4.2 1.7 6L.2 24l6.4-1.7a11.8 11.8 0 0 0 5.5 1.4h.1c6.5 0 11.8-5.3 11.8-11.8 0-3.2-1.3-6.2-3.5-8.4ZM12.2 21.6h-.1a9.8 9.8 0 0 1-5-1.4l-.4-.2-3.8 1 1-3.7-.2-.4a9.8 9.8 0 0 1-1.5-5.2C2.2 6.4 6.7 2 12.1 2c2.6 0 5.1 1 6.9 2.9a9.8 9.8 0 0 1 2.9 7c0 5.4-4.4 9.7-9.7 9.7Zm5.3-7.3c-.3-.2-1.7-.8-2-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-1.5-.7-2.5-1.3-3.5-2.9-.3-.5.3-.4.8-1.3.1-.2.1-.4 0-.6l-.9-2.1c-.2-.5-.5-.4-.7-.4h-.6c-.2 0-.6.1-.9.4-.3.3-1.1 1.1-1.1 2.6s1.1 3 1.3 3.2c.2.2 2.1 3.2 5.1 4.5 1.9.8 2.6.9 3.5.8.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.3.1-1.4-.2-.1-.4-.2-.8-.4Z" /></svg>
+            </span>
+            <div>
+              <span class="whatsapp-label">{{ language() === 'es' ? 'Atención Inmediata' : 'Immediate Support' }}</span>
+              <strong>{{ language() === 'es' ? 'WhatsApp Oficial' : 'Official WhatsApp' }}</strong>
+              <small>+51 995479948</small>
+            </div>
+          </div>
+          <a class="whatsapp-button"
+            [href]="language() === 'es' ? 'https://wa.me/51995479948?text=Hola%2C%20deseo%20comunicarme%20con%20atenci%C3%B3n%20al%20pasajero%20de%20Transportes%2041.' : 'https://wa.me/51995479948?text=Hello%2C%20I%20would%20like%20to%20contact%20Transportes%2041%20support.'"
+            target="_blank" rel="noopener">
+            {{ language() === 'es' ? 'Escribir ahora' : 'Chat now' }} <span>↗</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Formulario Unificado -->
+      <div class="contact-form-column">
+        <form class="contact-form unified-contact-form" (ngSubmit)="enviarContacto()">
+          <div class="form-intro">
+            <h3>{{ language() === 'es' ? 'Formulario de Atención y Consulta' : 'Inquiry & Support Form' }}</h3>
+            <p>{{ language() === 'es' ? 'Completa tus datos y te responderemos a la brevedad por correo o llamada.' : 'Fill in your details and we will reply promptly via email or phone.' }}</p>
+          </div>
+
+          <label>
+            {{ language() === 'es' ? 'Motivo de consulta' : 'Reason for inquiry' }}
+            <select name="motivo" [(ngModel)]="motivo" required class="contact-select">
+              <option value="Consulta sobre Servicio y Horarios">{{ language() === 'es' ? 'Consulta sobre Servicio y Horarios' : 'Service and Schedule Inquiry' }}</option>
+              <option value="Reporte de Objetos Perdidos">{{ language() === 'es' ? 'Reporte de Objetos Perdidos en Ruta' : 'Lost Property on Route' }}</option>
+              <option value="Alquiler de Buses y Servicios Especiales">{{ language() === 'es' ? 'Alquiler de Buses / Transporte Corporativo' : 'Bus Rental / Corporate Transport' }}</option>
+              <option value="Sugerencia o Felicitación">{{ language() === 'es' ? 'Sugerencia o Felicitación' : 'Suggestion or Compliment' }}</option>
+              <option value="Consulta General">{{ language() === 'es' ? 'Otra consulta general' : 'Other General Inquiry' }}</option>
+            </select>
+          </label>
+
+          <label>
+            {{ language() === 'es' ? 'Nombre completo' : 'Full name' }}
+            <input type="text" name="nombre" [(ngModel)]="nombre" required placeholder="{{ language() === 'es' ? 'Escribe tu nombre completo' : 'Enter your full name' }}" />
+          </label>
+
+          <div class="form-row">
+            <label>
+              {{ language() === 'es' ? 'Correo electrónico' : 'Email address' }}
+              <input type="email" name="email" [(ngModel)]="email" required placeholder="tu@correo.com" />
+            </label>
+            <label>
+              {{ language() === 'es' ? 'Teléfono / WhatsApp' : 'Phone / WhatsApp' }}
+              <input type="tel" name="telefono" [(ngModel)]="telefono" required placeholder="{{ language() === 'es' ? 'Ej. 987654321' : 'E.g. 987654321' }}" />
+            </label>
+          </div>
+
+          <label>
+            {{ language() === 'es' ? 'Asunto' : 'Subject' }}
+            <input type="text" name="asunto" [(ngModel)]="asunto" required placeholder="{{ language() === 'es' ? 'Motivo específico de tu mensaje' : 'Specific subject of your message' }}" />
+          </label>
+
+          <label>
+            {{ language() === 'es' ? 'Mensaje detallado' : 'Detailed message' }}
+            <textarea name="mensaje" [(ngModel)]="mensaje" rows="4" required placeholder="{{ language() === 'es' ? 'Cuéntanos en detalle en qué podemos ayudarte...' : 'Tell us how we can help you in detail...' }}"></textarea>
+          </label>
+
+          <button class="button button-primary" type="submit" [disabled]="isSendingContact">
+            {{ isSendingContact ? (language() === 'es' ? 'Enviando...' : 'Sending...') : (language() === 'es' ? 'Enviar mensaje' : 'Send message') }} <span>↗</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
 ` })
 export class ContactPage {
   protected readonly language = inject(LanguageService).language;
@@ -296,6 +1008,7 @@ export class ContactPage {
   private readonly templateContactoID = 'template_yp6vfyl';
   private readonly emailJsPublicKeyCD = 'LstO0DA7TXhuH1Va6';
 
+  motivo = 'Consulta sobre Servicio y Horarios';
   nombre = '';
   email = '';
   telefono = '';
@@ -303,36 +1016,45 @@ export class ContactPage {
   mensaje = '';
   isSendingContact = false;
 
+  seleccionarMotivo(motivo: string): void {
+    this.motivo = motivo;
+    const formEl = document.getElementById('formulario-contacto');
+    if (formEl) {
+      formEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
   enviarContacto(): void {
     if (this.isSendingContact) return;
 
-    if (this.templateContactoID.startsWith('PEGA_')) {
+    if (!this.nombre.trim() || !this.email.trim() || !this.mensaje.trim()) {
       window.alert(this.language() === 'es'
-        ? 'Configura el Template ID de contacto de EmailJS antes de enviar.'
-        : 'Configure the EmailJS contact template ID before sending.');
+        ? 'Por favor, completa los campos requeridos (nombre, correo y mensaje).'
+        : 'Please complete all required fields (name, email, and message).');
       return;
     }
 
     this.isSendingContact = true;
+    const asuntoFinal = this.motivo ? `[${this.motivo}] ${this.asunto}` : this.asunto;
     const datosContacto = {
       nombre: this.nombre,
       email: this.email,
       telefono: this.telefono,
-      asunto: this.asunto,
+      asunto: asuntoFinal,
       mensaje: this.mensaje,
     };
 
     emailjs.send(this.emailJsServiceCD, this.templateContactoID, datosContacto, this.emailJsPublicKeyCD)
       .then(() => {
         window.alert(this.language() === 'es'
-          ? 'Su mensaje ha sido enviado. Nos comunicaremos con usted a la brevedad.'
-          : 'Your message has been sent. We will get back to you shortly.');
+          ? 'Su mensaje ha sido enviado con éxito. Nos comunicaremos con usted a la brevedad.'
+          : 'Your message has been sent successfully. We will get back to you shortly.');
         this.limpiarFormularioContacto();
       })
       .catch(() => {
         window.alert(this.language() === 'es'
-          ? 'Hubo un error al enviar el mensaje.'
-          : 'There was an error sending your message.');
+          ? 'Hubo un error al enviar el mensaje. Intente de nuevo o comuníquese por WhatsApp.'
+          : 'There was an error sending your message. Please try again or contact us via WhatsApp.');
       })
       .finally(() => {
         this.isSendingContact = false;
@@ -340,6 +1062,7 @@ export class ContactPage {
   }
 
   private limpiarFormularioContacto(): void {
+    this.motivo = 'Consulta sobre Servicio y Horarios';
     this.nombre = '';
     this.email = '';
     this.telefono = '';

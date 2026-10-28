@@ -20,7 +20,7 @@ export const routes: Routes = [
   { path: 'flota', component: FleetPage },
   { path: 'seguridad', component: SafetyPage },
   { path: 'contacto', component: ContactPage },
-  { path: 'atencion', component: CustomerCarePage },
+  { path: 'atencion', redirectTo: 'contacto', pathMatch: 'full' },
   { path: 'reclamos', component: ClaimsPage },
   { path: '**', redirectTo: 'inicio' },
 ];

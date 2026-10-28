@@ -2,37 +2,49 @@
   <header class="site-header">
     <div class="topline">
       <div class="container top-line-inner">
-        <span>{{ language() === 'es' ? 'Empresa peruana de transporte terrestre' : 'Peruvian land transport company' }}</span>
+        <span>{{ language() === 'es' ? 'Empresa peruana de transporte terrestre' : 'Peruvian land transport company'
+          }}</span>
         <div class="top-links">
-          <a routerLink="/atencion">{{ language() === 'es' ? 'Atención al cliente' : 'Customer service' }}</a>
-          <span class="top-divider"></span>
           <a routerLink="/reclamos">{{ language() === 'es' ? 'Libro de reclamaciones' : 'Complaints book' }}</a>
         </div>
       </div>
     </div>
 
-    <nav class="main-nav" [class.menu-open]="menuOpen()" [attr.aria-label]="language() === 'es' ? 'Navegación principal' : 'Main navigation'">
+    <nav class="main-nav" [class.menu-open]="menuOpen()"
+      [attr.aria-label]="language() === 'es' ? 'Navegación principal' : 'Main navigation'">
       <div class="container nav-inner">
-        <a class="brand" routerLink="/inicio" (click)="closeMenu()" [attr.aria-label]="language() === 'es' ? 'Transportes 41 S.A., inicio' : 'Transportes 41 S.A., home'">
-          <img class="brand-logo" src="/logo-41.jfif" [attr.alt]="language() === 'es' ? 'Logo de Transportes 41 S.A.' : 'Transportes 41 S.A. logo'" />
+        <a class="brand" routerLink="/inicio" (click)="closeMenu()"
+          [attr.aria-label]="language() === 'es' ? 'Transportes 41 S.A., inicio' : 'Transportes 41 S.A., home'">
+          <img class="brand-logo" src="/logo-41.jfif"
+            [attr.alt]="language() === 'es' ? 'Logo de Transportes 41 S.A.' : 'Transportes 41 S.A. logo'" />
           <span class="brand-copy"><strong>TRANSPORTES</strong><b>41 S.A.</b></span>
         </a>
 
-        <button class="menu-toggle" type="button" (click)="toggleMenu()" [attr.aria-expanded]="menuOpen()" [attr.aria-label]="language() === 'es' ? 'Abrir menú' : 'Open menu'">
+        <button class="menu-toggle" type="button" (click)="toggleMenu()" [attr.aria-expanded]="menuOpen()"
+          [attr.aria-label]="language() === 'es' ? 'Abrir menú' : 'Open menu'">
           <span></span><span></span><span></span>
         </button>
 
         <div class="nav-menu">
-          <a routerLink="/inicio" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMenu()">{{ language() === 'es' ? 'Inicio' : 'Home' }}</a>
-          <a routerLink="/nosotros" routerLinkActive="active" (click)="closeMenu()">{{ language() === 'es' ? 'Nosotros' : 'About us' }}</a>
-          <a routerLink="/servicios" routerLinkActive="active" (click)="closeMenu()">{{ language() === 'es' ? 'Servicios' : 'Services' }}</a>
-          <a routerLink="/flota" routerLinkActive="active" (click)="closeMenu()">{{ language() === 'es' ? 'Nuestra flota' : 'Our fleet' }}</a>
-          <a routerLink="/seguridad" routerLinkActive="active" (click)="closeMenu()">{{ language() === 'es' ? 'Seguridad' : 'Safety' }}</a>
-          <a routerLink="/noticias" routerLinkActive="active" (click)="closeMenu()">{{ language() === 'es' ? 'Noticias' : 'News' }}</a>
-          <a routerLink="/contacto" routerLinkActive="active" class="nav-cta" (click)="closeMenu()">{{ language() === 'es' ? 'Contáctanos' : 'Contact us' }} <span>↗</span></a>
+          <a routerLink="/inicio" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+            (click)="closeMenu()">{{ language() === 'es' ? 'Inicio' : 'Home' }}</a>
+          <a routerLink="/nosotros" routerLinkActive="active" (click)="closeMenu()">{{ language() === 'es' ? 'Nosotros'
+            : 'About us' }}</a>
+          <a routerLink="/servicios" routerLinkActive="active" (click)="closeMenu()">{{ language() === 'es' ?
+            'Servicios' : 'Services' }}</a>
+          <a routerLink="/flota" routerLinkActive="active" (click)="closeMenu()">{{ language() === 'es' ? 'Nuestra
+            flota' : 'Our fleet' }}</a>
+          <a routerLink="/seguridad" routerLinkActive="active" (click)="closeMenu()">{{ language() === 'es' ?
+            'Seguridad' : 'Safety' }}</a>
+          <a routerLink="/noticias" routerLinkActive="active" (click)="closeMenu()">{{ language() === 'es' ? 'Noticias'
+            : 'News' }}</a>
+          <a routerLink="/contacto" routerLinkActive="active" class="nav-cta" (click)="closeMenu()">{{ language() ===
+            'es' ? 'Contáctanos' : 'Contact us' }} <span class="nav-cta-arrow">↗</span></a>
           <div class="nav-utilities">
-            <div class="language-switcher" [attr.aria-label]="language() === 'es' ? 'Selector de idioma' : 'Language selector'">
-              <button class="lang-option" [class.active]="language() === 'es'" type="button" aria-label="Español" title="Español" (click)="setLanguage('es')">
+            <div class="language-switcher"
+              [attr.aria-label]="language() === 'es' ? 'Selector de idioma' : 'Language selector'">
+              <button class="lang-option" [class.active]="language() === 'es'" type="button" aria-label="Español"
+                title="Español" (click)="setLanguage('es')">
                 <svg class="lang-flag" viewBox="0 0 22 15" width="22" height="15" aria-hidden="true">
                   <path fill="#d91023" d="M1 1h6.67v13H1z" />
                   <path fill="#fff" d="M7.67 1h6.66v13H7.67z" />
@@ -40,24 +52,57 @@
                   <rect x=".5" y=".5" width="21" height="14" rx="2" fill="none" stroke="#000" stroke-opacity=".12" />
                 </svg>
               </button>
-              <button class="lang-option" [class.active]="language() === 'en'" type="button" aria-label="English" title="English" (click)="setLanguage('en')">
+              <button class="lang-option" [class.active]="language() === 'en'" type="button" aria-label="English"
+                title="English" (click)="setLanguage('en')">
                 <svg class="lang-flag" viewBox="0 0 60 36" width="22" height="15" aria-hidden="true">
                   <path fill="#b22234" d="M0 0h60v36H0z" />
-                  <path stroke="#fff" stroke-width="2.77" d="M0 2.77h60M0 8.31h60M0 13.85h60M0 19.38h60M0 24.92h60M0 30.46h60" />
+                  <path stroke="#fff" stroke-width="2.77"
+                    d="M0 2.77h60M0 8.31h60M0 13.85h60M0 19.38h60M0 24.92h60M0 30.46h60" />
                   <path fill="#3c3b6e" d="M0 0h26v19H0z" />
                   <g fill="#fff">
-                    <circle cx="3" cy="3" r=".8" /><circle cx="8" cy="3" r=".8" /><circle cx="13" cy="3" r=".8" /><circle cx="18" cy="3" r=".8" /><circle cx="23" cy="3" r=".8" />
-                    <circle cx="5.5" cy="6.5" r=".8" /><circle cx="10.5" cy="6.5" r=".8" /><circle cx="15.5" cy="6.5" r=".8" /><circle cx="20.5" cy="6.5" r=".8" />
-                    <circle cx="3" cy="10" r=".8" /><circle cx="8" cy="10" r=".8" /><circle cx="13" cy="10" r=".8" /><circle cx="18" cy="10" r=".8" /><circle cx="23" cy="10" r=".8" />
-                    <circle cx="5.5" cy="13.5" r=".8" /><circle cx="10.5" cy="13.5" r=".8" /><circle cx="15.5" cy="13.5" r=".8" /><circle cx="20.5" cy="13.5" r=".8" />
-                    <circle cx="3" cy="17" r=".8" /><circle cx="8" cy="17" r=".8" /><circle cx="13" cy="17" r=".8" /><circle cx="18" cy="17" r=".8" /><circle cx="23" cy="17" r=".8" />
+                    <circle cx="3" cy="3" r=".8" />
+                    <circle cx="8" cy="3" r=".8" />
+                    <circle cx="13" cy="3" r=".8" />
+                    <circle cx="18" cy="3" r=".8" />
+                    <circle cx="23" cy="3" r=".8" />
+                    <circle cx="5.5" cy="6.5" r=".8" />
+                    <circle cx="10.5" cy="6.5" r=".8" />
+                    <circle cx="15.5" cy="6.5" r=".8" />
+                    <circle cx="20.5" cy="6.5" r=".8" />
+                    <circle cx="3" cy="10" r=".8" />
+                    <circle cx="8" cy="10" r=".8" />
+                    <circle cx="13" cy="10" r=".8" />
+                    <circle cx="18" cy="10" r=".8" />
+                    <circle cx="23" cy="10" r=".8" />
+                    <circle cx="5.5" cy="13.5" r=".8" />
+                    <circle cx="10.5" cy="13.5" r=".8" />
+                    <circle cx="15.5" cy="13.5" r=".8" />
+                    <circle cx="20.5" cy="13.5" r=".8" />
+                    <circle cx="3" cy="17" r=".8" />
+                    <circle cx="8" cy="17" r=".8" />
+                    <circle cx="13" cy="17" r=".8" />
+                    <circle cx="18" cy="17" r=".8" />
+                    <circle cx="23" cy="17" r=".8" />
                   </g>
                   <rect x=".5" y=".5" width="59" height="35" rx="2" fill="none" stroke="#000" stroke-opacity=".12" />
                 </svg>
               </button>
             </div>
-            <a class="social-link social-facebook" href="https://www.facebook.com/profile.php?id=61594917055851" target="_blank" rel="noopener" [attr.aria-label]="language() === 'es' ? 'Facebook de Transportes 41' : 'Transportes 41 on Facebook'" [attr.title]="language() === 'es' ? 'Facebook de Transportes 41' : 'Transportes 41 on Facebook'"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 8h3V4h-3c-3.3 0-5 1.9-5 5v3H6v4h3v8h4v-8h3.2l.8-4H13V9c0-.7.3-1 1-1Z" /></svg></a>
-            <a class="social-link social-tiktok" href="https://www.tiktok.com/@et41sa.oficial" target="_blank" rel="noopener" [attr.aria-label]="language() === 'es' ? 'TikTok de Transportes 41' : 'Transportes 41 on TikTok'" [attr.title]="language() === 'es' ? 'TikTok de Transportes 41' : 'Transportes 41 on TikTok'"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.4 3c.4 2.2 1.7 3.6 3.8 3.8v3.1a8.4 8.4 0 0 1-3.8-1.1v6.1a5.1 5.1 0 1 1-4.4-5v3.2a2 2 0 1 0 1.3 1.9V3h3.1Z" /></svg></a>
+            <a class="social-link social-facebook" href="https://www.facebook.com/profile.php?id=61594917055851"
+              target="_blank" rel="noopener"
+              [attr.aria-label]="language() === 'es' ? 'Facebook de Transportes 41' : 'Transportes 41 on Facebook'"
+              [attr.title]="language() === 'es' ? 'Facebook de Transportes 41' : 'Transportes 41 on Facebook'"><svg
+                viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M14 8h3V4h-3c-3.3 0-5 1.9-5 5v3H6v4h3v8h4v-8h3.2l.8-4H13V9c0-.7.3-1 1-1Z" />
+              </svg></a>
+            <a class="social-link social-tiktok" href="https://www.tiktok.com/@et41sa.oficial" target="_blank"
+              rel="noopener"
+              [attr.aria-label]="language() === 'es' ? 'TikTok de Transportes 41' : 'Transportes 41 on TikTok'"
+              [attr.title]="language() === 'es' ? 'TikTok de Transportes 41' : 'Transportes 41 on TikTok'"><svg
+                viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M15.4 3c.4 2.2 1.7 3.6 3.8 3.8v3.1a8.4 8.4 0 0 1-3.8-1.1v6.1a5.1 5.1 0 1 1-4.4-5v3.2a2 2 0 1 0 1.3 1.9V3h3.1Z" />
+              </svg></a>
           </div>
         </div>
       </div>
@@ -69,49 +114,134 @@
   <footer class="site-footer">
     <div class="site-footer-topbar"></div>
     <div class="container footer-grid">
+      <!-- Columna 1: Marca e Identidad -->
       <div class="footer-column footer-brand-column">
         <a class="brand footer-brand" routerLink="/inicio">
-          <img class="brand-logo" src="/logo-41.jfif" [attr.alt]="language() === 'es' ? 'Logo de Transportes 41 S.A.' : 'Transportes 41 S.A. logo'" />
+          <img class="brand-logo" src="/logo-41.jfif"
+            [attr.alt]="language() === 'es' ? 'Logo de Transportes 41 S.A.' : 'Transportes 41 S.A. logo'" />
           <span class="brand-copy"><strong>TRANSPORTES</strong><b>41 S.A.</b></span>
         </a>
         <p class="footer-tagline">{{ language() === 'es' ? 'Movemos lo que importa.' : 'We move what matters.' }}</p>
+        <p class="footer-desc">
+          {{ language() === 'es' ? 'Empresa peruana líder en transporte terrestre urbano, conectando diariamente a miles de familias entre Pachacútec, Lima y Villa El Salvador con puntualidad, seguridad y vocación de servicio.' : 'Leading Peruvian urban transport company, connecting thousands of families daily between Pachacútec, Lima, and Villa El Salvador with safety, punctuality, and commitment.' }}
+        </p>
+        <div class="footer-badges-row">
+          <a routerLink="/nosotros" fragment="buscador-paraderos" class="footer-pill-badge" style="text-decoration: none; cursor: pointer;" title="{{ language() === 'es' ? 'Ver paraderos oficiales de la Ruta 9801' : 'View official Route 9801 bus stops' }}">🚍 Ruta 9801</a>
+          <span class="footer-pill-badge">⚡ Pachacútec ⇄ VES</span>
+          <span class="footer-pill-badge">🇵🇪 {{ language() === 'es' ? '100% Peruana' : '100% Peruvian' }}</span>
+        </div>
       </div>
 
+      <!-- Columna 2: Enlaces Rápidos -->
       <div class="footer-column">
-        <h3>{{ language() === 'es' ? 'Acerca de' : 'About us' }}</h3>
-        <ul>
+        <h3>{{ language() === 'es' ? 'Navegación' : 'Navigation' }}</h3>
+        <ul class="footer-nav-list">
+          <li><a routerLink="/inicio">{{ language() === 'es' ? 'Inicio' : 'Home' }}</a></li>
           <li><a routerLink="/nosotros">{{ language() === 'es' ? 'Quiénes Somos' : 'Who we are' }}</a></li>
-          <li><a routerLink="/servicios">{{ language() === 'es' ? 'Nuestras Empresas' : 'Our services' }}</a></li>
-          <li><a routerLink="/nosotros">{{ language() === 'es' ? 'Nuestro Propósito' : 'Our purpose' }}</a></li>
-          <li class="footer-flag" [attr.aria-label]="language() === 'es' ? 'Perú' : 'Peru'">🇵🇪</li>
+          <li><a routerLink="/nosotros" fragment="buscador-paraderos">{{ language() === 'es' ? 'Paraderos y Distritos' : 'Bus Stops & Districts' }}</a></li>
+          <li><a routerLink="/servicios">{{ language() === 'es' ? 'Nuestros Servicios' : 'Our services' }}</a></li>
+          <li><a routerLink="/flota">{{ language() === 'es' ? 'Nuestra Flota' : 'Our fleet' }}</a></li>
+          <li><a routerLink="/seguridad">{{ language() === 'es' ? 'Seguridad Vial' : 'Safety & operations' }}</a></li>
+          <li><a routerLink="/noticias">{{ language() === 'es' ? 'Noticias y Tarifas' : 'News & fares' }}</a></li>
         </ul>
       </div>
 
+      <!-- Columna 3: Contacto y Terminales -->
       <div class="footer-column">
-        <h3>{{ language() === 'es' ? 'Contacto' : 'Contact' }}</h3>
+        <h3>{{ language() === 'es' ? 'Contacto & Terminales' : 'Contact & Terminals' }}</h3>
         <ul class="footer-contact-list">
-          <li><span class="inline-icon">☎</span> <a href="tel:+51995479948">+51 995479948</a></li>
-          <li><span class="inline-icon">✉</span> <a href="mailto:contab.et41sa@gmail.com">contab.et41sa@gmail.com</a></li>
-          <li><span class="inline-icon">⌂</span> <span>av. santa rosa p.esp.ciudad pachacutec s/n ventanilla - callao - provincia constitucional del callao</span></li>
+          <li class="footer-contact-item">
+            <span class="inline-icon">☎</span>
+            <div>
+              <strong>{{ language() === 'es' ? 'Central Telefónica:' : 'Phone Line:' }}</strong>
+              <a href="tel:+51995479948">+51 995479948</a>
+            </div>
+          </li>
+          <li class="footer-contact-item">
+            <span class="inline-icon">✉</span>
+            <div>
+              <strong>{{ language() === 'es' ? 'Correo Electrónico:' : 'Email Address:' }}</strong>
+              <a href="mailto:contab.et41sa@gmail.com">contab.et41sa@gmail.com</a>
+            </div>
+          </li>
+          <li class="footer-contact-item">
+            <span class="inline-icon">⌂</span>
+            <div>
+              <strong>{{ language() === 'es' ? 'Terminal Pachacútec (Norte):' : 'North Terminal:' }}</strong>
+              <span>Av. Santa Rosa con Av. 200, Ciudad Pachacútec, Ventanilla</span>
+            </div>
+          </li>
+          <li class="footer-contact-item">
+            <span class="inline-icon">📍</span>
+            <div>
+              <strong>{{ language() === 'es' ? 'Terminal Villa El Salvador (Sur):' : 'South Terminal:' }}</strong>
+              <span>Av. 200 Millas, Óvalo Oasis, Villa El Salvador</span>
+            </div>
+          </li>
+          <li class="footer-contact-item">
+            <span class="inline-icon">🕒</span>
+            <div>
+              <strong>{{ language() === 'es' ? 'Horario de Operación:' : 'Operating Hours:' }}</strong>
+              <span>04:15 - 00:50 hrs ({{ language() === 'es' ? 'Lunes a Domingo' : 'Mon - Sun' }})</span>
+            </div>
+          </li>
         </ul>
       </div>
 
+      <!-- Columna 4: Atención al Pasajero y Redes -->
       <div class="footer-column">
-        <h3>{{ language() === 'es' ? 'Redes Sociales' : 'Social media' }}</h3>
+        <h3>{{ language() === 'es' ? 'Atención al Pasajero' : 'Passenger Service' }}</h3>
+        
+        <p class="footer-service-lead">
+          {{ language() === 'es' ? 'Estamos a tu servicio en cada viaje. Conéctate con nosotros:' : 'We are at your service on every journey. Connect with us:' }}
+        </p>
+
         <ul class="footer-social-list">
           <li>
-            <a href="https://www.facebook.com/profile.php?id=61594917055851" target="_blank" rel="noopener" [attr.aria-label]="language() === 'es' ? 'Facebook de Transportes 41' : 'Transportes 41 on Facebook'">
-              <svg class="social-badge" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 8h3V4h-3c-3.3 0-5 1.9-5 5v3H6v4h3v8h4v-8h3.2l.8-4H13V9c0-.7.3-1 1-1Z" /></svg>
-              <span>Facebook</span>
+            <a href="https://www.facebook.com/profile.php?id=61594917055851" target="_blank" rel="noopener"
+              [attr.aria-label]="language() === 'es' ? 'Facebook de Transportes 41' : 'Transportes 41 on Facebook'">
+              <svg class="social-badge" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M14 8h3V4h-3c-3.3 0-5 1.9-5 5v3H6v4h3v8h4v-8h3.2l.8-4H13V9c0-.7.3-1 1-1Z" />
+              </svg>
+              <span>Facebook Oficial</span>
             </a>
           </li>
           <li>
-            <a href="https://www.tiktok.com/@et41sa.oficial" target="_blank" rel="noopener" [attr.aria-label]="language() === 'es' ? 'TikTok de Transportes 41' : 'Transportes 41 on TikTok'">
-              <svg class="social-badge" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.4 3c.4 2.2 1.7 3.6 3.8 3.8v3.1a8.4 8.4 0 0 1-3.8-1.1v6.1a5.1 5.1 0 1 1-4.4-5v3.2a2 2 0 1 0 1.3 1.9V3h3.1Z" /></svg>
-              <span>TikTok</span>
+            <a href="https://www.tiktok.com/@et41sa.oficial" target="_blank" rel="noopener"
+              [attr.aria-label]="language() === 'es' ? 'TikTok de Transportes 41' : 'Transportes 41 on TikTok'">
+              <svg class="social-badge" viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M15.4 3c.4 2.2 1.7 3.6 3.8 3.8v3.1a8.4 8.4 0 0 1-3.8-1.1v6.1a5.1 5.1 0 1 1-4.4-5v3.2a2 2 0 1 0 1.3 1.9V3h3.1Z" />
+              </svg>
+              <span>TikTok Oficial</span>
             </a>
           </li>
         </ul>
+
+        <!-- Acceso directo al Libro de Reclamaciones -->
+        <a routerLink="/reclamos" class="footer-libro-card" title="{{ language() === 'es' ? 'Libro de Reclamaciones virtual' : 'Virtual Complaints Book' }}">
+          <img src="/libro.png" alt="{{ language() === 'es' ? 'Libro de Reclamaciones' : 'Complaints Book' }}" class="footer-libro-icon" />
+          <div class="footer-libro-copy">
+            <strong>{{ language() === 'es' ? 'Libro de Reclamaciones' : 'Complaints Book' }}</strong>
+            <small>{{ language() === 'es' ? 'D.S. N° 011-2011-PCM • Conforme a Ley' : 'Consumer Rights Compliance' }}</small>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- Barra inferior / Sub-footer -->
+    <div class="site-footer-bottom">
+      <div class="container footer-bottom-inner">
+        <p class="footer-copyright">
+          © 2026 Empresa de Transportes 41 S.A. • {{ language() === 'es' ? 'RUC: 20111957271 • Todos los derechos reservados.' : 'RUC: 20111957271 • All rights reserved.' }}
+        </p>
+        <div class="footer-bottom-links">
+          <a routerLink="/contacto">{{ language() === 'es' ? 'Atención y Contacto' : 'Support & Contact' }}</a>
+          <span class="footer-dot">•</span>
+          <a routerLink="/reclamos">{{ language() === 'es' ? 'Reclamaciones' : 'Complaints' }}</a>
+          <span class="footer-dot">•</span>
+          <span class="footer-motto">🇵🇪 {{ language() === 'es' ? 'Compromiso Peruano' : 'Peruvian Commitment' }}</span>
+        </div>
       </div>
     </div>
   </footer>
