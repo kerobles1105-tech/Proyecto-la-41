@@ -27,18 +27,18 @@ export class HomePage {
       </div>
 
       <article class="news-feature-story">
-        <!-- Columna Visual con Imagen Enmarcada y Badges -->
-        <figure class="news-story-image">
-          <div class="news-image-badges">
-            <span class="news-badge-live">⚡ {{ language() === 'es' ? 'COMUNICADO OFICIAL' : 'OFFICIAL STATEMENT' }}</span>
-            <span class="news-badge-date">2026</span>
-          </div>
-          <img src="/baje1.png" alt="{{ language() === 'es' ? 'Anuncio de reducción del precio de los pasajes de Transportes 41 S.A.' : 'Announcement of fare reductions by Transportes 41 S.A.' }}" />
-          <figcaption>
-            <span>{{ language() === 'es' ? 'COMUNICADO / TARIFAS' : 'ANNOUNCEMENT / FARES' }}</span>
-            <strong>Transportes 41 S.A.</strong>
-          </figcaption>
-        </figure>
+        <!-- Columna Visual: Imagen 100% COMPLETA adornada con su Marquito Ejecutivo -->
+        <div class="news-story-frame-wrapper">
+          <figure class="news-marquito-frame">
+            <div class="news-marquito-inner">
+              <img 
+                src="/baje1.png" 
+                alt="{{ language() === 'es' ? 'Anuncio oficial: ¡Baja de precios en los pasajes! La 41 S.A.' : 'Official announcement: Fare reductions on Transportes 41 S.A.' }}" 
+                class="news-image-full"
+              />
+            </div>
+          </figure>
+        </div>
 
         <!-- Columna de Contenido Editorial Mejorada -->
         <div class="news-story-copy">

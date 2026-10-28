@@ -1631,118 +1631,101 @@
 
 .news-feature-story { 
   display: grid; 
-  grid-template-columns: 1.08fr 0.92fr; 
-  align-items: stretch; 
-  gap: clamp(28px, 4vw, 54px); 
+  grid-template-columns: 1.15fr 0.85fr; 
+  align-items: center; 
+  gap: clamp(32px, 4.5vw, 60px); 
   margin-top: 44px; 
   padding: 38px; 
   background: #ffffff;
-  border-radius: 24px;
+  border-radius: 28px;
   border: 1px solid rgba(8, 40, 88, 0.08);
-  box-shadow: 0 14px 38px rgba(8, 40, 88, 0.06), 0 2px 6px rgba(8, 40, 88, 0.02);
+  box-shadow: 0 16px 44px rgba(8, 40, 88, 0.07), 0 2px 8px rgba(8, 40, 88, 0.03);
   transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
               box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .news-feature-story:hover {
   transform: translateY(-4px);
-  box-shadow: 0 22px 52px rgba(8, 40, 88, 0.11), 0 4px 12px rgba(8, 40, 88, 0.04);
+  box-shadow: 0 24px 56px rgba(8, 40, 88, 0.12), 0 4px 14px rgba(8, 40, 88, 0.04);
 }
 
-/* Imagen de la Noticia Destacada */
-.news-story-image { 
-  position: relative; 
-  min-height: 340px;
-  min-width: 0; 
-  margin: 0; 
-  overflow: hidden; 
-  border-radius: 18px;
-  background: #082858; 
-  box-shadow: 0 8px 24px rgba(8, 40, 88, 0.14);
+/* Wrapper del Marquito */
+.news-story-frame-wrapper {
+  width: 100%;
+  min-width: 0;
 }
 
-.news-story-image img { 
-  display: block; 
-  width: 100%; 
-  height: 100%; 
-  object-fit: cover; 
-  object-position: center 25%;
-  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+/* El Marquito Bonito Ejecutivo de Transportes 41 S.A. */
+.news-marquito-frame {
+  position: relative;
+  margin: 0;
+  padding: 12px;
+  border-radius: 30px;
+  background: linear-gradient(145deg, #ffffff 0%, #fffdf4 50%, #f6f0db 100%);
+  border: 3px solid var(--blue-dark);
+  box-shadow: 
+    0 24px 60px -10px rgba(8, 40, 88, 0.22),
+    0 8px 24px -4px rgba(0, 0, 0, 0.08),
+    inset 0 0 0 2px rgba(246, 197, 21, 0.95),
+    inset 0 4px 14px rgba(246, 197, 21, 0.22);
+  transition: all .35s ease;
 }
 
-.news-feature-story:hover .news-story-image img {
-  transform: scale(1.05);
+.news-marquito-frame:hover {
+  box-shadow: 
+    0 32px 75px -12px rgba(8, 40, 88, 0.28),
+    0 12px 30px -4px rgba(0, 0, 0, 0.12),
+    inset 0 0 0 2px rgba(246, 197, 21, 1),
+    inset 0 5px 18px rgba(246, 197, 21, 0.3);
 }
 
-.news-image-badges {
+/* Cinta tricolor de gala en la parte superior del marco */
+.news-marquito-frame::before {
+  content: "";
   position: absolute;
-  top: 16px;
-  left: 16px;
-  right: 16px;
-  z-index: 3;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
+  top: -4px;
+  left: 20%;
+  right: 20%;
+  height: 5px;
+  border-radius: 5px;
+  background: linear-gradient(90deg, transparent 0%, var(--red) 25%, var(--yellow) 50%, var(--blue) 75%, transparent 100%);
+  z-index: 4;
 }
 
-.news-badge-live {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 5px 13px;
-  border-radius: 999px;
-  background: linear-gradient(135deg, var(--yellow) 0%, #ebb410 100%);
-  color: var(--blue-dark);
-  font-size: 10px;
-  font-weight: 900;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  box-shadow: 0 4px 14px rgba(246, 197, 21, 0.4);
+/* Detalle pinstripe dorado en la base del marco */
+.news-marquito-frame::after {
+  content: "";
+  position: absolute;
+  bottom: -3px;
+  left: 30%;
+  right: 30%;
+  height: 3px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, transparent 0%, rgba(246, 197, 21, 0.85) 50%, transparent 100%);
+  z-index: 4;
 }
 
-.news-badge-date {
-  display: inline-flex;
-  align-items: center;
-  padding: 4px 11px;
-  border-radius: 999px;
-  background: rgba(8, 40, 88, 0.85);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  color: #ffffff;
-  font-size: 10px;
-  font-weight: 800;
-  border: 1px solid rgba(255, 255, 255, 0.25);
+/* Contenedor interior del marco */
+.news-marquito-inner {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #082858;
+  line-height: 0;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
 }
 
-.news-story-image::after { 
-  position: absolute; 
-  inset: 40% 0 0; 
-  background: linear-gradient(transparent, rgba(8, 40, 88, 0.88)); 
-  content: ""; 
-  pointer-events: none;
+/* Imagen 100% COMPLETA sin recortes */
+.news-image-full {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.news-story-image figcaption { 
-  position: absolute; 
-  z-index: 2; 
-  inset: auto 20px 18px; 
-  display: flex; 
-  flex-direction: column; 
-  gap: 3px; 
-  color: white; 
-}
-
-.news-story-image figcaption span { 
-  color: var(--yellow); 
-  font: 850 10px "Trebuchet MS", sans-serif; 
-  letter-spacing: .12em; 
-  text-transform: uppercase;
-}
-
-.news-story-image figcaption strong {
-  font: 700 18px Georgia, serif;
-  color: #f8fafc;
+.news-marquito-frame:hover .news-image-full {
+  transform: scale(1.02);
 }
 
 /* Columna de Contenido Editorial */
@@ -1750,7 +1733,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 8px 4px; 
+  padding: 8px 0; 
 }
 
 .news-meta-row {
@@ -1795,7 +1778,7 @@
 .news-lead-copy { 
   margin: 0 0 20px; 
   color: #475569; 
-  font-size: 14px; 
+  font-size: 14.5px; 
   line-height: 1.7; 
 }
 
@@ -1871,17 +1854,20 @@
   flex-shrink: 0;
 }
 
-@media (max-width: 860px) { 
+@media (max-width: 900px) { 
   .news-feature-story { 
     grid-template-columns: 1fr; 
-    gap: 24px; 
-    padding: 24px 20px; 
+    gap: 28px; 
+    padding: 24px 18px; 
     margin-top: 28px; 
-    border-radius: 20px;
+    border-radius: 22px;
   }
-  .news-story-image { 
-    min-height: 240px; 
-    aspect-ratio: 16 / 10; 
+  .news-marquito-frame {
+    padding: 8px;
+    border-radius: 22px;
+  }
+  .news-marquito-inner {
+    border-radius: 14px;
   }
   .news-story-copy { 
     padding: 0; 
