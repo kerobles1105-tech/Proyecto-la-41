@@ -3287,12 +3287,245 @@
   filter: brightness(1.05);
 }
 
+/* ===================================================
+   SECCIÓN: HOME INTRO (UNA RUTA CON PROPÓSITO)
+   =================================================== */
+.home-intro {
+  background: radial-gradient(circle at 10% 25%, rgba(246, 197, 21, 0.08) 0%, transparent 45%),
+              radial-gradient(circle at 90% 75%, rgba(8, 40, 88, 0.05) 0%, transparent 48%),
+              #fffdf1;
+  position: relative;
+  padding: 100px 0 115px;
+}
+
+.home-intro-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  align-items: center;
+  gap: 70px;
+}
+
+/* Columna Izquierda: Encabezado */
+.home-intro-header {
+  display: flex;
+  flex-direction: column;
+}
+
+.home-intro-header .eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--red);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  margin: 0 0 16px;
+}
+
+.home-intro-header .eyebrow span {
+  width: 20px;
+  height: 2px;
+  background: var(--red);
+  display: inline-block;
+  border-radius: 2px;
+}
+
+.home-intro-header h2 {
+  font: 700 clamp(42px, 4.6vw, 64px)/1.06 "Cormorant Garamond", Georgia, serif;
+  color: var(--blue-dark);
+  letter-spacing: -0.025em;
+  margin: 0 0 26px;
+}
+
+.home-intro-header h2 em {
+  color: var(--yellow);
+  font-style: italic;
+  display: inline-block;
+}
+
+/* Insignia Oficial de Ruta */
+.home-route-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 18px 10px 12px;
+  background: #ffffff;
+  border-radius: 999px;
+  border: 1px solid rgba(8, 40, 88, 0.1);
+  box-shadow: 0 8px 24px rgba(8, 40, 88, 0.06);
+  width: fit-content;
+  margin-top: 6px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.home-route-badge:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(8, 40, 88, 0.1);
+}
+
+.route-badge-seal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f6c515 0%, #ebb410 100%);
+  color: var(--blue-dark);
+  box-shadow: 0 3px 10px rgba(246, 197, 21, 0.4);
+  flex-shrink: 0;
+}
+
+.route-badge-num {
+  font: 900 17px/1 "Trebuchet MS", sans-serif;
+}
+
+.route-badge-seal small {
+  font: 800 8.5px/1 "Trebuchet MS", sans-serif;
+  opacity: 0.85;
+}
+
+.route-badge-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.route-badge-info strong {
+  font-size: 12.5px;
+  font-weight: 850;
+  color: var(--blue-dark);
+  letter-spacing: .02em;
+}
+
+.route-badge-info span {
+  font-size: 11px;
+  font-weight: 600;
+  color: #64748b;
+  margin-top: 1px;
+}
+
+/* Columna Derecha: Tarjeta Ejecutiva */
+.home-intro-card {
+  position: relative;
+  background: #ffffff;
+  border-radius: 22px;
+  border: 1px solid rgba(8, 40, 88, 0.08);
+  box-shadow: 0 16px 42px rgba(8, 40, 88, 0.07), 0 2px 8px rgba(8, 40, 88, 0.02);
+  overflow: hidden;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.home-intro-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 24px 54px rgba(8, 40, 88, 0.11), 0 4px 12px rgba(8, 40, 88, 0.03);
+}
+
+.home-card-accent-strip {
+  height: 5px;
+  width: 100%;
+  background: linear-gradient(90deg, #f6c515 0%, #dc2626 50%, #082858 100%);
+}
+
+.home-card-body {
+  padding: 36px 40px 38px;
+}
+
+.home-card-desc {
+  color: #475569;
+  font-size: 15.5px;
+  line-height: 1.75;
+  margin: 0 0 24px;
+}
+
+/* 3 Puntos Clave de Confianza */
+.home-intro-features {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  margin-bottom: 28px;
+  padding: 18px 0;
+  border-top: 1px solid #f1f5f9;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.intro-feature-item {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  font-size: 12.5px;
+  font-weight: 750;
+  color: #334155;
+}
+
+.intro-feature-item .feature-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  font-size: 10px;
+  font-weight: 900;
+  flex-shrink: 0;
+}
+
+.intro-feature-item .icon-yellow {
+  background: rgba(246, 197, 21, 0.28);
+  color: #855f00;
+}
+
+.intro-feature-item .icon-red {
+  background: rgba(220, 38, 38, 0.14);
+  color: #b91c1c;
+}
+
+.intro-feature-item .icon-blue {
+  background: rgba(18, 63, 145, 0.14);
+  color: #123f91;
+}
+
+/* Botones de Acción */
 .home-intro-actions {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 14px;
   flex-wrap: wrap;
-  margin-top: 18px;
+}
+
+.btn-intro-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 26px;
+  border-radius: 999px;
+  background: var(--blue-dark);
+  color: #ffffff;
+  font-size: 13.5px;
+  font-weight: 850;
+  text-decoration: none;
+  border: 1.5px solid rgba(8, 40, 88, 0.2);
+  box-shadow: 0 4px 14px rgba(8, 40, 88, 0.18);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-intro-primary .btn-arrow {
+  font-size: 15px;
+  transition: transform 0.25s ease;
+}
+
+.btn-intro-primary:hover {
+  background: var(--red);
+  color: #ffffff;
+  border-color: var(--red);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(220, 38, 38, 0.3);
+}
+
+.btn-intro-primary:hover .btn-arrow {
+  transform: translateX(4px);
 }
 
 .route-quick-link {
@@ -3301,13 +3534,17 @@
   gap: 8px;
   background: #eff6ff;
   color: var(--blue-dark);
-  font-size: 13px;
-  font-weight: 800;
-  padding: 8px 16px;
+  font-size: 13.5px;
+  font-weight: 850;
+  padding: 12px 22px;
   border-radius: 999px;
-  border: 1px solid #bfdbfe;
+  border: 1.5px solid #bfdbfe;
   text-decoration: none;
-  transition: all 0.2s ease;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.route-quick-link .btn-arrow-down {
+  transition: transform 0.25s ease;
 }
 
 .route-quick-link:hover {
@@ -3315,18 +3552,38 @@
   color: var(--yellow);
   border-color: var(--blue-dark);
   transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(8, 40, 88, 0.18);
 }
 
-@media (max-width: 800px) {
-  .route-ai-card {
-    padding: 22px 18px;
+.route-quick-link:hover .btn-arrow-down {
+  transform: translateY(3px);
+}
+
+@media (max-width: 900px) {
+  .home-intro {
+    padding: 75px 0 85px;
   }
-  .ai-search-form {
+  .home-intro-layout {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+  .home-intro-header h2 {
+    font-size: 44px;
+    margin-bottom: 20px;
+  }
+  .home-card-body {
+    padding: 26px 22px;
+  }
+  .home-intro-actions {
     flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
   }
-  .ai-submit-btn {
-    width: 100%;
+  .btn-intro-primary,
+  .route-quick-link {
     justify-content: center;
+    width: 100%;
+    box-sizing: border-box;
   }
 }
 
