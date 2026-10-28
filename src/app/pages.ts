@@ -9,66 +9,112 @@ import { OFFICIAL_ROUTE_41_PATH, OFFICIAL_ROUTE_41_IDA, OFFICIAL_ROUTE_41_VUELTA
 @Component({ standalone: true, imports: [RouterLink], template: `
   <section class="hero-section page-hero"><div class="hero-overlay"></div><div class="container hero-content"><p class="eyebrow light"><span></span> {{ language() === 'es' ? 'Servicio rápido, seguro y confiable' : 'Fast, safe and reliable service' }}</p><h1>{{ language() === 'es' ? 'Movemos lo que' : 'We move what' }}<br /><em>{{ language() === 'es' ? 'importa.' : 'matters.' }}</em></h1><p class="hero-description">{{ language() === 'es' ? 'Conectamos personas, ciudades y oportunidades con la fuerza de una flota preparada para llegar más lejos.' : 'We connect people, cities and opportunities with a fleet ready to go farther and serve better.' }}</p><div class="hero-stats" aria-label="{{ language() === 'es' ? 'Estadísticas de la empresa' : 'Company statistics' }}"><div class="stat-item"><strong class="stat-value"><span class="stat-sign">+</span>35</strong><span class="stat-label">{{ language() === 'es' ? 'años de experiencia' : 'years of experience' }}</span></div><div class="stat-item"><strong class="stat-value">24/7</strong><span class="stat-label">{{ language() === 'es' ? 'atención y soporte' : 'support and assistance' }}</span></div><div class="stat-item"><strong class="stat-value">100%</strong><span class="stat-label">{{ language() === 'es' ? 'compromiso peruano' : 'Peruvian commitment' }}</span></div></div></div></section>
   <section class="home-intro">
-    <div class="container home-intro-layout">
-      <!-- Columna Izquierda: Encabezado Editorial y Badge de Ruta -->
-      <div class="home-intro-header">
-        <p class="eyebrow">
-          <span></span>
-          {{ language() === 'es' ? 'Una ruta con propósito' : 'A route with purpose' }}
-        </p>
-        <h2>
-          {{ language() === 'es' ? 'La confianza también' : 'Trust is also' }}<br />
-          <em>{{ language() === 'es' ? 'se transporta.' : 'transported.' }}</em>
-        </h2>
-        
-        <!-- Insignia Corporativa Oficial de Ruta -->
-        <div class="home-route-badge">
-          <div class="route-badge-seal">
-            <span class="route-badge-num">41</span>
-            <small>S.A.</small>
+    <div class="container">
+      <!-- Fila Principal: Texto Editorial (Izquierda) + Showcase Visual del Bus 41 (Derecha) -->
+      <div class="home-intro-showcase-row">
+        <!-- Columna de Contenido Editorial -->
+        <div class="home-intro-copy-col">
+          <p class="eyebrow">
+            <span></span>
+            {{ language() === 'es' ? 'Una ruta con propósito' : 'A route with purpose' }}
+          </p>
+          <h2>
+            {{ language() === 'es' ? 'La confianza también' : 'Trust is also' }}<br />
+            <em>{{ language() === 'es' ? 'se transporta.' : 'transported.' }}</em>
+          </h2>
+          <p class="home-intro-lead">
+            {{ language() === 'es' ? 'Transportes 41 S.A. conecta personas, ciudades y oportunidades con responsabilidad, puntualidad y un profundo respeto por quienes confían en nosotros.' : 'Transportes 41 S.A. connects people, cities and opportunities with responsibility, punctuality and deep respect for those who trust us.' }}
+          </p>
+
+          <!-- Botones de Acción Principales -->
+          <div class="home-intro-buttons">
+            <a class="btn-home-primary" routerLink="/nosotros">
+              <span>{{ language() === 'es' ? 'Conoce nuestra empresa' : 'Meet our company' }}</span>
+              <span class="btn-arrow" aria-hidden="true">→</span>
+            </a>
+            <a class="btn-home-secondary" routerLink="/nosotros" fragment="mapa">
+              <span class="btn-icon" aria-hidden="true">🗺️</span>
+              <span>{{ language() === 'es' ? 'Ver Mapa de Ruta' : 'View Route Map' }}</span>
+              <span class="btn-arrow-down" aria-hidden="true">↓</span>
+            </a>
           </div>
-          <div class="route-badge-info">
-            <strong>{{ language() === 'es' ? 'Ruta Oficial 9801' : 'Official Route 9801' }}</strong>
-            <span>{{ language() === 'es' ? 'Pachacútec ⇄ Villa El Salvador' : 'Pachacútec ⇄ Villa El Salvador' }}</span>
+        </div>
+
+        <!-- Columna Visual: Showcase Fotográfico de la Flota -->
+        <div class="home-intro-visual-col">
+          <div class="home-fleet-frame">
+            <div class="home-fleet-accent-strip"></div>
+            <div class="home-fleet-photo-box">
+              <img 
+                src="/carronuevo.png" 
+                alt="{{ language() === 'es' ? 'Unidad oficial de Transportes 41 S.A.' : 'Transportes 41 S.A. official bus unit' }}" 
+                class="home-fleet-img"
+              />
+              <div class="home-fleet-overlay"></div>
+              
+              <!-- Insignia Superior Flotante -->
+              <span class="home-fleet-badge">
+                <span class="badge-dot"></span>
+                {{ language() === 'es' ? 'RUTA 9801 • FLOTA MODERNA' : 'ROUTE 9801 • MODERN FLEET' }}
+              </span>
+
+              <!-- Fila Inferior Flotante con Datos de Ruta -->
+              <div class="home-fleet-caption">
+                <div class="caption-icon">🚌</div>
+                <div class="caption-text">
+                  <strong>{{ language() === 'es' ? 'Pachacútec ⇄ Villa El Salvador' : 'Pachacútec ⇄ Villa El Salvador' }}</strong>
+                  <small>{{ language() === 'es' ? 'Pan. Norte • Evitamiento • Pan. Sur' : 'Pan. Norte • Evitamiento • Pan. Sur' }}</small>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- Columna Derecha: Tarjeta Ejecutiva de Propósito -->
-      <div class="home-intro-card">
-        <div class="home-card-accent-strip"></div>
-        <div class="home-card-body">
-          <p class="home-card-desc">
-            {{ language() === 'es' ? 'Transportes 41 S.A. conecta personas, ciudades y oportunidades con responsabilidad, puntualidad y un profundo respeto por quienes confían en nosotros.' : 'Transportes 41 S.A. connects people, cities and opportunities with responsibility, punctuality and deep respect for those who trust us.' }}
-          </p>
-
-          <!-- 3 Puntos Clave de Confianza con Checks Corporativos -->
-          <div class="home-intro-features">
-            <div class="intro-feature-item">
-              <span class="feature-icon icon-yellow">✓</span>
-              <span>{{ language() === 'es' ? 'Puntualidad y frecuencia continua en cada salida' : 'Punctual departures and continuous service' }}</span>
-            </div>
-            <div class="intro-feature-item">
-              <span class="feature-icon icon-red">✓</span>
-              <span>{{ language() === 'es' ? 'Flota moderna con póliza y SOAT 100% vigente' : 'Modern fleet with 100% active insurance & SOAT' }}</span>
-            </div>
-            <div class="intro-feature-item">
-              <span class="feature-icon icon-blue">✓</span>
-              <span>{{ language() === 'es' ? 'Monitoreo satelital GPS y coordinación en ruta' : 'Real-time GPS satellite tracking and coordination' }}</span>
-            </div>
+      <!-- Fila de 3 Pilares Corporativos (Tarjetas con Colores de Marca) -->
+      <div class="home-intro-pillars-grid">
+        <!-- Pilar 01: Frecuencia (Amarillo / Oro corporativo) -->
+        <div class="home-pillar-card pillar-yellow">
+          <div class="pillar-accent-bar"></div>
+          <div class="pillar-header">
+            <span class="pillar-tag">01 / {{ language() === 'es' ? 'FRECUENCIA' : 'FREQUENCY' }}</span>
+            <span class="pillar-icon">⏱️</span>
           </div>
+          <h3>{{ language() === 'es' ? 'Salidas continuas' : 'Frequent departures' }}</h3>
+          <p>{{ language() === 'es' ? 'Unidades programadas en intervalos regulares para que llegues a tiempo y sin contratiempos.' : 'Scheduled departures at regular intervals to keep you moving smoothly and on time.' }}</p>
+          <div class="pillar-footer">
+            <span class="pillar-check">✓</span>
+            <span>{{ language() === 'es' ? 'Horarios continuos toda la jornada' : 'Continuous daily schedule' }}</span>
+          </div>
+        </div>
 
-          <!-- Acciones Principales -->
-          <div class="home-intro-actions">
-            <a class="btn-intro-primary" routerLink="/nosotros">
-              <span>{{ language() === 'es' ? 'Conoce nuestra empresa' : 'Meet our company' }}</span>
-              <span class="btn-arrow" aria-hidden="true">→</span>
-            </a>
-            <a class="route-quick-link" routerLink="/nosotros" fragment="mapa">
-              <span class="map-icon" aria-hidden="true">🗺️</span>
-              <span>{{ language() === 'es' ? 'Ver Mapa de Ruta' : 'View Route Map' }}</span>
-              <span class="btn-arrow-down" aria-hidden="true">↓</span>
-            </a>
+        <!-- Pilar 02: Seguridad (Rojo corporativo) -->
+        <div class="home-pillar-card pillar-red">
+          <div class="pillar-accent-bar"></div>
+          <div class="pillar-header">
+            <span class="pillar-tag">02 / {{ language() === 'es' ? 'RESPALDO' : 'PROTECTION' }}</span>
+            <span class="pillar-icon">🛡️</span>
+          </div>
+          <h3>{{ language() === 'es' ? 'Viajes asegurados' : 'Insured journeys' }}</h3>
+          <p>{{ language() === 'es' ? 'Conductores capacitados, mantenimiento preventivo riguroso y SOAT 100% activo.' : 'Trained drivers, rigorous preventive maintenance, and active SOAT insurance.' }}</p>
+          <div class="pillar-footer">
+            <span class="pillar-check">✓</span>
+            <span>{{ language() === 'es' ? 'Póliza vigente y cobertura total' : 'Active coverage for all passengers' }}</span>
+          </div>
+        </div>
+
+        <!-- Pilar 03: Cobertura (Azul corporativo) -->
+        <div class="home-pillar-card pillar-blue">
+          <div class="pillar-accent-bar"></div>
+          <div class="pillar-header">
+            <span class="pillar-tag">03 / {{ language() === 'es' ? 'COBERTURA' : 'COVERAGE' }}</span>
+            <span class="pillar-icon">📍</span>
+          </div>
+          <h3>{{ language() === 'es' ? 'Ruta estratégica' : 'Strategic route' }}</h3>
+          <p>{{ language() === 'es' ? 'Más de 55 km uniendo 17 distritos clave entre el Cono Norte y el Cono Sur de Lima.' : 'Over 55 km connecting 17 key districts across North and South Lima.' }}</p>
+          <div class="pillar-footer">
+            <span class="pillar-check">✓</span>
+            <span>{{ language() === 'es' ? 'Conexión directa vía Evitamiento' : 'Direct connection via Evitamiento' }}</span>
           </div>
         </div>
       </div>
