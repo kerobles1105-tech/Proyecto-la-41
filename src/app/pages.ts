@@ -458,7 +458,75 @@ export class FleetPage {
 
 @Component({ standalone: true, template: `
   <section class="inner-hero safety-hero"><div class="container"><p class="eyebrow">{{ language() === 'es' ? '04 / Seguridad' : '04 / Safety' }}</p><h1>{{ language() === 'es' ? 'Más que llegar,' : 'More than arriving,' }}<br /><em>{{ language() === 'es' ? 'llegar bien.' : 'arriving well.' }}</em></h1><p>{{ language() === 'es' ? 'La seguridad es una práctica diaria que guía cada recorrido.' : 'Safety is a daily practice that guides every trip.' }}</p></div></section>
-  <section class="safety-values-section section-space"><div class="container"><div class="section-heading"><div><p class="eyebrow">{{ language() === 'es' ? 'Nuestro compromiso' : 'Our commitment' }}</p><h2>{{ language() === 'es' ? 'Un servicio' : 'A service' }}<br /><em>{{ language() === 'es' ? 'con propósito.' : 'with purpose.' }}</em></h2></div><p class="heading-support">{{ language() === 'es' ? 'Cuidamos a las personas y pensamos en el futuro de cada recorrido.' : 'We care for people and think about the future of every route.' }}</p></div><div class="values-grid"><article class="safety-value-card"><div class="safety-value-image"><img src="/soat.webp" alt="{{ language() === 'es' ? 'Compromiso con la seguridad en cada recorrido' : 'Commitment to safety on every journey' }}" /></div><div class="safety-value-copy"><span>01 / {{ language() === 'es' ? 'SEGURIDAD' : 'SAFETY' }}</span><h3>{{ language() === 'es' ? 'Seguridad primero' : 'Safety first' }}</h3><p>{{ language() === 'es' ? 'Cuidamos a nuestros pasajeros, colaboradores y comunidades en cada recorrido.' : 'We care for our passengers, team members, and communities on every trip.' }}</p></div></article><article class="safety-value-card"><div class="safety-value-image"><img src="/juntos.jpeg" alt="{{ language() === 'es' ? 'Equipo de Transportes 41 S.A.' : 'Transportes 41 S.A. team' }}" /></div><div class="safety-value-copy"><span>02 / {{ language() === 'es' ? 'PERSONAS' : 'PEOPLE' }}</span><h3>{{ language() === 'es' ? 'Servicio humano' : 'Human service' }}</h3><p>{{ language() === 'es' ? 'Escuchamos, acompañamos y resolvemos con respeto y cercanía.' : 'We listen, support, and resolve issues with respect and care.' }}</p></div></article><article class="safety-value-card"><div class="safety-value-image"><img src="/futuro.webp" alt="{{ language() === 'es' ? 'Unidad de la flota de Transportes 41 S.A.' : 'Transportes 41 S.A. fleet vehicle' }}" /></div><div class="safety-value-copy"><span>03 / {{ language() === 'es' ? 'FUTURO' : 'FUTURE' }}</span><h3>{{ language() === 'es' ? 'Mirada al futuro' : 'Future vision' }}</h3><p>{{ language() === 'es' ? 'Buscamos una movilidad más ordenada, responsable y sostenible.' : 'We seek more orderly, responsible and sustainable mobility.' }}</p></div></article></div></div></section>
+  <section class="safety-values-section section-space">
+    <div class="container">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow"><span></span> {{ language() === 'es' ? 'Nuestro compromiso' : 'Our commitment' }}</p>
+          <h2>{{ language() === 'es' ? 'Un servicio' : 'A service' }}<br /><em>{{ language() === 'es' ? 'con propósito.' : 'with purpose.' }}</em></h2>
+        </div>
+        <p class="heading-support">{{ language() === 'es' ? 'Cuidamos a las personas y pensamos en el futuro de cada recorrido.' : 'We care for people and think about the future of every route.' }}</p>
+      </div>
+
+      <div class="values-grid">
+        <!-- Tarjeta 01: Seguridad Primero (Amarillo / Oro corporativo) -->
+        <article class="safety-value-card card-seguridad">
+          <div class="safety-card-accent-strip"></div>
+          <div class="safety-value-image image-soat">
+            <span class="safety-card-badge badge-yellow">🛡️ {{ language() === 'es' ? 'SOAT ACTIVO' : 'ACTIVE SOAT' }}</span>
+            <img src="/soat.webp" alt="{{ language() === 'es' ? 'Compromiso con la seguridad en cada recorrido - SOAT vigente' : 'Commitment to safety on every journey - Valid SOAT' }}" />
+          </div>
+          <div class="safety-value-copy">
+            <span class="value-tag tag-yellow">01 / {{ language() === 'es' ? 'SEGURIDAD' : 'SAFETY' }}</span>
+            <h3>{{ language() === 'es' ? 'Seguridad primero' : 'Safety first' }}</h3>
+            <p>{{ language() === 'es' ? 'Cuidamos a nuestros pasajeros, colaboradores y comunidades en cada recorrido.' : 'We care for our passengers, team members, and communities on every trip.' }}</p>
+            <div class="safety-card-guarantee">
+              <span class="guarantee-icon">✓</span>
+              <span>{{ language() === 'es' ? 'Póliza vigente y cobertura al 100%' : '100% active insurance coverage' }}</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Tarjeta 02: Servicio Humano (Rojo corporativo) -->
+        <article class="safety-value-card card-personas">
+          <div class="safety-card-accent-strip"></div>
+          <div class="safety-value-image">
+            <span class="safety-card-badge badge-red">👥 {{ language() === 'es' ? 'ATENCIÓN HUMANA' : 'HUMAN SERVICE' }}</span>
+            <img src="/juntos.jpeg" alt="{{ language() === 'es' ? 'Equipo de Transportes 41 S.A.' : 'Transportes 41 S.A. team' }}" />
+            <div class="safety-image-overlay"></div>
+          </div>
+          <div class="safety-value-copy">
+            <span class="value-tag tag-red">02 / {{ language() === 'es' ? 'PERSONAS' : 'PEOPLE' }}</span>
+            <h3>{{ language() === 'es' ? 'Servicio humano' : 'Human service' }}</h3>
+            <p>{{ language() === 'es' ? 'Escuchamos, acompañamos y resolvemos con respeto y cercanía.' : 'We listen, support, and resolve issues with respect and care.' }}</p>
+            <div class="safety-card-guarantee">
+              <span class="guarantee-icon">✓</span>
+              <span>{{ language() === 'es' ? 'Conductores con vocación de servicio' : 'Dedicated professional drivers' }}</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Tarjeta 03: Mirada al Futuro (Azul corporativo) -->
+        <article class="safety-value-card card-futuro">
+          <div class="safety-card-accent-strip"></div>
+          <div class="safety-value-image">
+            <span class="safety-card-badge badge-blue">🚀 {{ language() === 'es' ? 'MOVILIDAD SOSTENIBLE' : 'SUSTAINABLE MOBILITY' }}</span>
+            <img src="/futuro.webp" alt="{{ language() === 'es' ? 'Unidad de la flota de Transportes 41 S.A.' : 'Transportes 41 S.A. fleet vehicle' }}" />
+            <div class="safety-image-overlay"></div>
+          </div>
+          <div class="safety-value-copy">
+            <span class="value-tag tag-blue">03 / {{ language() === 'es' ? 'FUTURO' : 'FUTURE' }}</span>
+            <h3>{{ language() === 'es' ? 'Mirada al futuro' : 'Future vision' }}</h3>
+            <p>{{ language() === 'es' ? 'Buscamos una movilidad más ordenada, responsable y sostenible.' : 'We seek more orderly, responsible and sustainable mobility.' }}</p>
+            <div class="safety-card-guarantee">
+              <span class="guarantee-icon">✓</span>
+              <span>{{ language() === 'es' ? 'Flota moderna y tecnología satelital' : 'Modern fleet with GPS tracking' }}</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
 ` })
 export class SafetyPage {
   protected readonly language = inject(LanguageService).language;
