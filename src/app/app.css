@@ -3287,35 +3287,7 @@
   filter: brightness(1.05);
 }
 
-.home-intro-actions {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
-  margin-top: 18px;
-}
 
-.route-quick-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: #eff6ff;
-  color: var(--blue-dark);
-  font-size: 13px;
-  font-weight: 800;
-  padding: 8px 16px;
-  border-radius: 999px;
-  border: 1px solid #bfdbfe;
-  text-decoration: none;
-  transition: all 0.2s ease;
-}
-
-.route-quick-link:hover {
-  background: var(--blue-dark);
-  color: var(--yellow);
-  border-color: var(--blue-dark);
-  transform: translateY(-2px);
-}
 
 @media (max-width: 800px) {
   .route-ai-card {
